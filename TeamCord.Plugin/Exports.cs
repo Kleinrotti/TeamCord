@@ -142,9 +142,23 @@ namespace TeamCord.Plugin
             var id = Helpers.ExtractChannelID(description);
 
             if (id == 0)
+            {
                 TSPlugin.Instance.ConnectionHandler.LeaveChannel();
+            }
             else
-                TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
+            {
+                if (TSPlugin.Instance.Settings.AutomaticJoin)
+                {
+                    TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
+                }
+                else
+                {
+                    if (MessageBox.Show("Would you like to join to discord too?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
+                    }
+                }
+            }
 
             TSPlugin.Instance.Functions.freeMemory(ptr);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using TeamCord.Core;
 using TeamCord.DiscordLib;
@@ -71,18 +72,6 @@ namespace TeamCord.Plugin
                 return 1;
             }
             return 0;
-        }
-
-        private Task ConnectionHandler_Disconnected(Exception arg)
-        {
-            Functions.printMessageToCurrentTab("Disconnected from discord.");
-            return Task.CompletedTask;
-        }
-
-        private Task ConnectionHandler_Connected()
-        {
-            Functions.printMessageToCurrentTab("Connected to discord.");
-            return Task.CompletedTask;
         }
 
         public void Shutdown()
