@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using TeamCord.Core;
 using TeamCord.DiscordLib;
 
@@ -54,19 +55,39 @@ namespace TeamCord.Plugin
 
         public int Init()
         {
-            var dir = Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config");
-            if (!File.Exists(_configPath))
+            try
             {
-                var storage = new DataStorage();
-                storage.StoreSettings(new PluginSettings());
+                var dir = Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config");
+                if (!File.Exists(_configPath))
+                {
+                    var storage = new DataStorage();
+                    storage.StoreSettings(new PluginSettings());
+                }
+                ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
             }
-            ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 1;
+            }
             return 0;
+        }
+
+        private Task ConnectionHandler_Disconnected(Exception arg)
+        {
+            Functions.printMessageToCurrentTab("Disconnected from discord.");
+            return Task.CompletedTask;
+        }
+
+        private Task ConnectionHandler_Connected()
+        {
+            Functions.printMessageToCurrentTab("Connected to discord.");
+            return Task.CompletedTask;
         }
 
         public void Shutdown()
         {
-            ConnectionHandler.Dispose();
+            ConnectionHandler?.Dispose();
         }
     }
 }

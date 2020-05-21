@@ -24,46 +24,14 @@ namespace TeamCord.DiscordLib
             _token = token;
             client = new DiscordSocketClient();
             audioService = new AudioService();
-            client.Disconnected += Client_Disconnected;
-            client.LoggedOut += Client_LoggedOut;
-            client.LoggedIn += Client_LoggedIn;
-            client.Connected += Client_Connected;
             client.Log += Client_Log;
         }
-
-        #region Events
 
         private Task Client_Log(LogMessage arg)
         {
             Console.WriteLine(arg.Message);
             return Task.CompletedTask;
         }
-
-        private Task Client_Connected()
-        {
-            Console.WriteLine("Client connected");
-            return Task.CompletedTask;
-        }
-
-        private Task Client_LoggedIn()
-        {
-            Console.WriteLine("Client logged in");
-            return Task.CompletedTask;
-        }
-
-        private Task Client_LoggedOut()
-        {
-            Console.WriteLine("Client logged out");
-            return Task.CompletedTask;
-        }
-
-        private Task Client_Disconnected(Exception arg)
-        {
-            Console.WriteLine("Client disconnected");
-            return Task.CompletedTask;
-        }
-
-        #endregion Events
 
         public async void Connect()
         {
