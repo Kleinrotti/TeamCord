@@ -1,0 +1,33 @@
+﻿<Window x:Class="TeamCord.GUI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TeamCord.GUI"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="Settings" Height="400" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+            <DockPanel>
+                <Label Content="Token:" DockPanel.Dock="Left"/>
+                <Button Name="button_ShowToken" Content="Show" Background="Transparent" BorderThickness="0" Foreground="Blue" DockPanel.Dock="Right" FontSize="10" MouseDown="button_ShowToken_MouseDown" MouseUp="button_ShowToken_MouseUp"/>
+                <PasswordBox Name="passwordBox_token" DockPanel.Dock="Right" Height="18" Width="150"/>
+            </DockPanel>
+            <CheckBox Name="checkBox_Autojoin" Content="Auto join" />
+            <CheckBox Name="checkBox_RawAudio" Content="Use raw audio" />
+            <CheckBox Name="checkBox_ConnectionStatus" Content="Show connection status" />
+        </StackPanel>
+        <Button Grid.Row="1" Name="button_Save" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" Click="button_Save_Click"/>
+    </Grid>
+</Window>
