@@ -1,8 +1,8 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using SharpDX.Text;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace TeamCord.DiscordLib
