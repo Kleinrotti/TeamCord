@@ -49,7 +49,7 @@ namespace TeamCord.Plugin
 
         public string PluginName = "TeamCord";
         public string PluginVersion = "0.1";
-        public int ApiVersion = 23;
+        public int ApiVersion = 24;
         public string Author = "Kleinrotti";
         public string Description = "Bridge between Teamspeak and Discord";
         public string PluginID { get; set; }
@@ -71,12 +71,15 @@ namespace TeamCord.Plugin
                 Console.WriteLine(ex.Message);
                 return 1;
             }
+            Console.WriteLine("TeamCord initialized");
             return 0;
         }
 
         public void Shutdown()
         {
-            ConnectionHandler?.Dispose();
+            if(ConnectionHandler !=null)
+                ConnectionHandler.Dispose();
+            Console.WriteLine("TeamCord shutdown");
         }
     }
 }

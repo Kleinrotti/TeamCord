@@ -96,7 +96,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_registerPluginID(String id)
         {
-            var functs = (TS3Functions)TSPlugin.Instance.Functions;
+            var functs = TSPlugin.Instance.Functions;
             functs.printMessageToCurrentTab(id);
             TSPlugin.Instance.PluginID = id;
         }
@@ -194,56 +194,56 @@ namespace TeamCord.Plugin
             return lpstr.ToArray();
         }
 
-        public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, String text, String icon)
-        {
-            PluginMenuItem* menuItem = (PluginMenuItem*)Marshal.AllocHGlobal(sizeof(PluginMenuItem));
-            menuItem->type = type;
-            menuItem->id = id;
+        //public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, String text, String icon)
+        //{
+        //    PluginMenuItem* menuItem = (PluginMenuItem*)Marshal.AllocHGlobal(sizeof(PluginMenuItem));
+        //    menuItem->type = type;
+        //    menuItem->id = id;
 
-            IntPtr i_ptr = Marshal.StringToHGlobalAnsi(icon);
-            void* i_strPtr = i_ptr.ToPointer();
-            char* i_cptr = (char*)i_strPtr;
-            *menuItem->icon = *my_strcpy(menuItem->icon, 128, i_cptr);
+        //    IntPtr i_ptr = Marshal.StringToHGlobalAnsi(icon);
+        //    void* i_strPtr = i_ptr.ToPointer();
+        //    char* i_cptr = (char*)i_strPtr;
+        //    *menuItem->icon = *my_strcpy(menuItem->icon, 128, i_cptr);
 
-            IntPtr t_ptr = Marshal.StringToHGlobalAnsi(text);
-            void* t_strPtr = t_ptr.ToPointer();
-            char* t_cptr = (char*)t_strPtr;
-            my_strcpy(menuItem->text, 128, t_cptr);
+        //    IntPtr t_ptr = Marshal.StringToHGlobalAnsi(text);
+        //    void* t_strPtr = t_ptr.ToPointer();
+        //    char* t_cptr = (char*)t_strPtr;
+        //    my_strcpy(menuItem->text, 128, t_cptr);
 
-            return menuItem;
-        }
+        //    return menuItem;
+        //}
 
-        [DllExport]
-        public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
-        {
-            int x = 2;
-            int sz = x + 1;
-            int n = 0;
+        //[DllExport]
+        //public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
+        //{
+        //    int x = 2;
+        //    int sz = x + 1;
+        //    int n = 0;
 
-            *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * sz);
-            string icon = "2.png";
+        //    *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * sz);
+        //    string icon = "2.png";
 
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "Login", icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Logout", icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 3, "Info", icon);
+        //    (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "Login", icon);
+        //    (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Logout", icon);
+        //    (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 3, "Info", icon);
 
-            (*menuItems)[n++] = null;
+        //    (*menuItems)[n++] = null;
 
-            *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
+        //    *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
 
-            IntPtr ptr = Marshal.StringToHGlobalAnsi("t.png");
-            void* strPtr = ptr.ToPointer();
-            char* cptr = (char*)strPtr;
-            my_strcpy(*menuIcon, 128, cptr);
-        }
+        //    IntPtr ptr = Marshal.StringToHGlobalAnsi("t.png");
+        //    void* strPtr = ptr.ToPointer();
+        //    char* cptr = (char*)strPtr;
+        //    my_strcpy(*menuIcon, 128, cptr);
+        //}
 
-        [DllExport]
-        public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
-        {
-            if (menuItemID == 1)
-                TSPlugin.Instance.ConnectionHandler.Connect();
-            else if(menuItemID == 2)
-                TSPlugin.Instance.ConnectionHandler.Disconnect();
-        }
+        //[DllExport]
+        //public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
+        //{
+        //    if (menuItemID == 1)
+        //        TSPlugin.Instance.ConnectionHandler.Connect();
+        //    else if(menuItemID == 2)
+        //        TSPlugin.Instance.ConnectionHandler.Disconnect();
+        //}
     }
 }
