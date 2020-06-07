@@ -101,14 +101,6 @@ namespace TeamCord.Plugin
             TSPlugin.Instance.PluginID = id;
         }
 
-        /* Static title shown in the left column in the info frame */
-
-        [DllExport]
-        public static unsafe String ts3plugin_infoTitle()
-        {
-            return "Test plugin info";
-        }
-
         [DllExport]
         public static void ts3plugin_freeMemory(IntPtr data)
         {
@@ -118,8 +110,6 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_currentServerConnectionChanged(ulong serverConnectionHandlerID)
         {
-            var functs = TSPlugin.Instance.Functions;
-            functs.printMessageToCurrentTab(serverConnectionHandlerID.ToString());
         }
 
         [DllExport]
@@ -149,13 +139,13 @@ namespace TeamCord.Plugin
             {
                 if (TSPlugin.Instance.Settings.AutomaticJoin)
                 {
-                    TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
+                    TSPlugin.Instance.ConnectionHandler.JoinChannel(id, new Action<byte[], int>(DiscordAudioCallback));
                 }
                 else
                 {
                     if (MessageBox.Show("Would you like to join to discord too?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
+                        TSPlugin.Instance.ConnectionHandler.JoinChannel(id, new Action<byte[], int>(DiscordAudioCallback));
                     }
                 }
             }
@@ -163,10 +153,29 @@ namespace TeamCord.Plugin
             TSPlugin.Instance.Functions.freeMemory(ptr);
         }
 
+        private unsafe static void DiscordAudioCallback(byte[] buffer, int samples)
+        {
+            short[] shortBuffer = new short[(int)Math.Ceiling(buffer.Length / 2.0)];
+
+            fixed (byte* samplesPtr = buffer)
+            {
+                short* pSample = (short*)samplesPtr;
+
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    shortBuffer[i] = pSample[i];
+                }
+            }
+        }
+
         [DllExport]
         public static unsafe void ts3plugin_onEditCapturedVoiceDataEvent(ulong serverConnectionHandlerID, short* samples, int sampleCount, int channels, int* edited)
         {
-            TSPlugin.Instance.ConnectionHandler.VoiceData(samples, sampleCount, channels, edited);
+            //only process voice data if teamspeak would send it
+            if (*edited == 2)
+            {
+                TSPlugin.Instance.ConnectionHandler.VoiceData(samples, sampleCount, channels, edited);
+            }
         }
 
         public unsafe static char* my_strcpy(char* destination, int buffer, char* source)
@@ -194,56 +203,55 @@ namespace TeamCord.Plugin
             return lpstr.ToArray();
         }
 
-        //public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, String text, String icon)
-        //{
-        //    PluginMenuItem* menuItem = (PluginMenuItem*)Marshal.AllocHGlobal(sizeof(PluginMenuItem));
-        //    menuItem->type = type;
-        //    menuItem->id = id;
+        public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, String text, String icon)
+        {
+            PluginMenuItem* menuItem = (PluginMenuItem*)Marshal.AllocHGlobal(sizeof(PluginMenuItem));
+            menuItem->type = type;
+            menuItem->id = id;
 
-        //    IntPtr i_ptr = Marshal.StringToHGlobalAnsi(icon);
-        //    void* i_strPtr = i_ptr.ToPointer();
-        //    char* i_cptr = (char*)i_strPtr;
-        //    *menuItem->icon = *my_strcpy(menuItem->icon, 128, i_cptr);
+            IntPtr i_ptr = Marshal.StringToHGlobalAnsi(icon);
+            void* i_strPtr = i_ptr.ToPointer();
+            char* i_cptr = (char*)i_strPtr;
+            *menuItem->icon = *my_strcpy(menuItem->icon, 128, i_cptr);
 
-        //    IntPtr t_ptr = Marshal.StringToHGlobalAnsi(text);
-        //    void* t_strPtr = t_ptr.ToPointer();
-        //    char* t_cptr = (char*)t_strPtr;
-        //    my_strcpy(menuItem->text, 128, t_cptr);
+            IntPtr t_ptr = Marshal.StringToHGlobalAnsi(text);
+            void* t_strPtr = t_ptr.ToPointer();
+            char* t_cptr = (char*)t_strPtr;
+            my_strcpy(menuItem->text, 128, t_cptr);
 
-        //    return menuItem;
-        //}
+            return menuItem;
+        }
 
-        //[DllExport]
-        //public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
-        //{
-        //    int x = 2;
-        //    int sz = x + 1;
-        //    int n = 0;
+        [DllExport]
+        public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
+        {
+            int x = 1;
+            int sz = x + 1;
+            int n = 0;
 
-        //    *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * sz);
-        //    string icon = "2.png";
+            *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * sz);
+            string icon = "2.png";
 
-        //    (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "Login", icon);
-        //    (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Logout", icon);
-        //    (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 3, "Info", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "Login", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Logout", icon);
 
-        //    (*menuItems)[n++] = null;
+            (*menuItems)[n++] = null;
 
-        //    *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
+            *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
 
-        //    IntPtr ptr = Marshal.StringToHGlobalAnsi("t.png");
-        //    void* strPtr = ptr.ToPointer();
-        //    char* cptr = (char*)strPtr;
-        //    my_strcpy(*menuIcon, 128, cptr);
-        //}
+            IntPtr ptr = Marshal.StringToHGlobalAnsi("t.png");
+            void* strPtr = ptr.ToPointer();
+            char* cptr = (char*)strPtr;
+            my_strcpy(*menuIcon, 128, cptr);
+        }
 
-        //[DllExport]
-        //public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
-        //{
-        //    if (menuItemID == 1)
-        //        TSPlugin.Instance.ConnectionHandler.Connect();
-        //    else if(menuItemID == 2)
-        //        TSPlugin.Instance.ConnectionHandler.Disconnect();
-        //}
+        [DllExport]
+        public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
+        {
+            if (menuItemID == 1)
+                TSPlugin.Instance.ConnectionHandler.Connect();
+            else if (menuItemID == 2)
+                TSPlugin.Instance.ConnectionHandler.Disconnect();
+        }
     }
 }
