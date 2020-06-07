@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
-using System.IO;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,22 +9,21 @@ namespace TeamCord.DiscordLib
 {
     public class ConnectionHandler : IDisposable
     {
-        private DiscordSocketClient client;
-
-        private static short[] span = new short[960];
-        private byte[] mem = new byte[span.Length * sizeof(short)];
-
-        private AudioService audioService;
-
-        private MemoryStream memStream;
+        private DiscordSocketClient _client;
+        private byte[] _bufferBytes;
+        private AudioService _audioService;
         private byte[] _token;
+        private short[] _voiceBufferTemp;
+        private short[] _voiceBuffer;
+        private Stopwatch _watch;
 
         public ConnectionHandler(byte[] token)
         {
             _token = token;
-            client = new DiscordSocketClient();
-            audioService = new AudioService();
-            client.Log += Client_Log;
+            _client = new DiscordSocketClient();
+            _audioService = new AudioService();
+            _watch = new Stopwatch();
+            _client.Log += Client_Log;
         }
 
         private Task Client_Log(LogMessage arg)
@@ -35,61 +34,85 @@ namespace TeamCord.DiscordLib
 
         public async void Connect()
         {
-            if (client.ConnectionState != ConnectionState.Connected || client.ConnectionState == ConnectionState.Connecting)
+            if (_client.ConnectionState != ConnectionState.Connected || _client.ConnectionState == ConnectionState.Connecting)
             {
-                await client.LoginAsync(0, Encoding.Default.GetString(_token));
-                await client.StartAsync();
+                await _client.LoginAsync(0, Encoding.Default.GetString(_token));
+                await _client.StartAsync();
             }
         }
 
-        public async void JoinChannel(ulong channelID)
+        public async void JoinChannel(ulong channelID, Action<byte[], int> voiceCallback)
         {
-            if (client.ConnectionState != ConnectionState.Connecting || client.ConnectionState != ConnectionState.Connected)
+            if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
                 Connect();
-            var channel = client.GetChannel(channelID) as SocketVoiceChannel;
-            await audioService.JoinChannel(channel);
-            memStream = new MemoryStream(mem);
+            var channel = _client.GetChannel(channelID) as SocketVoiceChannel;
+            await _audioService.JoinChannel(channel, voiceCallback);
         }
 
         public async void LeaveChannel()
         {
-            await audioService.LeaveChannel();
+            await _audioService.LeaveChannel();
         }
 
         public async void Disconnect()
         {
-            if (audioService != null)
-                await audioService.LeaveChannel();
-            await client.StopAsync();
-            await client.LogoutAsync();
+            if (_audioService != null)
+                await _audioService.LeaveChannel();
+            await _client.StopAsync();
+            await _client.LogoutAsync();
         }
 
         public unsafe void VoiceData(short* samplesPtr, int sampleCount, int channels, int* edited)
         {
-            //if (_audioClient == null)
-            //    return;
-            //var v = sizeof(short) * sampleCount * channels; //960
-            //Console.WriteLine("Samples :" + *samplesPtr + " Count: " + sampleCount + " Edited: " + *edited);
-
-            for (int ctr = 0; ctr < span.Length; ctr++)
+            _watch.Start();
+            int bufSize = sampleCount * channels;
+            if (_voiceBufferTemp == null)
             {
-                span[ctr] = ((*(ctr + samplesPtr)));
+                _voiceBufferTemp = new short[bufSize];
+                _bufferBytes = new byte[sizeof(short) * _voiceBufferTemp.Length];
+            }
+            for (int ctr = 0; ctr < bufSize; ctr++)
+            {
+                _voiceBufferTemp[ctr] = *(ctr + samplesPtr);
+            }
+            //if sound data is PCM mono it needs to be converted to stereo for discord
+            if (channels < 2)
+                _voiceBuffer = ToStereo(_voiceBufferTemp);
+            else
+                _voiceBuffer = _voiceBufferTemp;
+
+            fixed (short* fo = _voiceBuffer)
+            {
+                byte* sample = (byte*)fo;
+                for (int i = 0; i < _bufferBytes.Length; i++)
+                {
+                    _bufferBytes[i] = sample[i];
+                }
             }
 
-            Buffer.BlockCopy(span, 0, mem, 0, span.Length);
+            _audioService.SendVoiceData(_bufferBytes);
 
-            Task.Run(() =>
+            Console.WriteLine(_watch.ElapsedTicks + "ticks");
+            _watch.Reset();
+        }
+
+        private short[] ToStereo(short[] buf)
+        {
+            short[] buffer = new short[buf.Length * 2];
+            for (int i = buf.Length - 1, j = buffer.Length - 1; i >= 0; --i)
             {
-                audioService.SendVoiceData(memStream);
-            });
+                buffer[j--] = buf[i];
+                buffer[j--] = buf[i];
+            }
+            return buffer;
         }
 
         public void Dispose()
         {
-            audioService.LeaveChannel().Wait();
-            client.StopAsync().Wait();
-            client.LogoutAsync().Wait();
-            client.Dispose();
+            _audioService.LeaveChannel().Wait();
+            _client.StopAsync().Wait();
+            _client.LogoutAsync().Wait();
+            _client.Dispose();
         }
     }
 }
