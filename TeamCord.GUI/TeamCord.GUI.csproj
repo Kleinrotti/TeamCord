@@ -81,9 +81,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TeamCord.Core\TeamCord.Core.csproj">
       <Project>{50281cf0-63d7-4f96-aa0b-8238bc9d6f3b}</Project>
       <Name>TeamCord.Core</Name>

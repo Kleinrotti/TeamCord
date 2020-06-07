@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using TeamCord.Core;
 using TeamCord.DiscordLib;
 
@@ -48,8 +46,8 @@ namespace TeamCord.Plugin
         }
 
         public string PluginName = "TeamCord";
-        public string PluginVersion = "0.1";
-        public int ApiVersion = 24;
+        public string PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString();
+        public int ApiVersion = 23;
         public string Author = "Kleinrotti";
         public string Description = "Bridge between Teamspeak and Discord";
         public string PluginID { get; set; }
@@ -77,7 +75,7 @@ namespace TeamCord.Plugin
 
         public void Shutdown()
         {
-            if(ConnectionHandler !=null)
+            if (ConnectionHandler != null)
                 ConnectionHandler.Dispose();
             Console.WriteLine("TeamCord shutdown");
         }
