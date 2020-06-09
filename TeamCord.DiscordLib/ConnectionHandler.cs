@@ -64,16 +64,17 @@ namespace TeamCord.DiscordLib
         public unsafe void VoiceData(short[] samples, int channels)
         {
             _watch.Start();
-            if (_voiceBuffer == null)
-            {
-                _bufferBytes = new byte[sizeof(short) * samples.Length];
-            }
 
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)
                 _voiceBuffer = ToStereo(samples);
             else
                 _voiceBuffer = samples;
+            
+            if (_bufferBytes == null)
+            {
+                _bufferBytes = new byte[sizeof(short) * _voiceBuffer.Length];
+            }
 
             fixed (short* fo = _voiceBuffer)
             {
