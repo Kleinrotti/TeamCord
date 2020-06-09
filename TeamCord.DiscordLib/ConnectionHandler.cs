@@ -13,7 +13,6 @@ namespace TeamCord.DiscordLib
         private byte[] _bufferBytes;
         private AudioService _audioService;
         private byte[] _token;
-        private short[] _voiceBufferTemp;
         private short[] _voiceBuffer;
         private Stopwatch _watch;
 
@@ -62,24 +61,19 @@ namespace TeamCord.DiscordLib
             await _client.LogoutAsync();
         }
 
-        public unsafe void VoiceData(short* samplesPtr, int sampleCount, int channels, int* edited)
+        public unsafe void VoiceData(short[] samples, int channels)
         {
             _watch.Start();
-            int bufSize = sampleCount * channels;
-            if (_voiceBufferTemp == null)
+            if (_voiceBuffer == null)
             {
-                _voiceBufferTemp = new short[bufSize];
-                _bufferBytes = new byte[sizeof(short) * _voiceBufferTemp.Length];
+                _bufferBytes = new byte[sizeof(short) * samples.Length];
             }
-            for (int ctr = 0; ctr < bufSize; ctr++)
-            {
-                _voiceBufferTemp[ctr] = *(ctr + samplesPtr);
-            }
+
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)
-                _voiceBuffer = ToStereo(_voiceBufferTemp);
+                _voiceBuffer = ToStereo(samples);
             else
-                _voiceBuffer = _voiceBufferTemp;
+                _voiceBuffer = samples;
 
             fixed (short* fo = _voiceBuffer)
             {

@@ -20,14 +20,14 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" HorizontalAlignment="Center">
             <DockPanel>
-                <Label Content="Token:" DockPanel.Dock="Left"/>
-                <Button Name="button_ShowToken" Content="Show" Background="Transparent" BorderThickness="0" Foreground="Blue" DockPanel.Dock="Right" FontSize="10" MouseDown="button_ShowToken_MouseDown" MouseUp="button_ShowToken_MouseUp"/>
-                <PasswordBox Name="passwordBox_token" DockPanel.Dock="Right" Height="18" Width="150"/>
+                <Label Content="Token:" DockPanel.Dock="Left" />
+                <Button Name="button_ShowToken" Content="Show" Background="Transparent" BorderThickness="0" Foreground="Blue" DockPanel.Dock="Right" FontSize="10" MouseDown="button_ShowToken_MouseDown" MouseUp="button_ShowToken_MouseUp" />
+                <PasswordBox Name="passwordBox_token" DockPanel.Dock="Right" Height="18" Width="150" />
             </DockPanel>
             <CheckBox Name="checkBox_Autojoin" Content="Auto join" />
             <CheckBox Name="checkBox_RawAudio" Content="Use raw audio" />
             <CheckBox Name="checkBox_ConnectionStatus" Content="Show connection status" />
         </StackPanel>
-        <Button Grid.Row="1" Name="button_Save" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" Click="button_Save_Click"/>
+        <Button Grid.Row="1" Name="button_Save" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" Click="button_Save_Click" />
     </Grid>
 </Window>

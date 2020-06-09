@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TeamCord.Core;
 using TeamCord.DiscordLib;
@@ -29,6 +30,7 @@ namespace TeamCord.Plugin
         public ConnectionHandler ConnectionHandler;
         private string _configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config\config.json";
         private PluginSettings _settings;
+        public List<TS3Device> Devices { get; set; }
 
         public PluginSettings Settings
         {

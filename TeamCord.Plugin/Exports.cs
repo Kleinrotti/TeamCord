@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using TeamCord.Core;
+using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
 {
@@ -174,7 +175,12 @@ namespace TeamCord.Plugin
             //only process voice data if teamspeak would send it
             if (*edited == 2)
             {
-                TSPlugin.Instance.ConnectionHandler.VoiceData(samples, sampleCount, channels, edited);
+                short[] buffer = new short[sampleCount * channels];
+                for (int ctr = 0; ctr < buffer.Length; ctr++)
+                {
+                    buffer[ctr] = *(ctr + samples);
+                }
+                TSPlugin.Instance.ConnectionHandler.VoiceData(buffer, channels);
             }
         }
 
@@ -225,15 +231,15 @@ namespace TeamCord.Plugin
         [DllExport]
         public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
         {
-            int x = 1;
-            int sz = x + 1;
+            int menuItemCount = 4;
             int n = 0;
 
-            *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * sz);
+            *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * menuItemCount);
             string icon = "2.png";
 
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "Login", icon);
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Logout", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Just a test", icon);
 
             (*menuItems)[n++] = null;
 

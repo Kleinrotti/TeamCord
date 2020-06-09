@@ -10,7 +10,6 @@ namespace TeamCord.GUI
     /// </summary>
     public sealed partial class SettingsWindow : Window
     {
-
         public Action<PluginSettings> Callback { get; set; }
         private PluginSettings _settings;
 
@@ -22,7 +21,7 @@ namespace TeamCord.GUI
             checkBox_Autojoin.IsChecked = _settings.AutomaticJoin;
             checkBox_ConnectionStatus.IsChecked = _settings.ShowConnectionStatus;
             checkBox_RawAudio.IsChecked = _settings.UseTeamspeakRawAudio;
-            if(_settings.PluginUserCredentials.Entropy != null && _settings.PluginUserCredentials.CipherText != null)
+            if (_settings.PluginUserCredentials.Entropy != null && _settings.PluginUserCredentials.CipherText != null)
                 passwordBox_token.Password = Encoding.Default.GetString(_settings.PluginUserCredentials.GetStoredPassword());
         }
 
@@ -33,12 +32,10 @@ namespace TeamCord.GUI
 
         private void button_ShowToken_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            
         }
 
         private void button_ShowToken_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
         }
 
         private void button_Save_Click(object sender, RoutedEventArgs e)
