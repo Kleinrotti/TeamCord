@@ -38,11 +38,11 @@ public delegate uint TS3Functions_logMessage([In()][MarshalAs(UnmanagedType.LPSt
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char****
-public delegate uint TS3Functions_getPlaybackDeviceList([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, ref IntPtr result);
+public delegate uint TS3Functions_getPlaybackDeviceList([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, out IntPtr result);
 
 /// Return Type: unsigned int
 ///result: char***
-public delegate uint TS3Functions_getPlaybackModeList(ref IntPtr result);
+public delegate uint TS3Functions_getPlaybackModeList([In][Out][MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ref string[] result);
 
 /// Return Type: unsigned int
 ///modeID: char*
@@ -51,25 +51,25 @@ public delegate uint TS3Functions_getCaptureDeviceList([In()][MarshalAs(Unmanage
 
 /// Return Type: unsigned int
 ///result: char***
-public delegate uint TS3Functions_getCaptureModeList(ref IntPtr result);
+public delegate uint TS3Functions_getCaptureModeList([In][Out][MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ref string[] result);
 
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char***
-public delegate uint TS3Functions_getDefaultPlaybackDevice([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, ref IntPtr result);
+public delegate uint TS3Functions_getDefaultPlaybackDevice([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, [Out][MarshalAs(UnmanagedType.LPArray, SizeConst = 2, ArraySubType = UnmanagedType.LPStr)] out string[] result);
 
 /// Return Type: unsigned int
 ///result: char**
-public delegate uint TS3Functions_getDefaultPlayBackMode(ref IntPtr result);
+public delegate uint TS3Functions_getDefaultPlayBackMode([In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char***
-public delegate uint TS3Functions_getDefaultCaptureDevice([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, ref IntPtr result);
+public delegate uint TS3Functions_getDefaultCaptureDevice([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, [Out][MarshalAs(UnmanagedType.LPArray, SizeConst = 2, ArraySubType = UnmanagedType.LPStr)] out string[] result);
 
 /// Return Type: unsigned int
 ///result: char**
-public delegate uint TS3Functions_getDefaultCaptureMode(ref IntPtr result);
+public delegate uint TS3Functions_getDefaultCaptureMode([In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -87,23 +87,23 @@ public delegate uint TS3Functions_openCaptureDevice(ulong serverConnectionHandle
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
 ///isDefault: int*
-public delegate uint TS3Functions_getCurrentPlaybackDeviceName(ulong serverConnectionHandlerID, ref IntPtr result, ref int isDefault);
+public delegate uint TS3Functions_getCurrentPlaybackDeviceName(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result, ref bool isDefault);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
-public delegate uint TS3Functions_getCurrentPlayBackMode(ulong serverConnectionHandlerID, ref IntPtr result);
+public delegate uint TS3Functions_getCurrentPlayBackMode(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
 ///isDefault: int*
-public delegate uint TS3Functions_getCurrentCaptureDeviceName(ulong serverConnectionHandlerID, ref IntPtr result, ref int isDefault);
+public delegate uint TS3Functions_getCurrentCaptureDeviceName(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result, ref bool isDefault);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
-public delegate uint TS3Functions_getCurrentCaptureMode(ulong serverConnectionHandlerID, ref IntPtr result);
+public delegate uint TS3Functions_getCurrentCaptureMode(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -161,13 +161,13 @@ public delegate uint TS3Functions_unregisterCustomDevice([In()][MarshalAs(Unmana
 ///deviceName: char*
 ///buffer: short*
 ///samples: int
-public delegate uint TS3Functions_processCustomCaptureData([In()][MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short buffer, int samples);
+public delegate uint TS3Functions_processCustomCaptureData([In()][MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short[] buffer, int samples);
 
 /// Return Type: unsigned int
 ///deviceName: char*
 ///buffer: short*
 ///samples: int
-public delegate uint TS3Functions_acquireCustomPlaybackData([In()][MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short buffer, int samples);
+public delegate uint TS3Functions_acquireCustomPlaybackData([In()][MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short[] buffer, int samples);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -509,7 +509,7 @@ public delegate uint TS3Functions_getChannelVariableAsUInt64(ulong serverConnect
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, uint flag, ref IntPtr result);
+public delegate uint TS3Functions_getChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, uint flag, [Out][MarshalAs(UnmanagedType.LPStr)] out string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
