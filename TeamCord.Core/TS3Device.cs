@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TeamCord.Core
+﻿namespace TeamCord.Core
 {
     public class TS3Device
     {
@@ -11,8 +9,27 @@ namespace TeamCord.Core
             DeviceName = deviceName;
         }
 
-        public TS3Device(IntPtr devicePointer)
+        public TS3Device(TS3DeviceType deviceType, string deviceId, string deviceName, bool isDefault)
         {
+            DeviceType = deviceType;
+            DeviceID = deviceId;
+            DeviceName = deviceName;
+            IsDefault = isDefault;
+        }
+
+        public TS3Device(TS3DeviceType deviceType, string[] deviceArray)
+        {
+            DeviceType = deviceType;
+            DeviceID = deviceArray[1];
+            DeviceName = deviceArray[0];
+        }
+
+        public TS3Device(TS3DeviceType deviceType, string[] deviceArray, bool isDefault)
+        {
+            DeviceType = deviceType;
+            DeviceID = deviceArray[1];
+            DeviceName = deviceArray[0];
+            IsDefault = isDefault;
         }
 
         public TS3DeviceType DeviceType { get; }
