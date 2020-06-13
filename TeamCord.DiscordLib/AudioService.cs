@@ -3,6 +3,7 @@ using Discord.Audio;
 using Discord.Audio.Streams;
 using Discord.Commands;
 using Discord.WebSocket;
+using NAudio.Wave;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +12,14 @@ namespace TeamCord.DiscordLib
 {
     internal class AudioService
     {
-        public AudioService()
-        {
-        }
-
         private AudioStream _outStream;
         private IAudioClient _audioClient;
         private IVoiceChannel _voiceChannel;
-        private Action<byte[], int> _voiceCallback;
+        private BufferedWaveProvider _waveProvider;
+        private WaveOut _waveOut;
 
         [Command("join", RunMode = RunMode.Async)]
-        public async Task JoinChannel(IVoiceChannel voiceChannel, Action<byte[], int> voiceCallback)
+        public async Task JoinChannel(IVoiceChannel voiceChannel)
         {
             if (voiceChannel != null)
             {
@@ -30,26 +28,44 @@ namespace TeamCord.DiscordLib
                     //await LeaveChannel();
                     _voiceChannel = voiceChannel;
                     _audioClient = await _voiceChannel.ConnectAsync();
-                    _voiceCallback = voiceCallback;
-                    _audioClient.Connected += _audioClient_Connected;
+                    _audioClient.Disconnected += _audioClient_Disconnected;
                     _audioClient.StreamCreated += _audioClient_StreamCreated;
                     _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
                     _outStream = _audioClient.CreatePCMStream(AudioApplication.Mixed, null, 100, 5);
+                    InitSpeakers();
+                    await ListenToUsersAsync();
                 }
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
             }
         }
 
-        private async Task _audioClient_Connected()
+        private Task _audioClient_Disconnected(Exception arg)
         {
-            var users = await _voiceChannel.GetUsersAsync().ToListAsync();
-            foreach (var v in users[0])
+            _waveOut.Stop();
+            return Task.CompletedTask;
+        }
+
+        private async Task ListenToUsersAsync()
+        {
+            var users = (await _voiceChannel.GetUsersAsync().ToListAsync()).FirstOrDefault();
+            foreach (var v in users)
             {
+                //only play users audio data
                 if (!v.IsBot)
                 {
-                    await ListenUserAsync(v);
+                    var socketUser = v as SocketGuildUser;
+                    var userAduioStream = (InputStream)socketUser.AudioStream;
+                    await ListenUserAsync(userAduioStream);
                 }
             }
+        }
+
+        private void InitSpeakers()
+        {
+            _waveProvider = new BufferedWaveProvider(new WaveFormat(48000, 2));
+            _waveOut = new WaveOut();
+            _waveOut.Init(_waveProvider);
+            _waveOut.Play();
         }
 
         private Task _audioClient_StreamDestroyed(ulong arg)
@@ -61,6 +77,7 @@ namespace TeamCord.DiscordLib
         private async Task _audioClient_StreamCreated(ulong arg1, AudioInStream arg2)
         {
             //Triggers when user joined to the channel
+
             await ListenUserAsync(arg2);
             return;
         }
@@ -90,39 +107,17 @@ namespace TeamCord.DiscordLib
             }
         }
 
-        private async Task ListenUserAsync(IGuildUser user)
-        {
-            var socketUser = user as SocketGuildUser;
-            var userAduioStream = (InputStream)socketUser.AudioStream;
-
-            try
-            {
-                var buffer = new byte[3840];
-                while (await userAduioStream.ReadAsync(buffer, 0, buffer.Length) > 0)
-                {
-                    _voiceCallback(buffer, 3840);
-                }
-            }
-            catch (Exception ex) { }
-            finally
-            {
-            }
-        }
-
-        private async Task ListenUserAsync(AudioInStream stream)
+        private async Task ListenUserAsync(AudioStream stream)
         {
             try
             {
                 var buffer = new byte[3840];
                 while (await stream.ReadAsync(buffer, 0, buffer.Length) > 0)
                 {
-                    _voiceCallback(buffer, 3840);
+                    _waveProvider.AddSamples(buffer, 0, buffer.Length);
                 }
             }
             catch (Exception ex) { }
-            finally
-            {
-            }
         }
     }
 }

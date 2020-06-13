@@ -1,12 +1,14 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TeamCord.DiscordLib
 {
+    /// <summary>
+    /// Discord connection handler class
+    /// </summary>
     public class ConnectionHandler : IDisposable
     {
         private DiscordSocketClient _client;
@@ -14,14 +16,12 @@ namespace TeamCord.DiscordLib
         private AudioService _audioService;
         private byte[] _token;
         private short[] _voiceBuffer;
-        private Stopwatch _watch;
 
         public ConnectionHandler(byte[] token)
         {
             _token = token;
             _client = new DiscordSocketClient();
             _audioService = new AudioService();
-            _watch = new Stopwatch();
             _client.Log += Client_Log;
         }
 
@@ -31,6 +31,9 @@ namespace TeamCord.DiscordLib
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Login and connect to discord
+        /// </summary>
         public async void Connect()
         {
             if (_client.ConnectionState != ConnectionState.Connected || _client.ConnectionState == ConnectionState.Connecting)
@@ -40,12 +43,16 @@ namespace TeamCord.DiscordLib
             }
         }
 
-        public async void JoinChannel(ulong channelID, Action<byte[], int> voiceCallback)
+        /// <summary>
+        /// Connect to a discord voice channel
+        /// </summary>
+        /// <param name="channelID"></param>
+        public async void JoinChannel(ulong channelID)
         {
             if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
                 Connect();
             var channel = _client.GetChannel(channelID) as SocketVoiceChannel;
-            await _audioService.JoinChannel(channel, voiceCallback);
+            await _audioService.JoinChannel(channel);
         }
 
         public async void LeaveChannel()
@@ -53,6 +60,9 @@ namespace TeamCord.DiscordLib
             await _audioService.LeaveChannel();
         }
 
+        /// <summary>
+        /// Disconnect and logout from discord
+        /// </summary>
         public async void Disconnect()
         {
             if (_audioService != null)
@@ -61,16 +71,19 @@ namespace TeamCord.DiscordLib
             await _client.LogoutAsync();
         }
 
+        /// <summary>
+        /// Transmit audio data to discord
+        /// </summary>
+        /// <param name="samples"></param>
+        /// <param name="channels"></param>
         public unsafe void VoiceData(short[] samples, int channels)
         {
-            _watch.Start();
-
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)
                 _voiceBuffer = ToStereo(samples);
             else
                 _voiceBuffer = samples;
-            
+
             if (_bufferBytes == null)
             {
                 _bufferBytes = new byte[sizeof(short) * _voiceBuffer.Length];
@@ -86,9 +99,6 @@ namespace TeamCord.DiscordLib
             }
 
             _audioService.SendVoiceData(_bufferBytes);
-
-            Console.WriteLine(_watch.ElapsedTicks + "ticks");
-            _watch.Reset();
         }
 
         private short[] ToStereo(short[] buf)
@@ -104,9 +114,7 @@ namespace TeamCord.DiscordLib
 
         public void Dispose()
         {
-            _audioService.LeaveChannel().Wait();
-            _client.StopAsync().Wait();
-            _client.LogoutAsync().Wait();
+            Disconnect();
             _client.Dispose();
         }
     }
