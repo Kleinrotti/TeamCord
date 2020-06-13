@@ -65,6 +65,7 @@ namespace TeamCord.Plugin
                     storage.StoreSettings(new PluginSettings());
                 }
                 ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
+                Devices = new List<TS3Device>();
             }
             catch (Exception ex)
             {

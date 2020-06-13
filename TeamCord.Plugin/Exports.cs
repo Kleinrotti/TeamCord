@@ -111,6 +111,19 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_currentServerConnectionChanged(ulong serverConnectionHandlerID)
         {
+            var mode = "";
+            if (TSPlugin.Instance.Functions.getCurrentPlayBackMode(serverConnectionHandlerID, ref mode) == (uint)Ts3ErrorType.ERROR_ok)
+            {
+                string[] playbackDevice;
+                string[] captureDevice;
+                TSPlugin.Instance.Functions.getDefaultPlaybackDevice(mode, out playbackDevice);
+                TSPlugin.Instance.Functions.getDefaultCaptureDevice(mode, out captureDevice);
+                TSPlugin.Instance.Devices = new List<TS3Device>
+                {
+                    new TS3Device(TS3DeviceType.Playback, playbackDevice, true),
+                    new TS3Device(TS3DeviceType.Capture, captureDevice, true)
+                };
+            }
         }
 
         [DllExport]
@@ -124,10 +137,9 @@ namespace TeamCord.Plugin
         [DllExport]
         public unsafe static void ts3plugin_onClientMoveEvent(ulong serverConnectionHandlerID, short clientID, ulong oldChannelID, ulong newChannelID, int visibility, char* moveMessage)
         {
-            IntPtr ptr = new IntPtr();
-            TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, (uint)ChannelProperties.CHANNEL_DESCRIPTION, ref ptr);
+            string description;
+            TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, (uint)ChannelProperties.CHANNEL_DESCRIPTION, out description);
 
-            var description = Marshal.PtrToStringAnsi(ptr);
             if (description == null)
                 return;
             var id = Helpers.ExtractChannelID(description);
@@ -140,18 +152,16 @@ namespace TeamCord.Plugin
             {
                 if (TSPlugin.Instance.Settings.AutomaticJoin)
                 {
-                    TSPlugin.Instance.ConnectionHandler.JoinChannel(id, new Action<byte[], int>(DiscordAudioCallback));
+                    TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
                 }
                 else
                 {
                     if (MessageBox.Show("Would you like to join to discord too?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        TSPlugin.Instance.ConnectionHandler.JoinChannel(id, new Action<byte[], int>(DiscordAudioCallback));
+                        TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
                     }
                 }
             }
-
-            TSPlugin.Instance.Functions.freeMemory(ptr);
         }
 
         private unsafe static void DiscordAudioCallback(byte[] buffer, int samples)
@@ -162,7 +172,7 @@ namespace TeamCord.Plugin
             {
                 short* pSample = (short*)samplesPtr;
 
-                for (int i = 0; i < buffer.Length; i++)
+                for (int i = 0; i < shortBuffer.Length; i++)
                 {
                     shortBuffer[i] = pSample[i];
                 }
