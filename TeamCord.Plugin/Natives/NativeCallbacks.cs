@@ -33,77 +33,77 @@ public delegate uint TS3Functions_freeMemory(IntPtr pointer);
 ///severity: LogLevel
 ///channel: char*
 ///logID: uint64->unsigned __int64
-public delegate uint TS3Functions_logMessage([In()][MarshalAs(UnmanagedType.LPStr)] string logMessage, LogLevel severity, [In()][MarshalAs(UnmanagedType.LPStr)] string channel, ulong logID);
+public delegate uint TS3Functions_logMessage([MarshalAs(UnmanagedType.LPStr)] string logMessage, LogLevel severity, [MarshalAs(UnmanagedType.LPStr)] string channel, ulong logID);
 
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char****
-public delegate uint TS3Functions_getPlaybackDeviceList([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, out IntPtr result);
+public delegate uint TS3Functions_getPlaybackDeviceList([MarshalAs(UnmanagedType.LPStr)] string modeID, out IntPtr result);
 
 /// Return Type: unsigned int
 ///result: char***
-public delegate uint TS3Functions_getPlaybackModeList([In][Out][MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ref string[] result);
+public delegate uint TS3Functions_getPlaybackModeList([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ref string[] result);
 
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char****
-public delegate uint TS3Functions_getCaptureDeviceList([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, ref IntPtr result);
+public delegate uint TS3Functions_getCaptureDeviceList([MarshalAs(UnmanagedType.LPStr)] string modeID, ref IntPtr result);
 
 /// Return Type: unsigned int
 ///result: char***
-public delegate uint TS3Functions_getCaptureModeList([In][Out][MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ref string[] result);
+public delegate uint TS3Functions_getCaptureModeList([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] ref string[] result);
 
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char***
-public delegate uint TS3Functions_getDefaultPlaybackDevice([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, [Out][MarshalAs(UnmanagedType.LPArray, SizeConst = 2, ArraySubType = UnmanagedType.LPStr)] out string[] result);
+public delegate uint TS3Functions_getDefaultPlaybackDevice([MarshalAs(UnmanagedType.LPStr)] string modeID, [MarshalAs(UnmanagedType.LPArray, SizeConst = 2, ArraySubType = UnmanagedType.LPStr)] out string[] result);
 
 /// Return Type: unsigned int
 ///result: char**
-public delegate uint TS3Functions_getDefaultPlayBackMode([In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
+public delegate uint TS3Functions_getDefaultPlayBackMode([MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///modeID: char*
 ///result: char***
-public delegate uint TS3Functions_getDefaultCaptureDevice([In()][MarshalAs(UnmanagedType.LPStr)] string modeID, [Out][MarshalAs(UnmanagedType.LPArray, SizeConst = 2, ArraySubType = UnmanagedType.LPStr)] out string[] result);
+public delegate uint TS3Functions_getDefaultCaptureDevice([MarshalAs(UnmanagedType.LPStr)] string modeID, [MarshalAs(UnmanagedType.LPArray, SizeConst = 2, ArraySubType = UnmanagedType.LPStr)] out string[] result);
 
 /// Return Type: unsigned int
 ///result: char**
-public delegate uint TS3Functions_getDefaultCaptureMode([In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
+public delegate uint TS3Functions_getDefaultCaptureMode([MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///modeID: char*
 ///playbackDevice: char*
-public delegate uint TS3Functions_openPlaybackDevice(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string modeID, [In()][MarshalAs(UnmanagedType.LPStr)] string playbackDevice);
+public delegate uint TS3Functions_openPlaybackDevice(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string modeID, [MarshalAs(UnmanagedType.LPStr)] string playbackDevice);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///modeID: char*
 ///captureDevice: char*
-public delegate uint TS3Functions_openCaptureDevice(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string modeID, [In()][MarshalAs(UnmanagedType.LPStr)] string captureDevice);
+public delegate uint TS3Functions_openCaptureDevice(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string modeID, [MarshalAs(UnmanagedType.LPStr)] string captureDevice);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
 ///isDefault: int*
-public delegate uint TS3Functions_getCurrentPlaybackDeviceName(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result, ref bool isDefault);
+public delegate uint TS3Functions_getCurrentPlaybackDeviceName(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] ref string result, ref bool isDefault);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
-public delegate uint TS3Functions_getCurrentPlayBackMode(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
+public delegate uint TS3Functions_getCurrentPlayBackMode(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
 ///isDefault: int*
-public delegate uint TS3Functions_getCurrentCaptureDeviceName(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result, ref bool isDefault);
+public delegate uint TS3Functions_getCurrentCaptureDeviceName(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] ref string result, ref bool isDefault);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///result: char**
-public delegate uint TS3Functions_getCurrentCaptureMode(ulong serverConnectionHandlerID, [In][Out][MarshalAs(UnmanagedType.LPStr)] ref string result);
+public delegate uint TS3Functions_getCurrentCaptureMode(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -126,7 +126,7 @@ public delegate uint TS3Functions_activateCaptureDevice(ulong serverConnectionHa
 ///path: char*
 ///loop: int
 ///waveHandle: uint64*
-public delegate uint TS3Functions_playWaveFileHandle(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string path, int loop, ref ulong waveHandle);
+public delegate uint TS3Functions_playWaveFileHandle(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string path, int loop, ref ulong waveHandle);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -142,7 +142,7 @@ public delegate uint TS3Functions_closeWaveFileHandle(ulong serverConnectionHand
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///path: char*
-public delegate uint TS3Functions_playWaveFile(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string path);
+public delegate uint TS3Functions_playWaveFile(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string path);
 
 /// Return Type: unsigned int
 ///deviceID: char*
@@ -151,59 +151,59 @@ public delegate uint TS3Functions_playWaveFile(ulong serverConnectionHandlerID, 
 ///capChannels: int
 ///playFrequency: int
 ///playChannels: int
-public delegate uint TS3Functions_registerCustomDevice([In()][MarshalAs(UnmanagedType.LPStr)] string deviceID, [In()][MarshalAs(UnmanagedType.LPStr)] string deviceDisplayName, int capFrequency, int capChannels, int playFrequency, int playChannels);
+public delegate uint TS3Functions_registerCustomDevice([MarshalAs(UnmanagedType.LPStr)] string deviceID, [MarshalAs(UnmanagedType.LPStr)] string deviceDisplayName, int capFrequency, int capChannels, int playFrequency, int playChannels);
 
 /// Return Type: unsigned int
 ///deviceID: char*
-public delegate uint TS3Functions_unregisterCustomDevice([In()][MarshalAs(UnmanagedType.LPStr)] string deviceID);
+public delegate uint TS3Functions_unregisterCustomDevice([MarshalAs(UnmanagedType.LPStr)] string deviceID);
 
 /// Return Type: unsigned int
 ///deviceName: char*
 ///buffer: short*
 ///samples: int
-public delegate uint TS3Functions_processCustomCaptureData([In()][MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short[] buffer, int samples);
+public delegate uint TS3Functions_processCustomCaptureData([MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short[] buffer, int samples);
 
 /// Return Type: unsigned int
 ///deviceName: char*
 ///buffer: short*
 ///samples: int
-public delegate uint TS3Functions_acquireCustomPlaybackData([In()][MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short[] buffer, int samples);
+public delegate uint TS3Functions_acquireCustomPlaybackData([MarshalAs(UnmanagedType.LPStr)] string deviceName, ref short[] buffer, int samples);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///ident: char*
 ///result: float*
-public delegate uint TS3Functions_getPreProcessorInfoValueFloat(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ident, ref float result);
+public delegate uint TS3Functions_getPreProcessorInfoValueFloat(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ident, ref float result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///ident: char*
 ///result: char**
-public delegate uint TS3Functions_getPreProcessorConfigValue(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ident, ref IntPtr result);
+public delegate uint TS3Functions_getPreProcessorConfigValue(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ident, ref IntPtr result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///ident: char*
 ///value: char*
-public delegate uint TS3Functions_setPreProcessorConfigValue(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ident, [In()][MarshalAs(UnmanagedType.LPStr)] string value);
+public delegate uint TS3Functions_setPreProcessorConfigValue(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ident, [MarshalAs(UnmanagedType.LPStr)] string value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///ident: char*
 ///result: char**
-public delegate uint TS3Functions_getEncodeConfigValue(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ident, ref IntPtr result);
+public delegate uint TS3Functions_getEncodeConfigValue(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ident, ref IntPtr result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///ident: char*
 ///result: float*
-public delegate uint TS3Functions_getPlaybackConfigValueAsFloat(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ident, ref float result);
+public delegate uint TS3Functions_getPlaybackConfigValueAsFloat(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ident, ref float result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///ident: char*
 ///value: char*
-public delegate uint TS3Functions_setPlaybackConfigValue(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ident, [In()][MarshalAs(UnmanagedType.LPStr)] string value);
+public delegate uint TS3Functions_setPlaybackConfigValue(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ident, [MarshalAs(UnmanagedType.LPStr)] string value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -253,12 +253,12 @@ public delegate uint TS3Functions_channelset3DAttributes(ulong serverConnectionH
 ///defaultChannelArray: char**
 ///defaultChannelPassword: char*
 ///serverPassword: char*
-public delegate uint TS3Functions_startConnection(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string identity, [In()][MarshalAs(UnmanagedType.LPStr)] string ip, uint port, [In()][MarshalAs(UnmanagedType.LPStr)] string nickname, ref IntPtr defaultChannelArray, [In()][MarshalAs(UnmanagedType.LPStr)] string defaultChannelPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string serverPassword);
+public delegate uint TS3Functions_startConnection(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string identity, [MarshalAs(UnmanagedType.LPStr)] string ip, uint port, [MarshalAs(UnmanagedType.LPStr)] string nickname, ref IntPtr defaultChannelArray, [MarshalAs(UnmanagedType.LPStr)] string defaultChannelPassword, [MarshalAs(UnmanagedType.LPStr)] string serverPassword);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///quitMessage: char*
-public delegate uint TS3Functions_stopConnection(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string quitMessage);
+public delegate uint TS3Functions_stopConnection(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string quitMessage);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -266,34 +266,34 @@ public delegate uint TS3Functions_stopConnection(ulong serverConnectionHandlerID
 ///newChannelID: uint64->unsigned __int64
 ///password: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientMove(ulong serverConnectionHandlerID, ushort clientID, ulong newChannelID, [In()][MarshalAs(UnmanagedType.LPStr)] string password, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientMove(ulong serverConnectionHandlerID, ushort clientID, ulong newChannelID, [MarshalAs(UnmanagedType.LPStr)] string password, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientVariables(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
-
-/// Return Type: unsigned int
-///serverConnectionHandlerID: uint64->unsigned __int64
-///clientID: anyID->unsigned short
-///kickReason: char*
-///returnCode: char*
-public delegate uint TS3Functions_requestClientKickFromChannel(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string kickReason, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientVariables(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///kickReason: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientKickFromServer(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string kickReason, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientKickFromChannel(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string kickReason, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
+
+/// Return Type: unsigned int
+///serverConnectionHandlerID: uint64->unsigned __int64
+///clientID: anyID->unsigned short
+///kickReason: char*
+///returnCode: char*
+public delegate uint TS3Functions_requestClientKickFromServer(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string kickReason, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///force: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelDelete(ulong serverConnectionHandlerID, ulong channelID, int force, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelDelete(ulong serverConnectionHandlerID, ulong channelID, int force, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -301,33 +301,33 @@ public delegate uint TS3Functions_requestChannelDelete(ulong serverConnectionHan
 ///newChannelParentID: uint64->unsigned __int64
 ///newChannelOrder: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelMove(ulong serverConnectionHandlerID, ulong channelID, ulong newChannelParentID, ulong newChannelOrder, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelMove(ulong serverConnectionHandlerID, ulong channelID, ulong newChannelParentID, ulong newChannelOrder, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///message: char*
 ///targetClientID: anyID->unsigned short
 ///returnCode: char*
-public delegate uint TS3Functions_requestSendPrivateTextMsg(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string message, ushort targetClientID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestSendPrivateTextMsg(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string message, ushort targetClientID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///message: char*
 ///targetChannelID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestSendChannelTextMsg(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string message, ulong targetChannelID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestSendChannelTextMsg(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string message, ulong targetChannelID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///message: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestSendServerTextMsg(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string message, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestSendServerTextMsg(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string message, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///returnCode: char*
-public delegate uint TS3Functions_requestConnectionInfo(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestConnectionInfo(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -335,29 +335,29 @@ public delegate uint TS3Functions_requestConnectionInfo(ulong serverConnectionHa
 ///targetChannelIDArray: uint64*
 ///targetClientIDArray: anyID*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientSetWhisperList(ulong serverConnectionHandlerID, ushort clientID, ref ulong targetChannelIDArray, ref ushort targetClientIDArray, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientSetWhisperList(ulong serverConnectionHandlerID, ushort clientID, ref ulong targetChannelIDArray, ref ushort targetClientIDArray, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelIDArray: uint64*
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelSubscribe(ulong serverConnectionHandlerID, ref ulong channelIDArray, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelSubscribe(ulong serverConnectionHandlerID, ref ulong channelIDArray, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelSubscribeAll(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelSubscribeAll(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelIDArray: uint64*
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelUnsubscribe(ulong serverConnectionHandlerID, ref ulong channelIDArray, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelUnsubscribe(ulong serverConnectionHandlerID, ref ulong channelIDArray, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelUnsubscribeAll(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelUnsubscribeAll(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -369,39 +369,39 @@ public delegate uint TS3Functions_requestChannelDescription(ulong serverConnecti
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientIDArray: anyID*
 ///returnCode: char*
-public delegate uint TS3Functions_requestMuteClients(ulong serverConnectionHandlerID, ref ushort clientIDArray, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestMuteClients(ulong serverConnectionHandlerID, ref ushort clientIDArray, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientIDArray: anyID*
 ///returnCode: char*
-public delegate uint TS3Functions_requestUnmuteClients(ulong serverConnectionHandlerID, ref ushort clientIDArray, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestUnmuteClients(ulong serverConnectionHandlerID, ref ushort clientIDArray, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///message: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientPoke(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string message, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientPoke(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string message, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientUniqueIdentifier: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientIDs(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientIDs(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientUniqueIdentifier: char*
 ///clientID: anyID->unsigned short
 ///returnCode: char*
-public delegate uint TS3Functions_clientChatClosed(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_clientChatClosed(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///returnCode: char*
-public delegate uint TS3Functions_clientChatComposing(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_clientChatComposing(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -411,18 +411,18 @@ public delegate uint TS3Functions_clientChatComposing(ulong serverConnectionHand
 ///targetChannelID: uint64->unsigned __int64
 ///targetChannelPW: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerTemporaryPasswordAdd(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string password, [In()][MarshalAs(UnmanagedType.LPStr)] string description, ulong duration, ulong targetChannelID, [In()][MarshalAs(UnmanagedType.LPStr)] string targetChannelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerTemporaryPasswordAdd(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string password, [MarshalAs(UnmanagedType.LPStr)] string description, ulong duration, ulong targetChannelID, [MarshalAs(UnmanagedType.LPStr)] string targetChannelPW, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///password: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerTemporaryPasswordDel(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string password, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerTemporaryPasswordDel(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string password, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerTemporaryPasswordList(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerTemporaryPasswordList(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -451,12 +451,12 @@ public delegate uint TS3Functions_setClientSelfVariableAsInt(ulong serverConnect
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: char*
-public delegate uint TS3Functions_setClientSelfVariableAsString(ulong serverConnectionHandlerID, IntPtr flag, [In()][MarshalAs(UnmanagedType.LPStr)] string value);
+public delegate uint TS3Functions_setClientSelfVariableAsString(ulong serverConnectionHandlerID, IntPtr flag, [MarshalAs(UnmanagedType.LPStr)] string value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_flushClientSelfUpdates(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_flushClientSelfUpdates(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -477,7 +477,7 @@ public delegate uint TS3Functions_getClientVariableAsUInt64(ulong serverConnecti
 ///clientID: anyID->unsigned short
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getClientVariableAsString(ulong serverConnectionHandlerID, ushort clientID, IntPtr flag, ref IntPtr result);
+public delegate uint TS3Functions_getClientVariableAsString(ulong serverConnectionHandlerID, ushort clientID, uint flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -509,7 +509,7 @@ public delegate uint TS3Functions_getChannelVariableAsUInt64(ulong serverConnect
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, uint flag, [Out][MarshalAs(UnmanagedType.LPStr)] out string result);
+public delegate uint TS3Functions_getChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, uint flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -536,19 +536,19 @@ public delegate uint TS3Functions_setChannelVariableAsUInt64(ulong serverConnect
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: char*
-public delegate uint TS3Functions_setChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, [In()][MarshalAs(UnmanagedType.LPStr)] string value);
+public delegate uint TS3Functions_setChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, [MarshalAs(UnmanagedType.LPStr)] string value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_flushChannelUpdates(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_flushChannelUpdates(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelParentID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_flushChannelCreation(ulong serverConnectionHandlerID, ulong channelParentID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_flushChannelCreation(ulong serverConnectionHandlerID, ulong channelParentID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -587,7 +587,7 @@ public delegate uint TS3Functions_getServerVariableAsUInt64(ulong serverConnecti
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getServerVariableAsString(ulong serverConnectionHandlerID, IntPtr flag, ref IntPtr result);
+public delegate uint TS3Functions_getServerVariableAsString(ulong serverConnectionHandlerID, uint flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -628,46 +628,46 @@ public delegate uint TS3Functions_cleanUpConnectionInfo(ulong serverConnectionHa
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientUniqueIdentifier: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientDBIDfromUID(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientDBIDfromUID(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientUniqueIdentifier: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientNamefromUID(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientNamefromUID(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string clientUniqueIdentifier, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientNamefromDBID(ulong serverConnectionHandlerID, ulong clientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientNamefromDBID(ulong serverConnectionHandlerID, ulong clientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///clientDescription: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientEditDescription(ulong serverConnectionHandlerID, ushort clientID, [In()][MarshalAs(UnmanagedType.LPStr)] string clientDescription, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientEditDescription(ulong serverConnectionHandlerID, ushort clientID, [MarshalAs(UnmanagedType.LPStr)] string clientDescription, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///isTalker: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientSetIsTalker(ulong serverConnectionHandlerID, ushort clientID, int isTalker, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientSetIsTalker(ulong serverConnectionHandlerID, ushort clientID, int isTalker, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///isTalkerRequest: int
 ///isTalkerRequestMessage: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestIsTalker(ulong serverConnectionHandlerID, int isTalkerRequest, [In()][MarshalAs(UnmanagedType.LPStr)] string isTalkerRequestMessage, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestIsTalker(ulong serverConnectionHandlerID, int isTalkerRequest, [MarshalAs(UnmanagedType.LPStr)] string isTalkerRequestMessage, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///command: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestSendClientQueryCommand(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string command, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestSendClientQueryCommand(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string command, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///transferID: anyID->unsigned short
@@ -724,7 +724,7 @@ public delegate uint TS3Functions_getTransferRunTime(ushort transferID, ref ulon
 ///sourceDirectory: char*
 ///result: anyID*
 ///returnCode: char*
-public delegate uint TS3Functions_sendFile(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string file, int overwrite, int resume, [In()][MarshalAs(UnmanagedType.LPStr)] string sourceDirectory, ref ushort result, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_sendFile(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, [MarshalAs(UnmanagedType.LPStr)] string file, int overwrite, int resume, [MarshalAs(UnmanagedType.LPStr)] string sourceDirectory, ref ushort result, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -736,14 +736,14 @@ public delegate uint TS3Functions_sendFile(ulong serverConnectionHandlerID, ulon
 ///destinationDirectory: char*
 ///result: anyID*
 ///returnCode: char*
-public delegate uint TS3Functions_requestFile(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string file, int overwrite, int resume, [In()][MarshalAs(UnmanagedType.LPStr)] string destinationDirectory, ref ushort result, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestFile(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, [MarshalAs(UnmanagedType.LPStr)] string file, int overwrite, int resume, [MarshalAs(UnmanagedType.LPStr)] string destinationDirectory, ref ushort result, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///transferID: anyID->unsigned short
 ///deleteUnfinishedFile: int
 ///returnCode: char*
-public delegate uint TS3Functions_haltTransfer(ulong serverConnectionHandlerID, ushort transferID, int deleteUnfinishedFile, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_haltTransfer(ulong serverConnectionHandlerID, ushort transferID, int deleteUnfinishedFile, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -751,7 +751,7 @@ public delegate uint TS3Functions_haltTransfer(ulong serverConnectionHandlerID, 
 ///channelPW: char*
 ///path: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestFileList(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string path, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestFileList(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, [MarshalAs(UnmanagedType.LPStr)] string path, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -759,7 +759,7 @@ public delegate uint TS3Functions_requestFileList(ulong serverConnectionHandlerI
 ///channelPW: char*
 ///file: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestFileInfo(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string file, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestFileInfo(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, [MarshalAs(UnmanagedType.LPStr)] string file, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -767,7 +767,7 @@ public delegate uint TS3Functions_requestFileInfo(ulong serverConnectionHandlerI
 ///channelPW: char*
 ///file: char**
 ///returnCode: char*
-public delegate uint TS3Functions_requestDeleteFile(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, ref IntPtr file, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestDeleteFile(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, ref IntPtr file, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -775,7 +775,7 @@ public delegate uint TS3Functions_requestDeleteFile(ulong serverConnectionHandle
 ///channelPW: char*
 ///directoryPath: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestCreateDirectory(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string directoryPath, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestCreateDirectory(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, [MarshalAs(UnmanagedType.LPStr)] string directoryPath, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -786,7 +786,7 @@ public delegate uint TS3Functions_requestCreateDirectory(ulong serverConnectionH
 ///oldFile: char*
 ///newFile: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestRenameFile(ulong serverConnectionHandlerID, ulong fromChannelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPW, ulong toChannelID, [In()][MarshalAs(UnmanagedType.LPStr)] string toChannelPW, [In()][MarshalAs(UnmanagedType.LPStr)] string oldFile, [In()][MarshalAs(UnmanagedType.LPStr)] string newFile, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestRenameFile(ulong serverConnectionHandlerID, ulong fromChannelID, [MarshalAs(UnmanagedType.LPStr)] string channelPW, ulong toChannelID, [MarshalAs(UnmanagedType.LPStr)] string toChannelPW, [MarshalAs(UnmanagedType.LPStr)] string oldFile, [MarshalAs(UnmanagedType.LPStr)] string newFile, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -794,44 +794,44 @@ public delegate uint TS3Functions_requestRenameFile(ulong serverConnectionHandle
 ///subject: char*
 ///message: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestMessageAdd(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string toClientUID, [In()][MarshalAs(UnmanagedType.LPStr)] string subject, [In()][MarshalAs(UnmanagedType.LPStr)] string message, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestMessageAdd(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string toClientUID, [MarshalAs(UnmanagedType.LPStr)] string subject, [MarshalAs(UnmanagedType.LPStr)] string message, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///messageID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestMessageDel(ulong serverConnectionHandlerID, ulong messageID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestMessageDel(ulong serverConnectionHandlerID, ulong messageID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///messageID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestMessageGet(ulong serverConnectionHandlerID, ulong messageID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestMessageGet(ulong serverConnectionHandlerID, ulong messageID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestMessageList(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestMessageList(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///messageID: uint64->unsigned __int64
 ///flag: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestMessageUpdateFlag(ulong serverConnectionHandlerID, ulong messageID, int flag, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestMessageUpdateFlag(ulong serverConnectionHandlerID, ulong messageID, int flag, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///serverPassword: char*
 ///returnCode: char*
-public delegate uint TS3Functions_verifyServerPassword(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string serverPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_verifyServerPassword(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string serverPassword, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///channelPassword: char*
 ///returnCode: char*
-public delegate uint TS3Functions_verifyChannelPassword(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_verifyChannelPassword(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string channelPassword, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -839,7 +839,7 @@ public delegate uint TS3Functions_verifyChannelPassword(ulong serverConnectionHa
 ///timeInSeconds: uint64->unsigned __int64
 ///banReason: char*
 ///returnCode: char*
-public delegate uint TS3Functions_banclient(ulong serverConnectionHandlerID, ushort clientID, ulong timeInSeconds, [In()][MarshalAs(UnmanagedType.LPStr)] string banReason, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_banclient(ulong serverConnectionHandlerID, ushort clientID, ulong timeInSeconds, [MarshalAs(UnmanagedType.LPStr)] string banReason, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -849,7 +849,7 @@ public delegate uint TS3Functions_banclient(ulong serverConnectionHandlerID, ush
 ///timeInSeconds: uint64->unsigned __int64
 ///banReason: char*
 ///returnCode: char*
-public delegate uint TS3Functions_banadd(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string ipRegExp, [In()][MarshalAs(UnmanagedType.LPStr)] string nameRegexp, [In()][MarshalAs(UnmanagedType.LPStr)] string uniqueIdentity, ulong timeInSeconds, [In()][MarshalAs(UnmanagedType.LPStr)] string banReason, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_banadd(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string ipRegExp, [MarshalAs(UnmanagedType.LPStr)] string nameRegexp, [MarshalAs(UnmanagedType.LPStr)] string uniqueIdentity, ulong timeInSeconds, [MarshalAs(UnmanagedType.LPStr)] string banReason, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -857,88 +857,88 @@ public delegate uint TS3Functions_banadd(ulong serverConnectionHandlerID, [In()]
 ///timeInSeconds: uint64->unsigned __int64
 ///banReason: char*
 ///returnCode: char*
-public delegate uint TS3Functions_banclientdbid(ulong serverConnectionHandlerID, ulong clientDBID, ulong timeInSeconds, [In()][MarshalAs(UnmanagedType.LPStr)] string banReason, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_banclientdbid(ulong serverConnectionHandlerID, ulong clientDBID, ulong timeInSeconds, [MarshalAs(UnmanagedType.LPStr)] string banReason, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///banID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_bandel(ulong serverConnectionHandlerID, ulong banID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_bandel(ulong serverConnectionHandlerID, ulong banID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_bandelall(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_bandelall(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestBanList(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestBanList(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///targetClientDatabaseID: uint64->unsigned __int64
 ///complainReason: char*
 ///returnCode: char*
-public delegate uint TS3Functions_requestComplainAdd(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string complainReason, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestComplainAdd(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string complainReason, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///targetClientDatabaseID: uint64->unsigned __int64
 ///fromClientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestComplainDel(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, ulong fromClientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestComplainDel(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, ulong fromClientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///targetClientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestComplainDelAll(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestComplainDelAll(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///targetClientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestComplainList(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestComplainList(ulong serverConnectionHandlerID, ulong targetClientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupList(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupList(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///groupName: char*
 ///groupType: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupAdd(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string groupName, int groupType, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupAdd(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string groupName, int groupType, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///serverGroupID: uint64->unsigned __int64
 ///force: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupDel(ulong serverConnectionHandlerID, ulong serverGroupID, int force, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupDel(ulong serverConnectionHandlerID, ulong serverGroupID, int force, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///serverGroupID: uint64->unsigned __int64
 ///clientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupAddClient(ulong serverConnectionHandlerID, ulong serverGroupID, ulong clientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupAddClient(ulong serverConnectionHandlerID, ulong serverGroupID, ulong clientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///serverGroupID: uint64->unsigned __int64
 ///clientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupDelClient(ulong serverConnectionHandlerID, ulong serverGroupID, ulong clientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupDelClient(ulong serverConnectionHandlerID, ulong serverGroupID, ulong clientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupsByClientID(ulong serverConnectionHandlerID, ulong clientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupsByClientID(ulong serverConnectionHandlerID, ulong clientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -950,7 +950,7 @@ public delegate uint TS3Functions_requestServerGroupsByClientID(ulong serverConn
 ///permissionSkipArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupAddPerm(ulong serverConnectionHandlerID, ulong serverGroupID, int continueonerror, ref uint permissionIDArray, ref int permissionValueArray, ref int permissionNegatedArray, ref int permissionSkipArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupAddPerm(ulong serverConnectionHandlerID, ulong serverGroupID, int continueonerror, ref uint permissionIDArray, ref int permissionValueArray, ref int permissionNegatedArray, ref int permissionSkipArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -959,39 +959,39 @@ public delegate uint TS3Functions_requestServerGroupAddPerm(ulong serverConnecti
 ///permissionIDArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupDelPerm(ulong serverConnectionHandlerID, ulong serverGroupID, int continueOnError, ref uint permissionIDArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupDelPerm(ulong serverConnectionHandlerID, ulong serverGroupID, int continueOnError, ref uint permissionIDArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///serverGroupID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupPermList(ulong serverConnectionHandlerID, ulong serverGroupID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupPermList(ulong serverConnectionHandlerID, ulong serverGroupID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///serverGroupID: uint64->unsigned __int64
 ///withNames: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestServerGroupClientList(ulong serverConnectionHandlerID, ulong serverGroupID, int withNames, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestServerGroupClientList(ulong serverConnectionHandlerID, ulong serverGroupID, int withNames, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelGroupList(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelGroupList(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///groupName: char*
 ///groupType: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelGroupAdd(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string groupName, int groupType, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelGroupAdd(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string groupName, int groupType, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelGroupID: uint64->unsigned __int64
 ///force: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelGroupDel(ulong serverConnectionHandlerID, ulong channelGroupID, int force, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelGroupDel(ulong serverConnectionHandlerID, ulong channelGroupID, int force, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1001,7 +1001,7 @@ public delegate uint TS3Functions_requestChannelGroupDel(ulong serverConnectionH
 ///permissionValueArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelGroupAddPerm(ulong serverConnectionHandlerID, ulong channelGroupID, int continueonerror, ref uint permissionIDArray, ref int permissionValueArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelGroupAddPerm(ulong serverConnectionHandlerID, ulong channelGroupID, int continueonerror, ref uint permissionIDArray, ref int permissionValueArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1010,13 +1010,13 @@ public delegate uint TS3Functions_requestChannelGroupAddPerm(ulong serverConnect
 ///permissionIDArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelGroupDelPerm(ulong serverConnectionHandlerID, ulong channelGroupID, int continueOnError, ref uint permissionIDArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelGroupDelPerm(ulong serverConnectionHandlerID, ulong channelGroupID, int continueOnError, ref uint permissionIDArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelGroupID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelGroupPermList(ulong serverConnectionHandlerID, ulong channelGroupID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelGroupPermList(ulong serverConnectionHandlerID, ulong channelGroupID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1025,7 +1025,7 @@ public delegate uint TS3Functions_requestChannelGroupPermList(ulong serverConnec
 ///clientDatabaseIDArray: uint64*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestSetClientChannelGroup(ulong serverConnectionHandlerID, ref ulong channelGroupIDArray, ref ulong channelIDArray, ref ulong clientDatabaseIDArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestSetClientChannelGroup(ulong serverConnectionHandlerID, ref ulong channelGroupIDArray, ref ulong channelIDArray, ref ulong clientDatabaseIDArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1034,7 +1034,7 @@ public delegate uint TS3Functions_requestSetClientChannelGroup(ulong serverConne
 ///permissionValueArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelAddPerm(ulong serverConnectionHandlerID, ulong channelID, ref uint permissionIDArray, ref int permissionValueArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelAddPerm(ulong serverConnectionHandlerID, ulong channelID, ref uint permissionIDArray, ref int permissionValueArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1042,13 +1042,13 @@ public delegate uint TS3Functions_requestChannelAddPerm(ulong serverConnectionHa
 ///permissionIDArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelDelPerm(ulong serverConnectionHandlerID, ulong channelID, ref uint permissionIDArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelDelPerm(ulong serverConnectionHandlerID, ulong channelID, ref uint permissionIDArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelPermList(ulong serverConnectionHandlerID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelPermList(ulong serverConnectionHandlerID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1058,7 +1058,7 @@ public delegate uint TS3Functions_requestChannelPermList(ulong serverConnectionH
 ///permissionSkipArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientAddPerm(ulong serverConnectionHandlerID, ulong clientDatabaseID, ref uint permissionIDArray, ref int permissionValueArray, ref int permissionSkipArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientAddPerm(ulong serverConnectionHandlerID, ulong clientDatabaseID, ref uint permissionIDArray, ref int permissionValueArray, ref int permissionSkipArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1066,13 +1066,13 @@ public delegate uint TS3Functions_requestClientAddPerm(ulong serverConnectionHan
 ///permissionIDArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientDelPerm(ulong serverConnectionHandlerID, ulong clientDatabaseID, ref uint permissionIDArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientDelPerm(ulong serverConnectionHandlerID, ulong clientDatabaseID, ref uint permissionIDArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestClientPermList(ulong serverConnectionHandlerID, ulong clientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestClientPermList(ulong serverConnectionHandlerID, ulong clientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1082,7 +1082,7 @@ public delegate uint TS3Functions_requestClientPermList(ulong serverConnectionHa
 ///permissionValueArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelClientAddPerm(ulong serverConnectionHandlerID, ulong channelID, ulong clientDatabaseID, ref uint permissionIDArray, ref int permissionValueArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelClientAddPerm(ulong serverConnectionHandlerID, ulong channelID, ulong clientDatabaseID, ref uint permissionIDArray, ref int permissionValueArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1091,47 +1091,47 @@ public delegate uint TS3Functions_requestChannelClientAddPerm(ulong serverConnec
 ///permissionIDArray: int*
 ///arraySize: int
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelClientDelPerm(ulong serverConnectionHandlerID, ulong channelID, ulong clientDatabaseID, ref uint permissionIDArray, int arraySize, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelClientDelPerm(ulong serverConnectionHandlerID, ulong channelID, ulong clientDatabaseID, ref uint permissionIDArray, int arraySize, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///clientDatabaseID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestChannelClientPermList(ulong serverConnectionHandlerID, ulong channelID, ulong clientDatabaseID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestChannelClientPermList(ulong serverConnectionHandlerID, ulong channelID, ulong clientDatabaseID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandler: uint64->unsigned __int64
 ///tokenKey: char*
 ///returnCode: char*
-public delegate uint TS3Functions_privilegeKeyUse(ulong serverConnectionHandler, [In()][MarshalAs(UnmanagedType.LPStr)] string tokenKey, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_privilegeKeyUse(ulong serverConnectionHandler, [MarshalAs(UnmanagedType.LPStr)] string tokenKey, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandler: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestPermissionList(ulong serverConnectionHandler, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestPermissionList(ulong serverConnectionHandler, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///serverConnectionHandler: uint64->unsigned __int64
 ///clientDBID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///returnCode: char*
-public delegate uint TS3Functions_requestPermissionOverview(ulong serverConnectionHandler, ulong clientDBID, ulong channelID, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate uint TS3Functions_requestPermissionOverview(ulong serverConnectionHandler, ulong clientDBID, ulong channelID, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: unsigned int
 ///clientPropertyString: char*
 ///resultFlag: size_t*
-public delegate uint TS3Functions_clientPropertyStringToFlag([In()][MarshalAs(UnmanagedType.LPStr)] string clientPropertyString, ref uint resultFlag);
+public delegate uint TS3Functions_clientPropertyStringToFlag([MarshalAs(UnmanagedType.LPStr)] string clientPropertyString, ref uint resultFlag);
 
 /// Return Type: unsigned int
 ///channelPropertyString: char*
 ///resultFlag: size_t*
-public delegate uint TS3Functions_channelPropertyStringToFlag([In()][MarshalAs(UnmanagedType.LPStr)] string channelPropertyString, ref uint resultFlag);
+public delegate uint TS3Functions_channelPropertyStringToFlag([MarshalAs(UnmanagedType.LPStr)] string channelPropertyString, ref uint resultFlag);
 
 /// Return Type: unsigned int
 ///serverPropertyString: char*
 ///resultFlag: size_t*
-public delegate uint TS3Functions_serverPropertyStringToFlag([In()][MarshalAs(UnmanagedType.LPStr)] string serverPropertyString, ref uint resultFlag);
+public delegate uint TS3Functions_serverPropertyStringToFlag([MarshalAs(UnmanagedType.LPStr)] string serverPropertyString, ref uint resultFlag);
 
 /// Return Type: void
 ///path: char*
@@ -1160,17 +1160,17 @@ public delegate ulong TS3Functions_getCurrentServerConnectionHandlerID();
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///message: char*
 ///messageTarget: PluginMessageTarget
-public unsafe delegate void TS3Functions_printMessage(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string message, PluginMessageTarget messageTarget);
+public unsafe delegate void TS3Functions_printMessage(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string message, PluginMessageTarget messageTarget);
 
 /// Return Type: void
 ///message: char*
-public delegate void TS3Functions_printMessageToCurrentTab([In()][MarshalAs(UnmanagedType.LPStr)] string message);
+public delegate void TS3Functions_printMessageToCurrentTab([MarshalAs(UnmanagedType.LPStr)] string message);
 
 /// Return Type: void
 ///text: char*
 ///result: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_urlsToBB([In()][MarshalAs(UnmanagedType.LPStr)] string text, IntPtr result, IntPtr maxLen);
+public delegate void TS3Functions_urlsToBB([MarshalAs(UnmanagedType.LPStr)] string text, IntPtr result, IntPtr maxLen);
 
 /// Return Type: void
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -1179,13 +1179,13 @@ public delegate void TS3Functions_urlsToBB([In()][MarshalAs(UnmanagedType.LPStr)
 ///targetMode: int
 ///targetIDs: anyID*
 ///returnCode: char*
-public delegate void TS3Functions_sendPluginCommand(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string pluginID, [In()][MarshalAs(UnmanagedType.LPStr)] string command, int targetMode, ref ushort targetIDs, [In()][MarshalAs(UnmanagedType.LPStr)] string returnCode);
+public delegate void TS3Functions_sendPluginCommand(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string pluginID, [MarshalAs(UnmanagedType.LPStr)] string command, int targetMode, ref ushort targetIDs, [MarshalAs(UnmanagedType.LPStr)] string returnCode);
 
 /// Return Type: void
 ///path: char*
 ///result: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getDirectories([In()][MarshalAs(UnmanagedType.LPStr)] string path, IntPtr result, IntPtr maxLen);
+public delegate void TS3Functions_getDirectories([MarshalAs(UnmanagedType.LPStr)] string path, IntPtr result, IntPtr maxLen);
 
 /// Return Type: unsigned int
 ///scHandlerID: uint64->unsigned __int64
@@ -1207,7 +1207,7 @@ public unsafe delegate uint TS3Functions_getChannelConnectInfo(ulong scHandlerID
 ///pluginID: char*
 ///returnCode: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_createReturnCode([In()][MarshalAs(UnmanagedType.LPStr)] string pluginID, IntPtr returnCode, uint maxLen);
+public delegate void TS3Functions_createReturnCode([MarshalAs(UnmanagedType.LPStr)] string pluginID, IntPtr returnCode, uint maxLen);
 
 /// Return Type: unsigned int
 ///scHandlerID: uint64->unsigned __int64
@@ -1242,7 +1242,7 @@ public delegate uint TS3Functions_getAvatar(ulong scHandlerID, ushort clientID, 
 ///pluginID: char*
 ///menuID: int
 ///enabled: int
-public delegate void TS3Functions_setPluginMenuEnabled([In()][MarshalAs(UnmanagedType.LPStr)] string pluginID, int menuID, int enabled);
+public delegate void TS3Functions_setPluginMenuEnabled([MarshalAs(UnmanagedType.LPStr)] string pluginID, int menuID, int enabled);
 
 /// Return Type: void
 public delegate void TS3Functions_showHotkeySetup();
@@ -1251,7 +1251,7 @@ public delegate void TS3Functions_showHotkeySetup();
 ///pluginID: char*
 ///keyword: char*
 ///qParentWindow: void*
-public delegate void TS3Functions_requestHotkeyInputDialog([In()][MarshalAs(UnmanagedType.LPStr)] string pluginID, [In()][MarshalAs(UnmanagedType.LPStr)] string keyword, IntPtr qParentWindow);
+public delegate void TS3Functions_requestHotkeyInputDialog([MarshalAs(UnmanagedType.LPStr)] string pluginID, [MarshalAs(UnmanagedType.LPStr)] string keyword, IntPtr qParentWindow);
 
 /// Return Type: unsigned int
 ///pluginID: char*
@@ -1259,7 +1259,7 @@ public delegate void TS3Functions_requestHotkeyInputDialog([In()][MarshalAs(Unma
 ///hotkeys: char**
 ///arrayLen: size_t->unsigned int
 ///hotkeyBufSize: size_t->unsigned int
-public delegate uint TS3Functions_getHotkeyFromKeyword([In()][MarshalAs(UnmanagedType.LPStr)] string pluginID, ref IntPtr keywords, ref IntPtr hotkeys, IntPtr arrayLen, IntPtr hotkeyBufSize);
+public delegate uint TS3Functions_getHotkeyFromKeyword([MarshalAs(UnmanagedType.LPStr)] string pluginID, ref IntPtr keywords, ref IntPtr hotkeys, IntPtr arrayLen, IntPtr hotkeyBufSize);
 
 /// Return Type: unsigned int
 ///scHandlerID: uint64->unsigned __int64
@@ -1294,13 +1294,13 @@ public delegate uint TS3Functions_getProfileList(PluginGuiProfile profile, ref i
 ///oneTimeKey: char*
 ///phoneticName: char*
 ///scHandlerID: uint64*
-public delegate uint TS3Functions_guiConnect(PluginConnectTab connectTab, [In()][MarshalAs(UnmanagedType.LPStr)] string serverLabel, [In()][MarshalAs(UnmanagedType.LPStr)] string serverAddress, [In()][MarshalAs(UnmanagedType.LPStr)] string serverPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string nickname, [In()][MarshalAs(UnmanagedType.LPStr)] string channel, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string captureProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string playbackProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string hotkeyProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string soundProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string userIdentity, [In()][MarshalAs(UnmanagedType.LPStr)] string oneTimeKey, [In()][MarshalAs(UnmanagedType.LPStr)] string phoneticName, ref ulong scHandlerID);
+public delegate uint TS3Functions_guiConnect(PluginConnectTab connectTab, [MarshalAs(UnmanagedType.LPStr)] string serverLabel, [MarshalAs(UnmanagedType.LPStr)] string serverAddress, [MarshalAs(UnmanagedType.LPStr)] string serverPassword, [MarshalAs(UnmanagedType.LPStr)] string nickname, [MarshalAs(UnmanagedType.LPStr)] string channel, [MarshalAs(UnmanagedType.LPStr)] string channelPassword, [MarshalAs(UnmanagedType.LPStr)] string captureProfile, [MarshalAs(UnmanagedType.LPStr)] string playbackProfile, [MarshalAs(UnmanagedType.LPStr)] string hotkeyProfile, [MarshalAs(UnmanagedType.LPStr)] string soundProfile, [MarshalAs(UnmanagedType.LPStr)] string userIdentity, [MarshalAs(UnmanagedType.LPStr)] string oneTimeKey, [MarshalAs(UnmanagedType.LPStr)] string phoneticName, ref ulong scHandlerID);
 
 /// Return Type: unsigned int
 ///connectTab: PluginConnectTab
 ///bookmarkuuid: char*
 ///scHandlerID: uint64*
-public delegate uint TS3Functions_guiConnectBookmark(PluginConnectTab connectTab, [In()][MarshalAs(UnmanagedType.LPStr)] string bookmarkuuid, ref ulong scHandlerID);
+public delegate uint TS3Functions_guiConnectBookmark(PluginConnectTab connectTab, [MarshalAs(UnmanagedType.LPStr)] string bookmarkuuid, ref ulong scHandlerID);
 
 /// Return Type: unsigned int
 ///bookmarkuuid: char*
@@ -1317,19 +1317,19 @@ public delegate uint TS3Functions_guiConnectBookmark(PluginConnectTab connectTab
 ///uniqueUserId: char*
 ///oneTimeKey: char*
 ///phoneticName: char*
-public delegate uint TS3Functions_createBookmark([In()][MarshalAs(UnmanagedType.LPStr)] string bookmarkuuid, [In()][MarshalAs(UnmanagedType.LPStr)] string serverLabel, [In()][MarshalAs(UnmanagedType.LPStr)] string serverAddress, [In()][MarshalAs(UnmanagedType.LPStr)] string serverPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string nickname, [In()][MarshalAs(UnmanagedType.LPStr)] string channel, [In()][MarshalAs(UnmanagedType.LPStr)] string channelPassword, [In()][MarshalAs(UnmanagedType.LPStr)] string captureProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string playbackProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string hotkeyProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string soundProfile, [In()][MarshalAs(UnmanagedType.LPStr)] string uniqueUserId, [In()][MarshalAs(UnmanagedType.LPStr)] string oneTimeKey, [In()][MarshalAs(UnmanagedType.LPStr)] string phoneticName);
+public delegate uint TS3Functions_createBookmark([MarshalAs(UnmanagedType.LPStr)] string bookmarkuuid, [MarshalAs(UnmanagedType.LPStr)] string serverLabel, [MarshalAs(UnmanagedType.LPStr)] string serverAddress, [MarshalAs(UnmanagedType.LPStr)] string serverPassword, [MarshalAs(UnmanagedType.LPStr)] string nickname, [MarshalAs(UnmanagedType.LPStr)] string channel, [MarshalAs(UnmanagedType.LPStr)] string channelPassword, [MarshalAs(UnmanagedType.LPStr)] string captureProfile, [MarshalAs(UnmanagedType.LPStr)] string playbackProfile, [MarshalAs(UnmanagedType.LPStr)] string hotkeyProfile, [MarshalAs(UnmanagedType.LPStr)] string soundProfile, [MarshalAs(UnmanagedType.LPStr)] string uniqueUserId, [MarshalAs(UnmanagedType.LPStr)] string oneTimeKey, [MarshalAs(UnmanagedType.LPStr)] string phoneticName);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///permissionName: char*
 ///result: unsigned int*
-public delegate uint TS3Functions_getPermissionIDByName(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string permissionName, ref uint result);
+public delegate uint TS3Functions_getPermissionIDByName(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string permissionName, ref uint result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///permissionName: char*
 ///result: int*
-public delegate uint TS3Functions_getClientNeededPermission(ulong serverConnectionHandlerID, [In()][MarshalAs(UnmanagedType.LPStr)] string permissionName, ref int result);
+public delegate uint TS3Functions_getClientNeededPermission(ulong serverConnectionHandlerID, [MarshalAs(UnmanagedType.LPStr)] string permissionName, ref int result);
 
 [StructLayoutAttribute(LayoutKind.Sequential)]
 public struct TS3Functions
