@@ -18,9 +18,10 @@ namespace TeamCord.GUI
             InitializeComponent();
             this.Closed += SettingsWindow_Closed;
             _settings = settings;
-            checkBox_Autojoin.IsChecked = _settings.AutomaticJoin;
+            checkBox_Autojoin.IsChecked = _settings.AutomaticChannelJoin;
+            checkBox_AutoLoginDiscord.IsChecked = _settings.DiscordAutoLogin;
             checkBox_ConnectionStatus.IsChecked = _settings.ShowConnectionStatus;
-            checkBox_RawAudio.IsChecked = _settings.UseTeamspeakRawAudio;
+            checkBox_RawAudio.IsChecked = _settings.UseTeamspeakVoiceActivation;
             if (_settings.PluginUserCredentials.Entropy != null && _settings.PluginUserCredentials.CipherText != null)
                 passwordBox_token.Password = Encoding.Default.GetString(_settings.PluginUserCredentials.GetStoredPassword());
         }
@@ -40,8 +41,9 @@ namespace TeamCord.GUI
 
         private void button_Save_Click(object sender, RoutedEventArgs e)
         {
-            _settings.AutomaticJoin = checkBox_Autojoin.IsChecked ?? false;
-            _settings.UseTeamspeakRawAudio = checkBox_RawAudio.IsChecked ?? false;
+            _settings.AutomaticChannelJoin = checkBox_Autojoin.IsChecked ?? false;
+            _settings.UseTeamspeakVoiceActivation = checkBox_RawAudio.IsChecked ?? false;
+            _settings.DiscordAutoLogin = checkBox_AutoLoginDiscord.IsChecked ?? false;
             _settings.ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false;
             _settings.PluginUserCredentials = PluginUserCredentials.StorePassword(Encoding.Default.GetBytes(passwordBox_token.Password));
             var storage = new DataStorage();
