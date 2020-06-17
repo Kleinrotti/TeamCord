@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Threading;
-using System.Xml;
 using TeamCord.GUI;
 
 namespace TeamCord.Plugin
@@ -44,22 +45,26 @@ namespace TeamCord.Plugin
 
         public static ulong ExtractChannelID(string channelDescription)
         {
-            XmlDocument doc = new XmlDocument();
             try
             {
-                doc.LoadXml(channelDescription);
-                var v = doc.GetElementsByTagName("Teamcord").Item(0);
+                var obj = JsonConvert.DeserializeObject<TS3ChannelJson>(channelDescription);
 
-                return Convert.ToUInt64(v.InnerText);
-            }
-            catch (XmlException ex)
-            {
-                return 0;
+                return Convert.ToUInt64(obj.Teamcord.ChannelID);
             }
             catch (Exception ex)
             {
                 return 0;
             }
+        }
+
+        public static string UserListToTs3String(IList<string> userList)
+        {
+            string data = "[b][color=red]--- Userlist ---[/color][/b]\n";
+            foreach (var v in userList)
+            {
+                data += "- " + v + "\n";
+            }
+            return data;
         }
     }
 }
