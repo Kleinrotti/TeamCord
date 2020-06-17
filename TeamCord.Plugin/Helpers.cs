@@ -49,7 +49,7 @@ namespace TeamCord.Plugin
             {
                 var obj = JsonConvert.DeserializeObject<TS3ChannelJson>(channelDescription);
 
-                return Convert.ToUInt64(obj.Teamcord.ChannelID);
+                return obj.Teamcord.ChannelID;
             }
             catch (Exception ex)
             {

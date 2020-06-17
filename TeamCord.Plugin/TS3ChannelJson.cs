@@ -10,6 +10,6 @@ namespace TeamCord.Plugin
     internal struct Teamcord
     {
         [JsonProperty("Channel")]
-        public string ChannelID { get; set; }
+        public ulong ChannelID { get; set; }
     }
 }
