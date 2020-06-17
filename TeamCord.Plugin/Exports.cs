@@ -111,19 +111,6 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_currentServerConnectionChanged(ulong serverConnectionHandlerID)
         {
-            var mode = "";
-            if (TSPlugin.Instance.Functions.getCurrentPlayBackMode(serverConnectionHandlerID, ref mode) == (uint)Ts3ErrorType.ERROR_ok)
-            {
-                string[] playbackDevice;
-                string[] captureDevice;
-                TSPlugin.Instance.Functions.getDefaultPlaybackDevice(mode, out playbackDevice);
-                TSPlugin.Instance.Functions.getDefaultCaptureDevice(mode, out captureDevice);
-                TSPlugin.Instance.Devices = new List<TS3Device>
-                {
-                    new TS3Device(TS3DeviceType.Playback, playbackDevice, true),
-                    new TS3Device(TS3DeviceType.Capture, captureDevice, true)
-                };
-            }
         }
 
         [DllExport]
@@ -132,10 +119,14 @@ namespace TeamCord.Plugin
             //Join/leave a server
             if (newStatus == ConnectStatus.STATUS_DISCONNECTED)
                 TSPlugin.Instance.ConnectionHandler.Disconnect();
+            else if (newStatus == ConnectStatus.STATUS_CONNECTION_ESTABLISHED)
+                if (TSPlugin.Instance.Settings.DiscordAutoLogin)
+                    TSPlugin.Instance.ConnectionHandler.Connect();
         }
 
         [DllExport]
-        public unsafe static void ts3plugin_onClientMoveEvent(ulong serverConnectionHandlerID, short clientID, ulong oldChannelID, ulong newChannelID, int visibility, char* moveMessage)
+        public static void ts3plugin_onClientMoveEvent(ulong serverConnectionHandlerID, short clientID, ulong oldChannelID, ulong newChannelID,
+            int visibility, [MarshalAs(UnmanagedType.LPStr)] string moveMessage)
         {
             string description;
             TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, (uint)ChannelProperties.CHANNEL_DESCRIPTION, out description);
@@ -150,7 +141,7 @@ namespace TeamCord.Plugin
             }
             else
             {
-                if (TSPlugin.Instance.Settings.AutomaticJoin)
+                if (TSPlugin.Instance.Settings.AutomaticChannelJoin)
                 {
                     TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
                 }
@@ -180,21 +171,25 @@ namespace TeamCord.Plugin
         }
 
         [DllExport]
-        public static unsafe void ts3plugin_onEditCapturedVoiceDataEvent(ulong serverConnectionHandlerID, short* samples, int sampleCount, int channels, int* edited)
+        public static unsafe void ts3plugin_onEditCapturedVoiceDataEvent(ulong serverConnectionHandlerID,
+            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I2, SizeParamIndex = 2)] short[] samples, int sampleCount, int channels, int* edited)
         {
-            //only process voice data if teamspeak would send it
-            if (*edited == 2)
+            if (TSPlugin.Instance.Settings.UseTeamspeakVoiceActivation)
             {
-                short[] buffer = new short[sampleCount * channels];
-                for (int ctr = 0; ctr < buffer.Length; ctr++)
+                //only process voice data if teamspeak would send it
+                if (*edited == 2)
                 {
-                    buffer[ctr] = *(ctr + samples);
+                    //channels is always 1
+                    TSPlugin.Instance.ConnectionHandler.VoiceData(samples, channels);
                 }
-                TSPlugin.Instance.ConnectionHandler.VoiceData(buffer, channels);
+            }
+            else
+            {
+                TSPlugin.Instance.ConnectionHandler.VoiceData(samples, channels);
             }
         }
 
-        public unsafe static char* my_strcpy(char* destination, int buffer, char* source)
+        private unsafe static char* my_strcpy(char* destination, int buffer, char* source)
         {
             char* p = destination;
             int x = 0;
@@ -247,9 +242,9 @@ namespace TeamCord.Plugin
             *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * menuItemCount);
             string icon = "2.png";
 
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "Login", icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Logout", icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Just a test", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "About", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 2, "Join", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Leave", icon);
 
             (*menuItems)[n++] = null;
 
@@ -264,10 +259,43 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
         {
-            if (menuItemID == 1)
+            if (menuItemID == 2)
                 TSPlugin.Instance.ConnectionHandler.Connect();
-            else if (menuItemID == 2)
+            else if (menuItemID == 3)
                 TSPlugin.Instance.ConnectionHandler.Disconnect();
+        }
+
+        [DllExport]
+        public static IntPtr ts3plugin_infoTitle()
+        {
+            string info = "Teamcord";
+            return Marshal.StringToHGlobalAnsi(info);
+        }
+
+        [DllExport]
+        public static void ts3plugin_infoData(ulong serverConnectionHandlerID, ulong id, PluginItemType type, [MarshalAs(UnmanagedType.LPStr)] ref string data)
+        {
+            switch (type)
+            {
+                case PluginItemType.PLUGIN_CHANNEL:
+                    string description;
+                    TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, id, (uint)ChannelProperties.CHANNEL_DESCRIPTION, out description);
+                    var channelid = Helpers.ExtractChannelID(description);
+                    var users = TSPlugin.Instance.ConnectionHandler.GetUsersInChannel(channelid);
+                    data = Helpers.UserListToTs3String(users);
+                    break;
+
+                case PluginItemType.PLUGIN_CLIENT:
+                    break;
+
+                case PluginItemType.PLUGIN_SERVER:
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid item type: %d\n", type);
+                    data = null;  /* Ignore */
+                    return;
+            }
         }
     }
 }

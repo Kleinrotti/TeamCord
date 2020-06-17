@@ -98,6 +98,9 @@
       <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RGiesecke.DllExport.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8f52d83c1a22df51, processorArchitecture=MSIL">
@@ -196,6 +199,7 @@
     <Compile Include="Natives\VariablesExportItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Natives\NativeCallbacks.cs" />
+    <Compile Include="TS3ChannelJson.cs" />
     <Compile Include="TSPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
