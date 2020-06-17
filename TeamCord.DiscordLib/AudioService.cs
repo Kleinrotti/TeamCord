@@ -54,7 +54,7 @@ namespace TeamCord.DiscordLib
                 if (!v.IsBot)
                 {
                     var socketUser = v as SocketGuildUser;
-                    var userAduioStream = (InputStream)socketUser.AudioStream;
+                    var userAduioStream = socketUser.AudioStream;
                     await ListenUserAsync(userAduioStream);
                 }
             }
@@ -107,7 +107,7 @@ namespace TeamCord.DiscordLib
             }
         }
 
-        private async Task ListenUserAsync(AudioStream stream)
+        private async Task ListenUserAsync(AudioInStream stream)
         {
             try
             {

@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,23 @@ namespace TeamCord.DiscordLib
         private AudioService _audioService;
         private byte[] _token;
         private short[] _voiceBuffer;
+        private IChannel _currentChannel;
+
+        public IList<string> UsersInCurrentChannel
+        {
+            get
+            {
+                if (_currentChannel == null)
+                    return new List<string>();
+                var users = _client.GetChannel(_currentChannel.Id).Users;
+                IList<string> list = new List<string>();
+                foreach (var v in users)
+                {
+                    list.Add(v.Username);
+                }
+                return list;
+            }
+        }
 
         public ConnectionHandler(byte[] token)
         {
@@ -23,6 +41,25 @@ namespace TeamCord.DiscordLib
             _client = new DiscordSocketClient();
             _audioService = new AudioService();
             _client.Log += Client_Log;
+        }
+
+        public IList<string> GetUsersInChannel(ulong channelId)
+        {
+            IList<string> list = new List<string>();
+            try
+            {
+
+                var users = _client.GetChannel(channelId).Users;
+                foreach (var v in users)
+                {
+                    list.Add(v.Username);
+                }
+            }
+            catch(NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return list;
         }
 
         private Task Client_Log(LogMessage arg)
@@ -51,13 +88,14 @@ namespace TeamCord.DiscordLib
         {
             if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
                 Connect();
-            var channel = _client.GetChannel(channelID) as SocketVoiceChannel;
-            await _audioService.JoinChannel(channel);
+            _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
+            await _audioService.JoinChannel((IVoiceChannel)_currentChannel);
         }
 
         public async void LeaveChannel()
         {
             await _audioService.LeaveChannel();
+            _currentChannel = null;
         }
 
         /// <summary>
@@ -69,6 +107,7 @@ namespace TeamCord.DiscordLib
                 await _audioService.LeaveChannel();
             await _client.StopAsync();
             await _client.LogoutAsync();
+            _currentChannel = null;
         }
 
         /// <summary>
