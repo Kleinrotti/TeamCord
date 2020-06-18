@@ -1,4 +1,4 @@
-﻿namespace TeamCord.Plugin.Natives
+﻿namespace TeamCord.Core
 {
     public enum LogLevel
     {

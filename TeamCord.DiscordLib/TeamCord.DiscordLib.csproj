@@ -105,5 +105,11 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TeamCord.Core\TeamCord.Core.csproj">
+      <Project>{50281CF0-63D7-4F96-AA0B-8238BC9D6F3B}</Project>
+      <Name>TeamCord.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

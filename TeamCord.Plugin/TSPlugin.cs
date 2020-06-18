@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using TeamCord.Core;
 using TeamCord.DiscordLib;
@@ -56,8 +57,11 @@ namespace TeamCord.Plugin
 
         public int Init()
         {
+            Stopwatch watch = new Stopwatch();
             try
             {
+                watch.Start();
+                var log = new Logging(Log);
                 var dir = Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config");
                 if (!File.Exists(_configPath))
                 {
@@ -69,10 +73,11 @@ namespace TeamCord.Plugin
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Logging.Log(ex.Message, LogLevel.LogLevel_CRITICAL);
                 return 1;
             }
-            Console.WriteLine("TeamCord initialized");
+            watch.Stop();
+            Logging.Log($"Teamcord initialized in {watch.ElapsedMilliseconds}ms", LogLevel.LogLevel_INFO);
             return 0;
         }
 
@@ -80,7 +85,11 @@ namespace TeamCord.Plugin
         {
             if (ConnectionHandler != null)
                 ConnectionHandler.Dispose();
-            Console.WriteLine("TeamCord shutdown");
+        }
+
+        private void Log(string message, LogLevel level)
+        {
+            Functions.logMessage(message, level, "TeamCord", 0);
         }
     }
 }

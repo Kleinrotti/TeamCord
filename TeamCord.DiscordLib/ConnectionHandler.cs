@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TeamCord.Core;
 
 namespace TeamCord.DiscordLib
 {
@@ -48,23 +49,22 @@ namespace TeamCord.DiscordLib
             IList<string> list = new List<string>();
             try
             {
-
                 var users = _client.GetChannel(channelId).Users;
                 foreach (var v in users)
                 {
                     list.Add(v.Username);
                 }
             }
-            catch(NullReferenceException ex)
+            catch (NullReferenceException ex)
             {
-                Console.WriteLine(ex.Message);
+                Logging.Log(ex.Message, LogLevel.LogLevel_ERROR);
             }
             return list;
         }
 
         private Task Client_Log(LogMessage arg)
         {
-            Console.WriteLine(arg.Message);
+            Logging.Log("Discord --> " + arg.Message, LogLevel.LogLevel_INFO);
             return Task.CompletedTask;
         }
 

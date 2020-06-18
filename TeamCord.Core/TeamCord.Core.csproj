@@ -56,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStorage.cs" />
+    <Compile Include="Logging.cs" />
+    <Compile Include="LogLevel.cs" />
+    <Compile Include="LogTypes.cs" />
     <Compile Include="PluginSettings.cs" />
     <Compile Include="PluginUserCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,7 +66,6 @@
     <Compile Include="TS3DeviceType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

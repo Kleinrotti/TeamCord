@@ -1,12 +1,12 @@
 ﻿using Discord;
 using Discord.Audio;
-using Discord.Audio.Streams;
 using Discord.Commands;
 using Discord.WebSocket;
 using NAudio.Wave;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TeamCord.Core;
 
 namespace TeamCord.DiscordLib
 {
@@ -30,7 +30,6 @@ namespace TeamCord.DiscordLib
                     _audioClient = await _voiceChannel.ConnectAsync();
                     _audioClient.Disconnected += _audioClient_Disconnected;
                     _audioClient.StreamCreated += _audioClient_StreamCreated;
-                    _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
                     _outStream = _audioClient.CreatePCMStream(AudioApplication.Mixed, null, 100, 5);
                     InitSpeakers();
                     await ListenToUsersAsync();
@@ -68,12 +67,6 @@ namespace TeamCord.DiscordLib
             _waveOut.Play();
         }
 
-        private Task _audioClient_StreamDestroyed(ulong arg)
-        {
-            Console.WriteLine("Stream destroyed");
-            return Task.CompletedTask;
-        }
-
         private async Task _audioClient_StreamCreated(ulong arg1, AudioInStream arg2)
         {
             //Triggers when user joined to the channel
@@ -102,7 +95,7 @@ namespace TeamCord.DiscordLib
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Logging.Log(ex.Message, LogLevel.LogLevel_ERROR);
                 }
             }
         }
@@ -117,7 +110,10 @@ namespace TeamCord.DiscordLib
                     _waveProvider.AddSamples(buffer, 0, buffer.Length);
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Logging.Log(ex.Message, LogLevel.LogLevel_ERROR);
+            }
         }
     }
 }

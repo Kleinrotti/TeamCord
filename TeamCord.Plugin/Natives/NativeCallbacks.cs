@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using TeamCord.Core;
 using TeamCord.Plugin.Natives;
 
 /// Return Type: unsigned int

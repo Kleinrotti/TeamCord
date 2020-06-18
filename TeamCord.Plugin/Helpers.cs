@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Threading;
+using TeamCord.Core;
 using TeamCord.GUI;
 
 namespace TeamCord.Plugin
@@ -53,6 +54,7 @@ namespace TeamCord.Plugin
             }
             catch (Exception ex)
             {
+                Logging.Log(ex.Message, LogLevel.LogLevel_WARNING);
                 return 0;
             }
         }

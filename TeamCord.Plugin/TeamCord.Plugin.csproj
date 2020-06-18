@@ -171,8 +171,6 @@
     <Compile Include="Natives\NativeEnums\HardwareOutputStatus.cs" />
     <Compile Include="Natives\NativeEnums\InputDeactivationStatus.cs" />
     <Compile Include="Natives\NativeEnums\LocalTestMode.cs" />
-    <Compile Include="Natives\NativeEnums\LogLevel.cs" />
-    <Compile Include="Natives\NativeEnums\LogTypes.cs" />
     <Compile Include="Natives\NativeEnums\MonoSoundDestination.cs" />
     <Compile Include="Natives\NativeEnums\MuteInputStatus.cs" />
     <Compile Include="Natives\NativeEnums\MuteOutputStatus.cs" />
