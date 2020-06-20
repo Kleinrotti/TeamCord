@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using TeamCord.Core;
 
-namespace TeamCord.DiscordLib
+namespace TeamCord.Core
 {
     /// <summary>
     /// Discord connection handler class

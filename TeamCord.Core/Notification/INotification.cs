@@ -4,6 +4,7 @@
     {
         string Message { get; }
         string Title { get; }
+
         void Notify();
     }
 }

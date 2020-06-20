@@ -6,9 +6,8 @@ using NAudio.Wave;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TeamCord.Core;
 
-namespace TeamCord.DiscordLib
+namespace TeamCord.Core
 {
     internal class AudioService
     {

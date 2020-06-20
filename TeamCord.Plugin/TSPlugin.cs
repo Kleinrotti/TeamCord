@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using TeamCord.Core;
-using TeamCord.DiscordLib;
 
 namespace TeamCord.Plugin
 {

@@ -205,10 +205,6 @@
       <Project>{50281cf0-63d7-4f96-aa0b-8238bc9d6f3b}</Project>
       <Name>TeamCord.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TeamCord.DiscordLib\TeamCord.DiscordLib.csproj">
-      <Project>{9eb32172-f96d-4019-9f32-6913217eee93}</Project>
-      <Name>TeamCord.DiscordLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TeamCord.GUI\TeamCord.GUI.csproj">
       <Project>{beffee47-6b2e-488a-997f-e5bd49e9f77c}</Project>
       <Name>TeamCord.GUI</Name>

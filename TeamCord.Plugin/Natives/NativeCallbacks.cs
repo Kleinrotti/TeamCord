@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.Framework.XamlTypes;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using TeamCord.Core;
 using TeamCord.Plugin.Natives;

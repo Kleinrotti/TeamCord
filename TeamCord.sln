@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamCord.GUI", "TeamCord.GU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamCord.Core", "TeamCord.Core\TeamCord.Core.csproj", "{50281CF0-63D7-4F96-AA0B-8238BC9D6F3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamCord.DiscordLib", "TeamCord.DiscordLib\TeamCord.DiscordLib.csproj", "{9EB32172-F96D-4019-9F32-6913217EEE93}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,18 +55,6 @@ Global
 		{50281CF0-63D7-4F96-AA0B-8238BC9D6F3B}.Release|x64.Build.0 = Release|Any CPU
 		{50281CF0-63D7-4F96-AA0B-8238BC9D6F3B}.Release|x86.ActiveCfg = Release|Any CPU
 		{50281CF0-63D7-4F96-AA0B-8238BC9D6F3B}.Release|x86.Build.0 = Release|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Debug|x64.Build.0 = Debug|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Debug|x86.Build.0 = Debug|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Release|x64.ActiveCfg = Release|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Release|x64.Build.0 = Release|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Release|x86.ActiveCfg = Release|Any CPU
-		{9EB32172-F96D-4019-9F32-6913217EEE93}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
