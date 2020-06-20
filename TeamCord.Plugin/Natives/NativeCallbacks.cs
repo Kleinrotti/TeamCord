@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Build.Framework.XamlTypes;
+using System;
 using System.Runtime.InteropServices;
 using TeamCord.Core;
 using TeamCord.Plugin.Natives;
@@ -1137,22 +1138,22 @@ public delegate uint TS3Functions_serverPropertyStringToFlag([MarshalAs(Unmanage
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getAppPath(IntPtr path, IntPtr maxLen);
+public delegate void TS3Functions_getAppPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
 
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getResourcesPath(IntPtr path, IntPtr maxLen);
+public delegate void TS3Functions_getResourcesPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
 
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getConfigPath(IntPtr path, IntPtr maxLen);
+public delegate void TS3Functions_getConfigPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
 
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getPluginPath(IntPtr path, IntPtr maxLen);
+public delegate void TS3Functions_getPluginPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
 
 /// Return Type: uint64->unsigned __int64
 public delegate ulong TS3Functions_getCurrentServerConnectionHandlerID();

@@ -70,6 +70,7 @@ namespace TeamCord.Plugin
                 }
                 ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
                 Devices = new List<TS3Device>();
+                TrayIcon.BalloonTimeout = 3;
             }
             catch (Exception ex)
             {

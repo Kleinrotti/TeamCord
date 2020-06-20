@@ -240,20 +240,19 @@ namespace TeamCord.Plugin
             int n = 0;
 
             *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * menuItemCount);
-            string icon = "2.png";
 
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "About", icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 2, "Join", icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Leave", icon);
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "About", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 2, "Join", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Leave", "");
 
             (*menuItems)[n++] = null;
 
-            *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
+            *menuIcon = (char*)Marshal.AllocHGlobal(256 * sizeof(char));
 
-            IntPtr ptr = Marshal.StringToHGlobalAnsi("t.png");
+            IntPtr ptr = Marshal.StringToHGlobalAnsi("logo.png");
             void* strPtr = ptr.ToPointer();
             char* cptr = (char*)strPtr;
-            my_strcpy(*menuIcon, 128, cptr);
+            my_strcpy(*menuIcon, 256, cptr);
         }
 
         [DllExport]
