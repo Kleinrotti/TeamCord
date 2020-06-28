@@ -106,6 +106,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="SoundService.cs" />
     <Compile Include="TS3Device.cs" />
     <Compile Include="TS3DeviceType.cs" />
   </ItemGroup>
@@ -125,9 +126,6 @@
     <None Include="Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo_voice_connected.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logo_connected.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +134,8 @@
   <ItemGroup>
     <None Include="Resources\logo_error.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\logo_voice.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

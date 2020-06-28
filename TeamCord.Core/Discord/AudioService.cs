@@ -2,20 +2,44 @@
 using Discord.Audio;
 using Discord.Commands;
 using Discord.WebSocket;
-using NAudio.Wave;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace TeamCord.Core
 {
-    internal class AudioService
+    public class AudioService : IDisposable
     {
         private AudioStream _outStream;
         private IAudioClient _audioClient;
         private IVoiceChannel _voiceChannel;
-        private BufferedWaveProvider _waveProvider;
-        private WaveOut _waveOut;
+        private static IList<SoundService> _soundServices;
+        public ulong OwnUserID { get; set; }
+
+        public event EventHandler VoiceConnected;
+
+        public event EventHandler VoiceDisconnected;
+
+        public AudioService(ulong ownUserID = 0)
+        {
+            OwnUserID = ownUserID;
+            _soundServices = new List<SoundService>();
+        }
+
+        public IList<Tuple<float, ulong>> UserVolumes
+        {
+            get
+            {
+                var volumes = new List<Tuple<float, ulong>>();
+                foreach (var v in _soundServices)
+                {
+                    var tuple = new Tuple<float, ulong>(v.Volume, v.UserID);
+                    volumes.Add(tuple);
+                }
+                return volumes;
+            }
+        }
 
         [Command("join", RunMode = RunMode.Async)]
         public async Task JoinChannel(IVoiceChannel voiceChannel)
@@ -29,49 +53,52 @@ namespace TeamCord.Core
                     _audioClient = await _voiceChannel.ConnectAsync();
                     _audioClient.Disconnected += _audioClient_Disconnected;
                     _audioClient.StreamCreated += _audioClient_StreamCreated;
+                    _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
                     _outStream = _audioClient.CreatePCMStream(AudioApplication.Mixed, null, 100, 5);
-                    InitSpeakers();
+                    VoiceConnected?.Invoke(this, EventArgs.Empty);
                     await ListenToUsersAsync();
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) { Logging.Log(ex); }
             }
+        }
+
+        private Task _audioClient_StreamDestroyed(ulong arg)
+        {
+            Logging.Log($"Stream destroyed {arg}");
+            var v = _soundServices.SingleOrDefault(x => x.UserID == arg);
+            if (v == null)
+                return Task.CompletedTask;
+            _soundServices.Remove(v);
+            v.Dispose();
+            return Task.CompletedTask;
         }
 
         private Task _audioClient_Disconnected(Exception arg)
         {
-            _waveOut.Stop();
+            VoiceDisconnected?.Invoke(this, EventArgs.Empty);
             return Task.CompletedTask;
         }
 
         private async Task ListenToUsersAsync()
         {
-            var users = (await _voiceChannel.GetUsersAsync().ToListAsync()).FirstOrDefault();
-            foreach (var v in users)
+            var users = (await _voiceChannel.GetUsersAsync().ToListAsync());
+            foreach (var v in users[0])
             {
                 //only play users audio data
                 if (!v.IsBot)
                 {
                     var socketUser = v as SocketGuildUser;
-                    var userAduioStream = socketUser.AudioStream;
-                    await ListenUserAsync(userAduioStream);
+                    var userAudioStream = socketUser.AudioStream;
+                    _ = Task.Run(() => { ListenUserAsync(userAudioStream, socketUser.Id); });
                 }
             }
         }
 
-        private void InitSpeakers()
-        {
-            _waveProvider = new BufferedWaveProvider(new WaveFormat(48000, 2));
-            _waveOut = new WaveOut();
-            _waveOut.Init(_waveProvider);
-            _waveOut.Play();
-        }
-
-        private async Task _audioClient_StreamCreated(ulong arg1, AudioInStream arg2)
+        private Task _audioClient_StreamCreated(ulong userID, AudioInStream arg2)
         {
             //Triggers when user joined to the channel
-
-            await ListenUserAsync(arg2);
-            return;
+            Logging.Log($"Stream created {userID}");
+            return Task.Run(() => { ListenUserAsync(arg2, userID); });
         }
 
         [Command("leave", RunMode = RunMode.Async)]
@@ -94,24 +121,54 @@ namespace TeamCord.Core
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log(ex.Message, LogLevel.LogLevel_ERROR);
+                    Logging.Log(ex);
                 }
             }
         }
 
-        private async Task ListenUserAsync(AudioInStream stream)
+        /// <summary>
+        /// Change the audio output volume of the specified stream
+        /// </summary>
+        /// <param name="streamID"></param>
+        /// <param name="volume"></param>
+        public static void ChangeVolume(ulong streamID, float volume)
         {
+            var sound = _soundServices.SingleOrDefault(x => x.UserID == streamID);
+            if (sound != null)
+                sound.Volume = volume;
+        }
+
+        private async void ListenUserAsync(AudioInStream stream, ulong userID)
+        {
+            //do not playback own audio data
+            if (userID == OwnUserID)
+                return;
+            var soundsrv = new SoundService(userID);
+            _soundServices.Add(soundsrv);
             try
             {
                 var buffer = new byte[3840];
+                soundsrv.StartPlayback();
                 while (await stream.ReadAsync(buffer, 0, buffer.Length) > 0)
                 {
-                    _waveProvider.AddSamples(buffer, 0, buffer.Length);
+                    soundsrv.AddSamples(buffer);
                 }
             }
             catch (Exception ex)
             {
-                Logging.Log(ex.Message, LogLevel.LogLevel_ERROR);
+                Logging.Log(ex);
+            }
+            finally
+            {
+                soundsrv.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var v in _soundServices)
+            {
+                v.Dispose();
             }
         }
     }

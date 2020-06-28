@@ -8,14 +8,14 @@
         /// <summary>
         /// Message of the notification
         /// </summary>
-        public string Message { get; }
+        public string Message { get; protected set; }
 
         /// <summary>
         /// Title of the notification
         /// </summary>
-        public string Title { get; }
+        public string Title { get; protected set; }
 
-        protected TrayIcon trayIcon { get; }
+        protected TrayIcon trayIcon { get; set; }
 
         /// <summary>
         /// Initializes a new notification object

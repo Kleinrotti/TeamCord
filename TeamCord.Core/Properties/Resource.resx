@@ -130,8 +130,8 @@
   <data name="logo_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_error.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="logo_voice_connected" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo_voice_connected.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="logo_voice" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo_voice.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_voice_muted" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_voice_muted.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

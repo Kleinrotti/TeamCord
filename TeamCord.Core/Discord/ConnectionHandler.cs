@@ -35,19 +35,78 @@ namespace TeamCord.Core
             }
         }
 
+        public IList<Tuple<float, ulong>> UserVolumesInCurrentChannel
+        {
+            get
+            {
+                return _audioService.UserVolumes;
+            }
+        }
+
         public ConnectionHandler(byte[] token)
         {
             _token = token;
             _client = new DiscordSocketClient();
+
             _audioService = new AudioService();
+            _audioService.VoiceConnected += _audioService_VoiceConnected;
+            _audioService.VoiceDisconnected += _audioService_VoiceDisconnected;
             _client.Log += Client_Log;
+            _client.Connected += _client_Connected;
+            _client.Disconnected += _client_Disconnected;
+            _client.LoggedOut += _client_LoggedOut;
         }
+
+        #region Connection events
+
+        private Task _client_LoggedOut()
+        {
+            Logging.Log($"Client logged out");
+            var status = new DiscordStatusNotification("TeamCord", "Status");
+            status.UpdateStatus(_client.LoginState);
+            return Task.CompletedTask;
+        }
+
+        private void _audioService_VoiceDisconnected(object sender, EventArgs e)
+        {
+            Logging.Log($"Client disconnected to voice");
+            var status = new DiscordStatusNotification("TeamCord", "Status");
+            status.UpdateStatus(ConnectionState.Disconnected);
+        }
+
+        private void _audioService_VoiceConnected(object sender, EventArgs e)
+        {
+            Logging.Log($"Client connected to voice");
+            var status = new DiscordStatusNotification("TeamCord", "Status");
+            status.UpdateStatus(ConnectionState.Connected);
+        }
+
+        private Task _client_Disconnected(Exception arg)
+        {
+            Logging.Log($"Client disconnected");
+            var status = new DiscordStatusNotification("TeamCord", "Status");
+            status.UpdateStatus(_client.LoginState);
+            return Task.CompletedTask;
+        }
+
+        private Task _client_Connected()
+        {
+            Logging.Log($"Client connected");
+            var status = new DiscordStatusNotification("TeamCord", "Status");
+            status.UpdateStatus(_client.LoginState);
+            _audioService.OwnUserID = _client.CurrentUser.Id;
+            return Task.CompletedTask;
+        }
+
+        #endregion Connection events
 
         public IList<string> GetUsersInChannel(ulong channelId)
         {
             IList<string> list = new List<string>();
             try
             {
+                if (_client.ConnectionState != ConnectionState.Connected)
+                    return list;
                 var users = _client.GetChannel(channelId).Users;
                 foreach (var v in users)
                 {
@@ -56,14 +115,14 @@ namespace TeamCord.Core
             }
             catch (NullReferenceException ex)
             {
-                Logging.Log(ex.Message, LogLevel.LogLevel_ERROR);
+                Logging.Log(ex);
             }
             return list;
         }
 
         private Task Client_Log(LogMessage arg)
         {
-            Logging.Log("Discord --> " + arg.Message, LogLevel.LogLevel_INFO);
+            Console.WriteLine(arg.Message);
             return Task.CompletedTask;
         }
 
@@ -74,8 +133,15 @@ namespace TeamCord.Core
         {
             if (_client.ConnectionState != ConnectionState.Connected || _client.ConnectionState == ConnectionState.Connecting)
             {
-                await _client.LoginAsync(0, Encoding.Default.GetString(_token));
-                await _client.StartAsync();
+                try
+                {
+                    await _client.LoginAsync(0, Encoding.Default.GetString(_token));
+                    await _client.StartAsync();
+                }
+                catch (Exception ex)
+                {
+                    Logging.Log(ex);
+                }
             }
         }
 
@@ -85,6 +151,7 @@ namespace TeamCord.Core
         /// <param name="channelID"></param>
         public async void JoinChannel(ulong channelID)
         {
+            Logging.Log($"Joining discord channel {channelID}");
             if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
                 Connect();
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
@@ -93,6 +160,7 @@ namespace TeamCord.Core
 
         public async void LeaveChannel()
         {
+            Logging.Log($"Leaving discord channel {_currentChannel.Id}");
             await _audioService.LeaveChannel();
             _currentChannel = null;
         }
@@ -136,7 +204,7 @@ namespace TeamCord.Core
                 }
             }
 
-            _audioService.SendVoiceData(_bufferBytes);
+            Task.Run(() => { _audioService.SendVoiceData(_bufferBytes); });
         }
 
         private short[] ToStereo(short[] buf)
@@ -154,6 +222,7 @@ namespace TeamCord.Core
         {
             Disconnect();
             _client.Dispose();
+            _audioService.Dispose();
         }
     }
 }

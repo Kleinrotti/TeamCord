@@ -6,19 +6,29 @@ namespace TeamCord.Core
 {
     public class DataStorage
     {
-        private string _configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config\config.json";
+        private static string _configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config";
+
+        public DataStorage()
+        {
+            Directory.CreateDirectory(_configPath);
+            if (!File.Exists(_configPath + @"\config.json"))
+            {
+                Logging.Log("Config file does not exists, creating one...");
+                StoreSettings(new PluginSettings());
+            }
+        }
 
         public void StoreSettings(PluginSettings settings)
         {
             Logging.Log("Storing plugin settings...", LogLevel.LogLevel_INFO);
             var json = JsonConvert.SerializeObject(settings);
-            File.WriteAllText(_configPath, json);
+            File.WriteAllText(_configPath + @"\config.json", json);
         }
 
         public PluginSettings GetSettings()
         {
             Logging.Log("Reading plugin settings...", LogLevel.LogLevel_INFO);
-            var jsonString = File.ReadAllText(_configPath);
+            var jsonString = File.ReadAllText(_configPath + @"\config.json");
             return JsonConvert.DeserializeObject<PluginSettings>(jsonString);
         }
     }

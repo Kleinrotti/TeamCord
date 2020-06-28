@@ -103,9 +103,9 @@ namespace TeamCord.Core.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo_voice_connected {
+        internal static System.Drawing.Icon logo_voice {
             get {
-                object obj = ResourceManager.GetObject("logo_voice_connected", resourceCulture);
+                object obj = ResourceManager.GetObject("logo_voice", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

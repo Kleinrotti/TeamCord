@@ -98,7 +98,6 @@ namespace TeamCord.Plugin
         public static void ts3plugin_registerPluginID(String id)
         {
             var functs = TSPlugin.Instance.Functions;
-            functs.printMessageToCurrentTab(id);
             TSPlugin.Instance.PluginID = id;
         }
 

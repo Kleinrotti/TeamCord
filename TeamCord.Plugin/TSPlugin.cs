@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows.Threading;
 using TeamCord.Core;
+using TeamCord.GUI;
 
 namespace TeamCord.Plugin
 {
@@ -28,9 +30,9 @@ namespace TeamCord.Plugin
 
         public TS3Functions Functions { get; set; }
         public ConnectionHandler ConnectionHandler;
-        private string _configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config\config.json";
+        private string _configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config";
         private PluginSettings _settings;
-        public List<TS3Device> Devices { get; set; }
+        private TrayIcon _trayIcon;
 
         public PluginSettings Settings
         {
@@ -60,20 +62,16 @@ namespace TeamCord.Plugin
             try
             {
                 watch.Start();
-                var log = new Logging(Log);
-                var dir = Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config");
-                if (!File.Exists(_configPath))
-                {
-                    var storage = new DataStorage();
-                    storage.StoreSettings(new PluginSettings());
-                }
+                //logging with callback to ts3 client log
+                var log = new Logging(Log,Log);
                 ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
-                Devices = new List<TS3Device>();
+                _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
+                TrayIcon.VolumeChangedClicked += TrayIcon_VolumeChangedClicked;
             }
             catch (Exception ex)
             {
-                Logging.Log(ex.Message, LogLevel.LogLevel_CRITICAL);
+                Logging.Log(ex, LogLevel.LogLevel_CRITICAL);
                 return 1;
             }
             watch.Stop();
@@ -81,15 +79,33 @@ namespace TeamCord.Plugin
             return 0;
         }
 
+        private void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)
+        {
+            var _volumeControl = new VolumeControl(ConnectionHandler.UserVolumesInCurrentChannel);
+            _volumeControl.VolumeChanged += Control_VolumeChanged;
+            _volumeControl.Show();
+        }
+
+        private void Control_VolumeChanged(object sender, Tuple<float, ulong> e)
+        {
+            AudioService.ChangeVolume(e.Item2, e.Item1);
+        }
+
         public void Shutdown()
         {
             if (ConnectionHandler != null)
                 ConnectionHandler.Dispose();
+            TrayIcon.Visible = false;
+            _trayIcon.Dispose();
         }
 
         private void Log(string message, LogLevel level)
         {
             Functions.logMessage(message, level, "TeamCord", 0);
+        }
+        private void Log(Exception exception, LogLevel level)
+        {
+            Functions.logMessage("Exception: " + exception.Message + "\nStacktrace: " + exception.StackTrace, level, "TeamCord", 0);
         }
     }
 }
