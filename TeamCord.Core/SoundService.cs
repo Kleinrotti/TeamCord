@@ -9,7 +9,8 @@ namespace TeamCord.Core
         private BufferedWaveProvider _waveProvider;
         private VolumeSampleProvider _volumeSampleProvider;
         private WaveOut _waveOut;
-        public ulong UserID { get; private set; }
+        public ulong UserID { get; }
+        public string Nickname { get; set; }
 
         /// <summary>
         /// Audio volume of user, 1.0 is full
@@ -41,9 +42,10 @@ namespace TeamCord.Core
             }
         }
 
-        public SoundService(ulong userID)
+        public SoundService(ulong userID, string nickname)
         {
             UserID = userID;
+            Nickname = nickname;
             InitSpeakers();
         }
 
@@ -93,6 +95,11 @@ namespace TeamCord.Core
             _waveOut.Dispose();
             _waveProvider = null;
             Logging.Log($"Disposed SoundService of userID: {UserID}");
+        }
+
+        public Tuple<float, ulong, string> ToTuple()
+        {
+            return new Tuple<float, ulong, string>(Volume, UserID, Nickname);
         }
     }
 }

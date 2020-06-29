@@ -27,15 +27,17 @@ namespace TeamCord.Core
             _soundServices = new List<SoundService>();
         }
 
-        public IList<Tuple<float, ulong>> UserVolumes
+        /// <summary>
+        /// Return a list of tuples with each volume, userid and nickname
+        /// </summary>
+        public IList<Tuple<float, ulong, string>> UserVolumes
         {
             get
             {
-                var volumes = new List<Tuple<float, ulong>>();
+                var volumes = new List<Tuple<float, ulong, string>>();
                 foreach (var v in _soundServices)
                 {
-                    var tuple = new Tuple<float, ulong>(v.Volume, v.UserID);
-                    volumes.Add(tuple);
+                    volumes.Add(v.ToTuple());
                 }
                 return volumes;
             }
@@ -81,7 +83,7 @@ namespace TeamCord.Core
 
         private async Task ListenToUsersAsync()
         {
-            var users = (await _voiceChannel.GetUsersAsync().ToListAsync());
+            var users = await _voiceChannel.GetUsersAsync().ToListAsync();
             foreach (var v in users[0])
             {
                 //only play users audio data
@@ -143,7 +145,9 @@ namespace TeamCord.Core
             //do not playback own audio data
             if (userID == OwnUserID)
                 return;
-            var soundsrv = new SoundService(userID);
+
+            var user = await _voiceChannel.GetUserAsync(userID);
+            var soundsrv = new SoundService(userID, user.Nickname);
             _soundServices.Add(soundsrv);
             try
             {

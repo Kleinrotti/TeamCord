@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Windows.Threading;
 using TeamCord.Core;
 using TeamCord.GUI;
 
@@ -30,7 +27,6 @@ namespace TeamCord.Plugin
 
         public TS3Functions Functions { get; set; }
         public ConnectionHandler ConnectionHandler;
-        private string _configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Teamcord\config";
         private PluginSettings _settings;
         private TrayIcon _trayIcon;
 
@@ -63,7 +59,7 @@ namespace TeamCord.Plugin
             {
                 watch.Start();
                 //logging with callback to ts3 client log
-                var log = new Logging(Log,Log);
+                var log = new Logging(Log, Log);
                 ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
@@ -86,7 +82,7 @@ namespace TeamCord.Plugin
             _volumeControl.Show();
         }
 
-        private void Control_VolumeChanged(object sender, Tuple<float, ulong> e)
+        private void Control_VolumeChanged(object sender, Tuple<float, ulong, string> e)
         {
             AudioService.ChangeVolume(e.Item2, e.Item1);
         }
@@ -103,6 +99,7 @@ namespace TeamCord.Plugin
         {
             Functions.logMessage(message, level, "TeamCord", 0);
         }
+
         private void Log(Exception exception, LogLevel level)
         {
             Functions.logMessage("Exception: " + exception.Message + "\nStacktrace: " + exception.StackTrace, level, "TeamCord", 0);

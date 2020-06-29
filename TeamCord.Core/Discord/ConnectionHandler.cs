@@ -17,8 +17,11 @@ namespace TeamCord.Core
         private AudioService _audioService;
         private byte[] _token;
         private short[] _voiceBuffer;
-        private IChannel _currentChannel;
+        private IVoiceChannel _currentChannel;
 
+        /// <summary>
+        /// Returns a list with the usernames w
+        /// </summary>
         public IList<string> UsersInCurrentChannel
         {
             get
@@ -35,7 +38,10 @@ namespace TeamCord.Core
             }
         }
 
-        public IList<Tuple<float, ulong>> UserVolumesInCurrentChannel
+        /// <summary>
+        /// Return a list of tuples with each volume, userid and nickname
+        /// </summary>
+        public IList<Tuple<float, ulong, string>> UserVolumesInCurrentChannel
         {
             get
             {

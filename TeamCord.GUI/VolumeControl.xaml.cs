@@ -11,12 +11,12 @@ namespace TeamCord.GUI
     /// </summary>
     public partial class VolumeControl : Window
     {
-        public event EventHandler<Tuple<float, ulong>> VolumeChanged;
+        public event EventHandler<Tuple<float, ulong,string>> VolumeChanged;
 
-        private IList<Tuple<float, ulong>> _userList;
+        private IList<Tuple<float, ulong,string>> _userList;
         private IList<Slider> _sliders;
 
-        public VolumeControl(IList<Tuple<float, ulong>> userList)
+        public VolumeControl(IList<Tuple<float, ulong,string>> userList)
         {
             InitializeComponent();
             _userList = userList;
@@ -57,8 +57,8 @@ namespace TeamCord.GUI
         private void Sl_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var slider = (Slider)e.Source;
-            var tuple = (Tuple<float, ulong>)slider.DataContext;
-            var newTuple = new Tuple<float, ulong>((float)slider.Value, tuple.Item2);
+            var tuple = (Tuple<float, ulong,string>)slider.DataContext;
+            var newTuple = new Tuple<float, ulong,string>((float)slider.Value, tuple.Item2,tuple.Item3);
             VolumeChanged?.Invoke(sender, newTuple);
         }
     }
