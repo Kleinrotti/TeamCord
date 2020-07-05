@@ -4,7 +4,7 @@ using System;
 
 namespace TeamCord.Core
 {
-    public class SoundService : IDisposable
+    public class SoundService : ISoundPlayback, IDisposable
     {
         private BufferedWaveProvider _waveProvider;
         private VolumeSampleProvider _volumeSampleProvider;
