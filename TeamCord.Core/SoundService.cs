@@ -9,23 +9,20 @@ namespace TeamCord.Core
         private BufferedWaveProvider _waveProvider;
         private VolumeSampleProvider _volumeSampleProvider;
         private WaveOut _waveOut;
-        public ulong UserID { get; }
-        public string Nickname { get; set; }
 
         /// <summary>
         /// Audio volume of user, 1.0 is full
         /// </summary>
-        public float Volume
+        public UserVolume Volume
         {
             get
             {
-                return _volumeSampleProvider.Volume;
-            }
-            set
-            {
-                _volumeSampleProvider.Volume = value;
+                return new UserVolume(UserID, _volumeSampleProvider.Volume);
             }
         }
+
+        public ulong UserID { get; }
+        public string Nickname { get; set; }
 
         /// <summary>
         /// Master audio volume, 1.0 is full
@@ -99,7 +96,7 @@ namespace TeamCord.Core
 
         public Tuple<float, ulong, string> ToTuple()
         {
-            return new Tuple<float, ulong, string>(Volume, UserID, Nickname);
+            return new Tuple<float, ulong, string>(Volume.Volume, UserID, Nickname);
         }
     }
 }

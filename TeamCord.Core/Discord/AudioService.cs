@@ -137,7 +137,7 @@ namespace TeamCord.Core
         {
             var sound = _soundServices.SingleOrDefault(x => x.UserID == streamID);
             if (sound != null)
-                sound.Volume = volume;
+                sound.Volume.Volume = volume;
         }
 
         private async void ListenUserAsync(AudioInStream stream, ulong userID)

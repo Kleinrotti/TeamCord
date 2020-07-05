@@ -121,7 +121,7 @@ namespace TeamCord.Core
             }
             catch (NullReferenceException ex)
             {
-                Logging.Log(ex);
+                Logging.Log(ex, LogLevel.LogLevel_DEBUG);
             }
             return list;
         }
