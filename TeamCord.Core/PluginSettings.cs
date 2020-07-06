@@ -7,5 +7,6 @@
         public bool DiscordAutoLogin { get; set; } = true;
         public bool ShowConnectionStatus { get; set; } = false;
         public PluginUserCredentials PluginUserCredentials { get; set; }
+        public bool DebugLogging { get; set; }
     }
 }

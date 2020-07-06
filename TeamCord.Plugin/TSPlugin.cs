@@ -60,6 +60,7 @@ namespace TeamCord.Plugin
                 watch.Start();
                 //logging with callback to ts3 client log
                 var log = new Logging(Log, Log);
+                Logging.DebugLogging = Settings.DebugLogging;
                 ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
@@ -82,9 +83,9 @@ namespace TeamCord.Plugin
             _volumeControl.Show();
         }
 
-        private void Control_VolumeChanged(object sender, Tuple<float, ulong, string> e)
+        private void Control_VolumeChanged(object sender, UserVolume e)
         {
-            AudioService.ChangeVolume(e.Item2, e.Item1);
+            AudioService.ChangeVolume(e);
         }
 
         public void Shutdown()
