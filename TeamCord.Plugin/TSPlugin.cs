@@ -64,6 +64,7 @@ namespace TeamCord.Plugin
                 ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
+                TrayIcon.ShowNotifications = _settings.Notifications;
                 TrayIcon.VolumeChangedClicked += TrayIcon_VolumeChangedClicked;
             }
             catch (Exception ex)

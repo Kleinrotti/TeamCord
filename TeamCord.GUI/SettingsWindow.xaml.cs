@@ -23,6 +23,7 @@ namespace TeamCord.GUI
             checkBox_ConnectionStatus.IsChecked = _settings.ShowConnectionStatus;
             checkBox_RawAudio.IsChecked = _settings.UseTeamspeakVoiceActivation;
             checkBox_DebugLogging.IsChecked = _settings.DebugLogging;
+            checkBox_Notifications.IsChecked = _settings.Notifications;
             if (_settings.PluginUserCredentials.Entropy != null && _settings.PluginUserCredentials.CipherText != null)
                 passwordBox_token.Password = Encoding.Default.GetString(_settings.PluginUserCredentials.GetStoredPassword());
         }
@@ -32,14 +33,6 @@ namespace TeamCord.GUI
             Callback(_settings);
         }
 
-        private void button_ShowToken_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-        }
-
-        private void button_ShowToken_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-        }
-
         private void button_Save_Click(object sender, RoutedEventArgs e)
         {
             _settings.AutomaticChannelJoin = checkBox_Autojoin.IsChecked ?? false;
@@ -47,9 +40,11 @@ namespace TeamCord.GUI
             _settings.DiscordAutoLogin = checkBox_AutoLoginDiscord.IsChecked ?? false;
             _settings.ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false;
             _settings.DebugLogging = checkBox_DebugLogging.IsChecked ?? false;
+            _settings.Notifications = checkBox_Notifications.IsChecked ?? false;
             _settings.PluginUserCredentials = PluginUserCredentials.StorePassword(Encoding.Default.GetBytes(passwordBox_token.Password));
             var storage = new DataStorage();
             storage.StoreSettings(_settings);
+            MessageBox.Show("Please restart Teamspeak to apply all changed settings.");
             Close();
         }
     }
