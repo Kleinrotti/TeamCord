@@ -11,10 +11,27 @@ namespace TeamCord.Core
         private WaveOut _waveOut;
 
         /// <summary>
-        /// Audio volume of user, 1.0 is full
+        /// Volume of the user, 1.0 is full
         /// </summary>
-        public UserVolume Volume
+        public float Volume
         {
+            get
+            {
+                return _volumeSampleProvider.Volume;
+            }
+            set
+            {
+                _volumeSampleProvider.Volume = value;
+                Logging.Log($"Volume of userID {UserID} changed to {value}", LogLevel.LogLevel_DEBUG);
+            }
+        }
+
+        /// <summary>
+        /// User audio volume object
+        /// </summary>
+        public UserVolume UserVolume
+        {
+            //TODO set volume
             get
             {
                 return new UserVolume(UserID, _volumeSampleProvider.Volume);
@@ -72,12 +89,14 @@ namespace TeamCord.Core
             _waveOut.PlaybackStopped += _waveOut_PlaybackStopped;
             _volumeSampleProvider = new VolumeSampleProvider(_waveProvider.ToSampleProvider());
             _waveOut.Init(_volumeSampleProvider);
+            Logging.Log($"Wave device {_waveOut.DeviceNumber} initialized. Samplerate: {_waveProvider.WaveFormat.SampleRate} " +
+                $"Channels: {_waveProvider.WaveFormat.Channels}", LogLevel.LogLevel_DEBUG);
         }
 
         private void _waveOut_PlaybackStopped(object sender, StoppedEventArgs e)
         {
             if (e.Exception == null)
-                Logging.Log($"Sound playback stoppped of ID: {UserID}");
+                Logging.Log($"Sound playback automatically stoppped of userID: {UserID}");
             else
                 Logging.Log(e.Exception);
         }
@@ -91,12 +110,7 @@ namespace TeamCord.Core
         {
             _waveOut.Dispose();
             _waveProvider = null;
-            Logging.Log($"Disposed SoundService of userID: {UserID}");
-        }
-
-        public Tuple<float, ulong, string> ToTuple()
-        {
-            return new Tuple<float, ulong, string>(Volume.Volume, UserID, Nickname);
+            Logging.Log($"Disposed SoundService of userID: {UserID}", LogLevel.LogLevel_DEBUG);
         }
     }
 }

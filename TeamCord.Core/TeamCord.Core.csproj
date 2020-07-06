@@ -90,7 +90,10 @@
   <ItemGroup>
     <Compile Include="DataStorage.cs" />
     <Compile Include="Discord\AudioService.cs" />
+    <Compile Include="Discord\Auth.cs" />
     <Compile Include="Discord\ConnectionHandler.cs" />
+    <Compile Include="ISoundPlayback.cs" />
+    <Compile Include="Notification\ConnectionNotification.cs" />
     <Compile Include="Notification\INotification.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="LogLevel.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="SoundService.cs" />
     <Compile Include="TS3Device.cs" />
     <Compile Include="TS3DeviceType.cs" />
+    <Compile Include="UserVolume.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

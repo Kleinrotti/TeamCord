@@ -30,14 +30,14 @@ namespace TeamCord.Core
         /// <summary>
         /// Return a list of tuples with each volume, userid and nickname
         /// </summary>
-        public IList<Tuple<float, ulong, string>> UserVolumes
+        public IList<UserVolume> UserVolumes
         {
             get
             {
-                var volumes = new List<Tuple<float, ulong, string>>();
+                var volumes = new List<UserVolume>();
                 foreach (var v in _soundServices)
                 {
-                    volumes.Add(v.ToTuple());
+                    volumes.Add(v.UserVolume);
                 }
                 return volumes;
             }
@@ -133,11 +133,22 @@ namespace TeamCord.Core
         /// </summary>
         /// <param name="streamID"></param>
         /// <param name="volume"></param>
-        public static void ChangeVolume(ulong streamID, float volume)
+        public static void ChangeVolume(ulong userID, float volume)
         {
-            var sound = _soundServices.SingleOrDefault(x => x.UserID == streamID);
+            var sound = _soundServices.SingleOrDefault(x => x.UserID == userID);
             if (sound != null)
-                sound.Volume.Volume = volume;
+                sound.Volume = volume;
+        }
+
+        /// <summary>
+        /// Change the audio output volume of the specified stream
+        /// </summary>
+        /// <param name="userVolume"></param>
+        public static void ChangeVolume(UserVolume userVolume)
+        {
+            var sound = _soundServices.SingleOrDefault(x => x.UserID == userVolume.UserID);
+            if (sound != null)
+                sound.Volume = userVolume.Volume;
         }
 
         private async void ListenUserAsync(AudioInStream stream, ulong userID)

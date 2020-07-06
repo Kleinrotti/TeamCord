@@ -8,7 +8,7 @@
         WindowStyle="ToolWindow"
         ResizeMode="NoResize"
         WindowStartupLocation="Manual"
-        Title="Volume" Height="200" Width="250">
+        Title="Volume" Height="250" Width="300">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Center">
             <StackPanel x:Name="stackPanelSliders" Orientation="Horizontal" HorizontalAlignment="Center">

@@ -91,7 +91,6 @@ namespace TeamCord.Plugin
         {
             //Exit STA thread of the window when settings are received, if its not exited no more settings window can be opened
             Dispatcher.FromThread(_settingsThread).InvokeShutdown();
-            MessageBox.Show("Please restart Teamspeak to apply all changed settings.");
         }
 
         [DllExport]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using TeamCord.Core;
 
 namespace TeamCord.GUI
 {
@@ -11,12 +12,12 @@ namespace TeamCord.GUI
     /// </summary>
     public partial class VolumeControl : Window
     {
-        public event EventHandler<Tuple<float, ulong,string>> VolumeChanged;
+        public event EventHandler<UserVolume> VolumeChanged;
 
-        private IList<Tuple<float, ulong,string>> _userList;
-        private IList<Slider> _sliders;
+        private IList<UserVolume> _userList;
+        private ICollection<Slider> _sliders;
 
-        public VolumeControl(IList<Tuple<float, ulong,string>> userList)
+        public VolumeControl(IList<UserVolume> userList)
         {
             InitializeComponent();
             _userList = userList;
@@ -36,6 +37,7 @@ namespace TeamCord.GUI
             _sliders = new List<Slider>();
             foreach (var v in _userList)
             {
+                var pnl = new DockPanel();
                 var sl = new Slider
                 {
                     Minimum = 0,
@@ -43,23 +45,29 @@ namespace TeamCord.GUI
                     Width = 50,
                     Height = 100,
                     Orientation = Orientation.Vertical,
-                    Value = v.Item1,
+                    Value = v.Volume,
                     AutoToolTipPlacement = AutoToolTipPlacement.TopLeft,
                     AutoToolTipPrecision = 1,
                     DataContext = v
                 };
                 sl.ValueChanged += Sl_ValueChanged;
+                var txt = new Label
+                {
+                    Content = v.Username
+                };
                 _sliders.Add(sl);
-                stackPanelSliders.Children.Add(sl);
+                pnl.Children.Add(sl);
+                pnl.Children.Add(txt);
+                stackPanelSliders.Children.Add(pnl);
             }
         }
 
         private void Sl_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var slider = (Slider)e.Source;
-            var tuple = (Tuple<float, ulong,string>)slider.DataContext;
-            var newTuple = new Tuple<float, ulong,string>((float)slider.Value, tuple.Item2,tuple.Item3);
-            VolumeChanged?.Invoke(sender, newTuple);
+            var vol = (UserVolume)slider.DataContext;
+            var newVol = new UserVolume(vol.UserID, (float)slider.Value);
+            VolumeChanged?.Invoke(sender, newVol);
         }
     }
 }

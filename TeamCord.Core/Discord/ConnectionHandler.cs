@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TeamCord.Core.Notification;
 
 namespace TeamCord.Core
 {
@@ -41,7 +42,7 @@ namespace TeamCord.Core
         /// <summary>
         /// Return a list of tuples with each volume, userid and nickname
         /// </summary>
-        public IList<Tuple<float, ulong, string>> UserVolumesInCurrentChannel
+        public IList<UserVolume> UserVolumesInCurrentChannel
         {
             get
             {
@@ -78,6 +79,7 @@ namespace TeamCord.Core
             Logging.Log($"Client disconnected to voice");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Disconnected);
+            new ConnectionNotification("TeamCord", "").Notify(_currentChannel, ConnectionState.Disconnected);
         }
 
         private void _audioService_VoiceConnected(object sender, EventArgs e)
@@ -85,6 +87,7 @@ namespace TeamCord.Core
             Logging.Log($"Client connected to voice");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Connected);
+            new ConnectionNotification("TeamCord", "").Notify(_currentChannel, ConnectionState.Connected);
         }
 
         private Task _client_Disconnected(Exception arg)
@@ -161,7 +164,7 @@ namespace TeamCord.Core
             if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
                 Connect();
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
-            await _audioService.JoinChannel((IVoiceChannel)_currentChannel);
+            await _audioService.JoinChannel(_currentChannel);
         }
 
         public async void LeaveChannel()
