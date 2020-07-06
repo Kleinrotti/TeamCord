@@ -9,7 +9,7 @@ namespace TeamCord.Core
     {
         protected static NotifyIcon Icon;
         protected static ContextMenu Menu;
-        public static bool ShowNotifications { get; set; } = true;
+        public static bool ShowNotifications { get; set; }
         public static int BalloonTimeout { get; set; } = 5;
 
         public static event EventHandler VolumeChangedClicked;
