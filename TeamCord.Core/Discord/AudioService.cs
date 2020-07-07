@@ -46,22 +46,19 @@ namespace TeamCord.Core
         [Command("join", RunMode = RunMode.Async)]
         public async Task JoinChannel(IVoiceChannel voiceChannel)
         {
-            if (voiceChannel != null)
+            try
             {
-                try
-                {
-                    //await LeaveChannel();
-                    _voiceChannel = voiceChannel;
-                    _audioClient = await _voiceChannel.ConnectAsync();
-                    _audioClient.Disconnected += _audioClient_Disconnected;
-                    _audioClient.StreamCreated += _audioClient_StreamCreated;
-                    _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
-                    _outStream = _audioClient.CreatePCMStream(AudioApplication.Mixed, null, 100, 5);
-                    VoiceConnected?.Invoke(this, EventArgs.Empty);
-                    await ListenToUsersAsync();
-                }
-                catch (Exception ex) { Logging.Log(ex); }
+                //await LeaveChannel();
+                _voiceChannel = voiceChannel;
+                _audioClient = await _voiceChannel.ConnectAsync();
+                _audioClient.Disconnected += _audioClient_Disconnected;
+                _audioClient.StreamCreated += _audioClient_StreamCreated;
+                _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
+                _outStream = _audioClient.CreatePCMStream(AudioApplication.Mixed, null, 100, 5);
+                VoiceConnected?.Invoke(this, EventArgs.Empty);
+                await ListenToUsersAsync();
             }
+            catch (Exception ex) { Logging.Log(ex); }
         }
 
         private Task _audioClient_StreamDestroyed(ulong arg)

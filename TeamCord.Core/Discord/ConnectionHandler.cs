@@ -164,12 +164,15 @@ namespace TeamCord.Core
             if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
                 Connect();
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
-            await _audioService.JoinChannel(_currentChannel);
+            if (_currentChannel != null)
+                await _audioService.JoinChannel(_currentChannel);
+            else
+                Logging.Log("Joining channel failed. User is not a member of the server or the channel id does not exists", LogLevel.LogLevel_WARNING);
         }
 
         public async void LeaveChannel()
         {
-            Logging.Log($"Leaving discord channel {_currentChannel.Id}");
+            Logging.Log($"Leaving discord channel");
             await _audioService.LeaveChannel();
             _currentChannel = null;
         }
