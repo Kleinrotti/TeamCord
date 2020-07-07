@@ -39,7 +39,11 @@ namespace TeamCord.Core
         /// <param name="logLevel"></param>
         public static void Log(Exception exception, LogLevel logLevel = LogLevel.LogLevel_ERROR)
         {
-            logCallbackException(exception, logLevel);
+            //if debug logging stacktrace will be added
+            if (DebugLogging)
+                logCallbackException(exception, logLevel);
+            else
+                logCallback(exception.Message, logLevel);
         }
     }
 }
