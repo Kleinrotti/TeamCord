@@ -153,21 +153,6 @@ namespace TeamCord.Plugin
             }
         }
 
-        private unsafe static void DiscordAudioCallback(byte[] buffer, int samples)
-        {
-            short[] shortBuffer = new short[(int)Math.Ceiling(buffer.Length / 2.0)];
-
-            fixed (byte* samplesPtr = buffer)
-            {
-                short* pSample = (short*)samplesPtr;
-
-                for (int i = 0; i < shortBuffer.Length; i++)
-                {
-                    shortBuffer[i] = pSample[i];
-                }
-            }
-        }
-
         [DllExport]
         public static unsafe void ts3plugin_onEditCapturedVoiceDataEvent(ulong serverConnectionHandlerID,
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I2, SizeParamIndex = 2)] short[] samples, int sampleCount, int channels, int* edited)
