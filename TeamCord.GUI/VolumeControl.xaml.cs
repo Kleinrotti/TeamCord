@@ -37,23 +37,25 @@ namespace TeamCord.GUI
             _sliders = new List<Slider>();
             foreach (var v in _userList)
             {
-                var pnl = new DockPanel();
+                var pnl = new StackPanel();
                 var sl = new Slider
                 {
                     Minimum = 0,
                     Maximum = 1.0,
                     Width = 50,
-                    Height = 100,
+                    Height = 180,
                     Orientation = Orientation.Vertical,
                     Value = v.Volume,
                     AutoToolTipPlacement = AutoToolTipPlacement.TopLeft,
                     AutoToolTipPrecision = 1,
-                    DataContext = v
+                    DataContext = v,
+                    HorizontalAlignment = HorizontalAlignment.Center
                 };
                 sl.ValueChanged += Sl_ValueChanged;
                 var txt = new Label
                 {
-                    Content = v.Username
+                    Content = v.Username,
+                    HorizontalAlignment = HorizontalAlignment.Center
                 };
                 _sliders.Add(sl);
                 pnl.Children.Add(sl);

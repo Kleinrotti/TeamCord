@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
-        public NotificationBase(string title, string message)
+        public NotificationBase(string message, string title)
         {
             Message = message;
             Title = title;

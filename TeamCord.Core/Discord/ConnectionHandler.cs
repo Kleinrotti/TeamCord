@@ -165,9 +165,14 @@ namespace TeamCord.Core
                 Connect();
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
             if (_currentChannel != null)
+            {
                 await _audioService.JoinChannel(_currentChannel);
+            }
             else
+            {
                 Logging.Log("Joining channel failed. User is not a member of the server or the channel id does not exists", LogLevel.LogLevel_WARNING);
+                new ConnectionNotification("Joining channel failed, check log for details").Notify();
+            }
         }
 
         public async void LeaveChannel()

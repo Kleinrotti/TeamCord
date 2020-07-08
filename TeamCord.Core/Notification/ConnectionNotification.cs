@@ -9,7 +9,7 @@ namespace TeamCord.Core.Notification
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
-        public ConnectionNotification(string title, string message) : base(title, message)
+        public ConnectionNotification(string message = "", string title = "TeamCord") : base(title, message)
         {
             Title = title;
             Message = message;

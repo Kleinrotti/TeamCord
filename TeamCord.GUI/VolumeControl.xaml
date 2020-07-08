@@ -11,8 +11,7 @@
         Title="Volume" Height="250" Width="300">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Center">
-            <StackPanel x:Name="stackPanelSliders" Orientation="Horizontal" HorizontalAlignment="Center">
-            </StackPanel>
+            <StackPanel x:Name="stackPanelSliders" Orientation="Horizontal" HorizontalAlignment="Center"/>
         </ScrollViewer>
     </Grid>
 </Window>

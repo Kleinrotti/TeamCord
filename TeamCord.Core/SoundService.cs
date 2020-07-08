@@ -34,12 +34,12 @@ namespace TeamCord.Core
             //TODO set volume
             get
             {
-                return new UserVolume(UserID, _volumeSampleProvider.Volume);
+                return new UserVolume(UserID, _volumeSampleProvider.Volume, Username);
             }
         }
 
         public ulong UserID { get; }
-        public string Nickname { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Master audio volume, 1.0 is full
@@ -59,7 +59,7 @@ namespace TeamCord.Core
         public SoundService(ulong userID, string nickname)
         {
             UserID = userID;
-            Nickname = nickname;
+            Username = nickname;
             InitSpeakers();
         }
 

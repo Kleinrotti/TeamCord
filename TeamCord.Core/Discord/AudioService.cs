@@ -155,7 +155,7 @@ namespace TeamCord.Core
                 return;
 
             var user = await _voiceChannel.GetUserAsync(userID);
-            var soundsrv = new SoundService(userID, user.Nickname);
+            var soundsrv = new SoundService(userID, user.Username);
             _soundServices.Add(soundsrv);
             try
             {
