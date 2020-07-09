@@ -61,7 +61,7 @@ namespace TeamCord.Plugin
                 //logging with callback to ts3 client log
                 var log = new Logging(Log, Log);
                 Logging.DebugLogging = Settings.DebugLogging;
-                ConnectionHandler = new ConnectionHandler(Settings.PluginUserCredentials.GetStoredPassword());
+                ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
                 TrayIcon.ShowNotifications = _settings.Notifications;

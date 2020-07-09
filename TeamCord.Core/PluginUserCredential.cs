@@ -4,12 +4,12 @@ using System.Security.Cryptography;
 
 namespace TeamCord.Core
 {
-    public struct PluginUserCredentials
+    public struct PluginUserCredential
     {
         public byte[] Entropy { get; }
         public byte[] CipherText { get; }
 
-        public PluginUserCredentials(byte[] entropy, byte[] cipherText)
+        public PluginUserCredential(byte[] entropy, byte[] cipherText)
         {
             Entropy = entropy;
             CipherText = cipherText;
@@ -18,10 +18,10 @@ namespace TeamCord.Core
         /// <summary>
         /// Encrypts the given password
         /// </summary>
-        /// <param name="securePassword"></param>
+        /// <param name="secureData"></param>
         /// <param name="cipherText"></param>
         /// <param name="entropy"></param>
-        public static PluginUserCredentials StorePassword(byte[] securePassword)
+        public static PluginUserCredential StoreData(byte[] secureData)
         {
             byte[] tempentropy = new byte[20];
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
@@ -29,9 +29,9 @@ namespace TeamCord.Core
                 rng.GetBytes(tempentropy);
             }
 
-            byte[] ciphertext = ProtectedData.Protect(securePassword.ToArray(), tempentropy,
+            byte[] ciphertext = ProtectedData.Protect(secureData.ToArray(), tempentropy,
                 DataProtectionScope.CurrentUser);
-            return new PluginUserCredentials(tempentropy, ciphertext);
+            return new PluginUserCredential(tempentropy, ciphertext);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace TeamCord.Core
         /// <param name="cipherText"></param>
         /// <param name="entropy"></param>
         /// <returns></returns>
-        public byte[] GetStoredPassword()
+        public byte[] GetStoredData()
         {
             try
             {

@@ -2,7 +2,6 @@
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TeamCord.Core.Notification;
 
@@ -16,9 +15,10 @@ namespace TeamCord.Core
         private DiscordSocketClient _client;
         private byte[] _bufferBytes;
         private AudioService _audioService;
-        private byte[] _token;
+        private string _token;
         private short[] _voiceBuffer;
         private IVoiceChannel _currentChannel;
+        private Auth _auth;
 
         /// <summary>
         /// Returns a list with the usernames w
@@ -50,9 +50,9 @@ namespace TeamCord.Core
             }
         }
 
-        public ConnectionHandler(byte[] token)
+        public ConnectionHandler(Auth authentication)
         {
-            _token = token;
+            _auth = authentication;
             _client = new DiscordSocketClient();
 
             _audioService = new AudioService();
@@ -144,7 +144,8 @@ namespace TeamCord.Core
             {
                 try
                 {
-                    await _client.LoginAsync(0, Encoding.Default.GetString(_token));
+                    _token = _auth.RequestToken();
+                    await _client.LoginAsync(0, _token);
                     await _client.StartAsync();
                 }
                 catch (Exception ex)

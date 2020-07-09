@@ -24,8 +24,10 @@ namespace TeamCord.GUI
             checkBox_RawAudio.IsChecked = _settings.UseTeamspeakVoiceActivation;
             checkBox_DebugLogging.IsChecked = _settings.DebugLogging;
             checkBox_Notifications.IsChecked = _settings.Notifications;
-            if (_settings.PluginUserCredentials.Entropy != null && _settings.PluginUserCredentials.CipherText != null)
-                passwordBox_token.Password = Encoding.Default.GetString(_settings.PluginUserCredentials.GetStoredPassword());
+            if (_settings.Email.Entropy != null && _settings.Email.CipherText != null)
+                textBox_Email.Text = Encoding.Default.GetString(_settings.Email.GetStoredData());
+            if (_settings.Password.Entropy != null && _settings.Password.CipherText != null)
+                passwordBox_Password.Password = Encoding.Default.GetString(_settings.Password.GetStoredData());
         }
 
         private void SettingsWindow_Closed(object sender, EventArgs e)
@@ -41,7 +43,8 @@ namespace TeamCord.GUI
             _settings.ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false;
             _settings.DebugLogging = checkBox_DebugLogging.IsChecked ?? false;
             _settings.Notifications = checkBox_Notifications.IsChecked ?? false;
-            _settings.PluginUserCredentials = PluginUserCredentials.StorePassword(Encoding.Default.GetBytes(passwordBox_token.Password));
+            _settings.Email = PluginUserCredential.StoreData(Encoding.Default.GetBytes(textBox_Email.Text));
+            _settings.Password = PluginUserCredential.StoreData(Encoding.Default.GetBytes(passwordBox_Password.Password));
             var storage = new DataStorage();
             storage.StoreSettings(_settings);
             MessageBox.Show("Please restart Teamspeak to apply all changed settings.");
