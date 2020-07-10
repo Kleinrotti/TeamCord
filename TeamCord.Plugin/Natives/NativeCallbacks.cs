@@ -434,25 +434,25 @@ public delegate uint TS3Functions_getClientID(ulong serverConnectionHandlerID, r
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: int*
-public delegate uint TS3Functions_getClientSelfVariableAsInt(ulong serverConnectionHandlerID, IntPtr flag, ref int result);
+public delegate uint TS3Functions_getClientSelfVariableAsInt(ulong serverConnectionHandlerID, ClientProperties flag, ref int result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getClientSelfVariableAsString(ulong serverConnectionHandlerID, IntPtr flag, ref IntPtr result);
+public delegate uint TS3Functions_getClientSelfVariableAsString(ulong serverConnectionHandlerID, ClientProperties flag, ref IntPtr result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: int
-public delegate uint TS3Functions_setClientSelfVariableAsInt(ulong serverConnectionHandlerID, IntPtr flag, int value);
+public delegate uint TS3Functions_setClientSelfVariableAsInt(ulong serverConnectionHandlerID, ClientProperties flag, int value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: char*
-public delegate uint TS3Functions_setClientSelfVariableAsString(ulong serverConnectionHandlerID, IntPtr flag, [MarshalAs(UnmanagedType.LPStr)] string value);
+public delegate uint TS3Functions_setClientSelfVariableAsString(ulong serverConnectionHandlerID, ClientProperties flag, [MarshalAs(UnmanagedType.LPStr)] string value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -464,21 +464,21 @@ public delegate uint TS3Functions_flushClientSelfUpdates(ulong serverConnectionH
 ///clientID: anyID->unsigned short
 ///flag: size_t->unsigned int
 ///result: int*
-public delegate uint TS3Functions_getClientVariableAsInt(ulong serverConnectionHandlerID, ushort clientID, IntPtr flag, ref int result);
+public delegate uint TS3Functions_getClientVariableAsInt(ulong serverConnectionHandlerID, ushort clientID, ClientProperties flag, ref int result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///flag: size_t->unsigned int
 ///result: uint64*
-public delegate uint TS3Functions_getClientVariableAsUInt64(ulong serverConnectionHandlerID, ushort clientID, IntPtr flag, ref ulong result);
+public delegate uint TS3Functions_getClientVariableAsUInt64(ulong serverConnectionHandlerID, ushort clientID, ClientProperties flag, ref ulong result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///clientID: anyID->unsigned short
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getClientVariableAsString(ulong serverConnectionHandlerID, ushort clientID, uint flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
+public delegate uint TS3Functions_getClientVariableAsString(ulong serverConnectionHandlerID, ushort clientID, ClientProperties flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -496,21 +496,21 @@ public delegate uint TS3Functions_getChannelOfClient(ulong serverConnectionHandl
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: int*
-public delegate uint TS3Functions_getChannelVariableAsInt(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, ref int result);
+public delegate uint TS3Functions_getChannelVariableAsInt(ulong serverConnectionHandlerID, ulong channelID, ChannelProperties flag, ref int result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: uint64*
-public delegate uint TS3Functions_getChannelVariableAsUInt64(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, ref ulong result);
+public delegate uint TS3Functions_getChannelVariableAsUInt64(ulong serverConnectionHandlerID, ulong channelID, ChannelProperties flag, ref ulong result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, uint flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
+public delegate uint TS3Functions_getChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, ChannelProperties flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -523,21 +523,21 @@ public delegate uint TS3Functions_getChannelIDFromChannelNames(ulong serverConne
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: int
-public delegate uint TS3Functions_setChannelVariableAsInt(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, int value);
+public delegate uint TS3Functions_setChannelVariableAsInt(ulong serverConnectionHandlerID, ulong channelID, ChannelProperties flag, int value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: uint64->unsigned __int64
-public delegate uint TS3Functions_setChannelVariableAsUInt64(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, ulong value);
+public delegate uint TS3Functions_setChannelVariableAsUInt64(ulong serverConnectionHandlerID, ulong channelID, ChannelProperties flag, ulong value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///channelID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///value: char*
-public delegate uint TS3Functions_setChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, IntPtr flag, [MarshalAs(UnmanagedType.LPStr)] string value);
+public delegate uint TS3Functions_setChannelVariableAsString(ulong serverConnectionHandlerID, ulong channelID, ChannelProperties flag, [MarshalAs(UnmanagedType.LPStr)] string value);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
