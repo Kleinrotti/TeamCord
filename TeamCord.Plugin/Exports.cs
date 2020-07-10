@@ -127,7 +127,7 @@ namespace TeamCord.Plugin
             int visibility, [MarshalAs(UnmanagedType.LPStr)] string moveMessage)
         {
             string description;
-            TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, (uint)ChannelProperties.CHANNEL_DESCRIPTION, out description);
+            TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, ChannelProperties.CHANNEL_DESCRIPTION, out description);
 
             if (description == null)
                 return;
@@ -219,7 +219,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
         {
-            int menuItemCount = 4;
+            int menuItemCount = 5;
             int n = 0;
 
             *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * menuItemCount);
@@ -227,6 +227,7 @@ namespace TeamCord.Plugin
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, "About", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 2, "Join", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Leave", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 4, "Link to channel", "");
 
             (*menuItems)[n++] = null;
 
@@ -245,6 +246,10 @@ namespace TeamCord.Plugin
                 TSPlugin.Instance.ConnectionHandler.Connect();
             else if (menuItemID == 3)
                 TSPlugin.Instance.ConnectionHandler.Disconnect();
+            else if (menuItemID == 4)
+            {
+                TSPlugin.Instance.LinkDiscordChannel(serverConnectionHandlerID, selectedItemID);
+            }
         }
 
         [DllExport]
@@ -261,7 +266,7 @@ namespace TeamCord.Plugin
             {
                 case PluginItemType.PLUGIN_CHANNEL:
                     string description;
-                    TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, id, (uint)ChannelProperties.CHANNEL_DESCRIPTION, out description);
+                    TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, id, ChannelProperties.CHANNEL_DESCRIPTION, out description);
                     var channelid = Helpers.ExtractChannelID(description);
                     var users = TSPlugin.Instance.ConnectionHandler.GetUsersInChannel(channelid);
                     data = Helpers.UserListToTs3String(users);

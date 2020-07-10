@@ -196,6 +196,29 @@ namespace TeamCord.Core
         }
 
         /// <summary>
+        /// Returns all servers that the client is in with all voice channels
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<string, IDictionary<ulong, string>> GetServerVoiceChannelList()
+        {
+            var guilds = _client.Guilds;
+            Dictionary<string, IDictionary<ulong, string>> values = new Dictionary<string, IDictionary<ulong, string>>();
+            foreach (var v in guilds)
+            {
+                var guildChannels = v.Channels;
+                var channels = new Dictionary<ulong, string>();
+                foreach (var x in guildChannels)
+                {
+                    //only add voice channels
+                    if (x.GetType() == typeof(SocketVoiceChannel))
+                        channels.Add(x.Id, x.Name);
+                }
+                values.Add(v.Name, channels);
+            }
+            return values;
+        }
+
+        /// <summary>
         /// Transmit audio data to discord
         /// </summary>
         /// <param name="samples"></param>

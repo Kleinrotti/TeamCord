@@ -59,6 +59,16 @@ namespace TeamCord.Plugin
             }
         }
 
+        public static string ChannelIDToJsonString(ulong channelID)
+        {
+            var obj = new TS3ChannelJson();
+            var val = new Teamcord();
+            val.ChannelID = channelID;
+            obj.Teamcord = val;
+            var json = JsonConvert.SerializeObject(obj);
+            return json;
+        }
+
         public static string UserListToTs3String(IList<string> userList)
         {
             string data = "[b][color=red]--- Userlist ---[/color][/b]\n";

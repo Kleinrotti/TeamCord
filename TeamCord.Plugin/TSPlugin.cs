@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TeamCord.Core;
 using TeamCord.GUI;
+using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
 {
@@ -87,6 +88,22 @@ namespace TeamCord.Plugin
         private void Control_VolumeChanged(object sender, UserVolume e)
         {
             AudioService.ChangeVolume(e);
+        }
+
+        public void LinkDiscordChannel(ulong serverConnectionHandlerID, ulong ts3ChannelID)
+        {
+            var list = ConnectionHandler.GetServerVoiceChannelList();
+            ChannelConnector c = new ChannelConnector(list, callback);
+            c.ShowDialog();
+            void callback(ulong channelID)
+            {
+                var description = Helpers.ChannelIDToJsonString(channelID);
+                var err = Functions.setChannelVariableAsString(serverConnectionHandlerID, ts3ChannelID, ChannelProperties.CHANNEL_DESCRIPTION, description);
+                if (err != (uint)Ts3ErrorType.ERROR_ok)
+                    Logging.Log($"Failed to set ts3channeldescription. Code: {err}", LogLevel.LogLevel_ERROR);
+                else
+                    Functions.flushChannelUpdates(serverConnectionHandlerID, ts3ChannelID, "");
+            }
         }
 
         public void Shutdown()
