@@ -63,8 +63,10 @@ namespace TeamCord.Plugin
                 var log = new Logging(Log, Log);
                 Logging.DebugLogging = Settings.DebugLogging;
                 ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
+                TrayIcon.Initialize();
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
+                TrayIcon.Visible = true;
                 TrayIcon.ShowNotifications = _settings.Notifications;
                 TrayIcon.VolumeChangedClicked += TrayIcon_VolumeChangedClicked;
             }
@@ -112,6 +114,7 @@ namespace TeamCord.Plugin
                 ConnectionHandler.Dispose();
             TrayIcon.Visible = false;
             _trayIcon.Dispose();
+            _settings = null;
         }
 
         private void Log(string message, LogLevel level)

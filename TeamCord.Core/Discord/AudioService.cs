@@ -172,6 +172,7 @@ namespace TeamCord.Core
             }
             finally
             {
+                _soundServices.Remove(soundsrv);
                 soundsrv.Dispose();
             }
         }
@@ -182,6 +183,11 @@ namespace TeamCord.Core
             {
                 v.Dispose();
             }
+            _soundServices = null;
+            if (_outStream != null)
+                _outStream.Dispose();
+            if (_audioClient != null)
+                _audioClient.Dispose();
         }
     }
 }
