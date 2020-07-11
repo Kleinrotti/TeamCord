@@ -44,7 +44,7 @@ namespace TeamCord.Core
             }
         }
 
-        static TrayIcon()
+        public static void Initialize()
         {
             Icon = new NotifyIcon();
             var volumeMenuItem = new MenuItem("Volume control", new EventHandler(OnVolumeMenuItemClick));
