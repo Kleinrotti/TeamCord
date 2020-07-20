@@ -96,7 +96,6 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_registerPluginID(String id)
         {
-            var functs = TSPlugin.Instance.Functions;
             TSPlugin.Instance.PluginID = id;
         }
 
@@ -243,9 +242,15 @@ namespace TeamCord.Plugin
         public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
         {
             if (menuItemID == 2)
-                TSPlugin.Instance.ConnectionHandler.Connect();
+            {
+                string description;
+                TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, selectedItemID, ChannelProperties.CHANNEL_DESCRIPTION, out description);
+                var channelid = Helpers.ExtractChannelID(description);
+                if (channelid != 0)
+                    TSPlugin.Instance.ConnectionHandler.JoinChannel(channelid);
+            }
             else if (menuItemID == 3)
-                TSPlugin.Instance.ConnectionHandler.Disconnect();
+                TSPlugin.Instance.ConnectionHandler.LeaveChannel();
             else if (menuItemID == 4)
             {
                 TSPlugin.Instance.LinkDiscordChannel(serverConnectionHandlerID, selectedItemID);
@@ -255,7 +260,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public static IntPtr ts3plugin_infoTitle()
         {
-            string info = "Teamcord";
+            string info = "TeamCord";
             return Marshal.StringToHGlobalAnsi(info);
         }
 
