@@ -76,10 +76,12 @@ namespace TeamCord.Core
 
         private void _audioService_VoiceDisconnected(object sender, EventArgs e)
         {
-            Logging.Log($"Client disconnected to voice");
+            Logging.Log($"Client disconnected from voice");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Disconnected);
             new ConnectionNotification("TeamCord", "").Notify(_currentChannel, ConnectionState.Disconnected);
+            TrayIcon.VolumeMenuItemEnabled = false;
+            _currentChannel = null;
         }
 
         private void _audioService_VoiceConnected(object sender, EventArgs e)
@@ -88,6 +90,7 @@ namespace TeamCord.Core
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Connected);
             new ConnectionNotification("TeamCord", "").Notify(_currentChannel, ConnectionState.Connected);
+            TrayIcon.VolumeMenuItemEnabled = true;
         }
 
         private Task _client_Disconnected(Exception arg)
@@ -138,7 +141,7 @@ namespace TeamCord.Core
         /// <summary>
         /// Login and connect to discord
         /// </summary>
-        public async void Connect()
+        public async Task Connect()
         {
             if (_client.ConnectionState != ConnectionState.Connected || _client.ConnectionState == ConnectionState.Connecting)
             {
@@ -162,8 +165,7 @@ namespace TeamCord.Core
         public async void JoinChannel(ulong channelID)
         {
             Logging.Log($"Joining discord channel {channelID}");
-            if (_client.ConnectionState != ConnectionState.Connecting || _client.ConnectionState != ConnectionState.Connected)
-                Connect();
+            await Connect();
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
             if (_currentChannel != null)
             {
@@ -171,7 +173,7 @@ namespace TeamCord.Core
             }
             else
             {
-                Logging.Log("Joining channel failed. User is not a member of the server or the channel id does not exists", LogLevel.LogLevel_WARNING);
+                Logging.Log("Joining channel failed.", LogLevel.LogLevel_WARNING);
                 new ConnectionNotification("Joining channel failed, check log for details").Notify();
             }
         }
@@ -180,7 +182,6 @@ namespace TeamCord.Core
         {
             Logging.Log($"Leaving discord channel");
             await _audioService.LeaveChannel();
-            _currentChannel = null;
         }
 
         /// <summary>

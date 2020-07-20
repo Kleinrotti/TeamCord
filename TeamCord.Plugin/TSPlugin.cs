@@ -68,16 +68,28 @@ namespace TeamCord.Plugin
                 TrayIcon.BalloonTimeout = 3;
                 TrayIcon.Visible = true;
                 TrayIcon.ShowNotifications = _settings.Notifications;
-                TrayIcon.VolumeChangedClicked += TrayIcon_VolumeChangedClicked;
+                TrayIcon.VolumeMenuItemClicked += TrayIcon_VolumeChangedClicked;
+                TrayIcon.MicMenuItemClicked += TrayIcon_MicMenuItemClicked;
+                TrayIcon.OutputMenuItemClicked += TrayIcon_OutputMenuItemClicked;
             }
             catch (Exception ex)
             {
-                Logging.Log(ex, LogLevel.LogLevel_CRITICAL);
+                Logging.Log(ex);
                 return 1;
             }
             watch.Stop();
             Logging.Log($"Teamcord initialized in {watch.ElapsedMilliseconds}ms", LogLevel.LogLevel_INFO);
             return 0;
+        }
+
+        private void TrayIcon_OutputMenuItemClicked(object sender, GenericEventArgs<bool> e)
+        {
+            AudioService.AudioOutput = e.Data;
+        }
+
+        private void TrayIcon_MicMenuItemClicked(object sender, GenericEventArgs<bool> e)
+        {
+            AudioService.AudioInput = e.Data;
         }
 
         private void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)

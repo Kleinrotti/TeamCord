@@ -4,11 +4,14 @@ using System;
 
 namespace TeamCord.Core
 {
-    public class SoundService : ISoundPlayback, IDisposable
+    internal class SoundService : ISoundPlayback, IDisposable
     {
         private BufferedWaveProvider _waveProvider;
         private VolumeSampleProvider _volumeSampleProvider;
         private WaveOut _waveOut;
+
+        public ulong UserID { get; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Volume of the user, 1.0 is full
@@ -37,9 +40,6 @@ namespace TeamCord.Core
                 return new UserVolume(UserID, _volumeSampleProvider.Volume, Username);
             }
         }
-
-        public ulong UserID { get; }
-        public string Username { get; set; }
 
         /// <summary>
         /// Master audio volume, 1.0 is full

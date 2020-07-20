@@ -92,6 +92,7 @@
     <Compile Include="Discord\AudioService.cs" />
     <Compile Include="Discord\Auth.cs" />
     <Compile Include="Discord\ConnectionHandler.cs" />
+    <Compile Include="EventArguments\GenericEventArgs.cs" />
     <Compile Include="ISoundPlayback.cs" />
     <Compile Include="Notification\ConnectionNotification.cs" />
     <Compile Include="Notification\INotification.cs" />

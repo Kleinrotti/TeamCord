@@ -43,6 +43,9 @@ namespace TeamCord.Core
             }
         }
 
+        public static bool AudioOutput { get; set; }
+        public static bool AudioInput { get; set; }
+
         [Command("join", RunMode = RunMode.Async)]
         public async Task JoinChannel(IVoiceChannel voiceChannel)
         {
@@ -105,14 +108,14 @@ namespace TeamCord.Core
         {
             if (_audioClient != null && _audioClient.ConnectionState == ConnectionState.Connected)
             {
+                //await _voiceChannel.DisconnectAsync();
                 await _audioClient.StopAsync();
-                await _voiceChannel.DisconnectAsync();
             }
         }
 
         public async void SendVoiceData(byte[] buffer)
         {
-            if (_audioClient != null && _outStream != null && _audioClient.ConnectionState == ConnectionState.Connected)
+            if (_audioClient != null && _outStream != null && _audioClient.ConnectionState == ConnectionState.Connected && AudioInput)
             {
                 try
                 {
@@ -163,7 +166,8 @@ namespace TeamCord.Core
                 soundsrv.StartPlayback();
                 while (await stream.ReadAsync(buffer, 0, buffer.Length) > 0)
                 {
-                    soundsrv.AddSamples(buffer);
+                    if (AudioOutput)
+                        soundsrv.AddSamples(buffer);
                 }
             }
             catch (Exception ex)
