@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="TeamCord" Language="1033" Version="!(bind.FileVersion.TeamCordDLL)" Manufacturer="Kleinrotti" UpgradeCode="b2943214-eac9-4e3f-aa5f-2bc41a380949">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="TeamCord" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="NeededComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="AppDataFolder">
+        <Directory Id="TS3Folder" Name="TS3Client">
+          <Directory Id="TS3PluginFolder" Name="plugins">
+            <Directory Id="INSTALLFOLDER" Name="TeamCord" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="TS3PluginFolder">
+      <Component Id="TeamCord.dll" Guid="{B419D057-D0EA-4986-9F00-FEFDC009B09D}">
+        <RemoveFolder Id="RemoveDLL" On="uninstall" />
+        <RegistryKey Root="HKCU" Key="Software\TeamCord">
+          <RegistryValue Name="TeamCordDLL" Value="1" KeyPath="yes" Type="integer" />
+        </RegistryKey>
+        <File Id="TeamCordDLL" Name="$(var.TeamCord.Plugin.TargetFileName)" Source="$(var.TeamCord.Plugin.TargetPath)" DiskId="1" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="NeededComponents" Directory="INSTALLFOLDER">
+
+      <Component Id="libsodium.dll" Guid="{696EA44B-8073-4EAC-8D2F-A4C0DFA621F9}">
+        <RemoveFolder Id="RemoveTeamCordDirectory" On="uninstall" />
+        <RegistryKey Root="HKCU" Key="Software\TeamCord">
+          <RegistryValue Name="TeamCordFolder" Value="1" KeyPath="yes" Type="integer" />
+        </RegistryKey>
+        <File Id="libsodium.dll" Source="..\TeamCord.Plugin\libsodium.dll" Checksum="no" />
+      </Component>
+
+      <Component Id="opus.dll" Guid="{09ED1BCF-DE6C-4D4E-83E4-AC5122755817}">
+        <File Id="opus.dll" Source="..\TeamCord.Plugin\opus.dll" Checksum="no" />
+      </Component>
+
+      <Component Id="logo" Guid="{F84203BF-4507-48D5-A823-7D0166650685}">
+        <File Id="logo.png" Source="..\TeamCord.Plugin\logo.png" Checksum="no" />
+      </Component>
+
+      <Component Id="Path" Guid="{9112EC61-7526-4F79-BF7C-11884DD7A78D}">
+        <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="no" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
