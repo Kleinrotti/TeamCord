@@ -8,9 +8,9 @@
     <Condition Message="This application requires .NET Framework 4.8. Please install the .NET Framework then run this installer again.">
       <![CDATA[Installed OR NETFRAMEWORK45>=#528040]]>
     </Condition>
-    
+    <Media Id="1" Cabinet="cab1.cab" EmbedCab="yes" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate />
+    
 
     <Feature Id="ProductFeature" Title="TeamCord" Level="1">
       
@@ -42,7 +42,7 @@
         <RegistryKey Root="HKCU" Key="Software\TeamCord">
           <RegistryValue Name="TeamCordDLL" Value="1" KeyPath="yes" Type="integer" />
         </RegistryKey>
-        <File Id="TeamCordDLL" Name="$(var.TeamCord.Plugin.TargetFileName)" Source="$(var.TeamCord.Plugin.TargetPath)" DiskId="1" />
+        <File Id="TeamCordDLL" Name="$(var.TeamCord.Plugin.TargetFileName)" Source="$(var.TeamCord.Plugin.TargetPath)" />
       </Component>
     </ComponentGroup>
 

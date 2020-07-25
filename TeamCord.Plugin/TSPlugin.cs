@@ -47,10 +47,14 @@ namespace TeamCord.Plugin
         }
 
         public string PluginName = "TeamCord";
+#if DEBUG
+        public string PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
+#else
         public string PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString();
+#endif
         public int ApiVersion = 23;
         public string Author = "Kleinrotti";
-        public string Description = "Bridge between Teamspeak and Discord";
+        public string Description = "Voice channel bridge between Teamspeak and Discord";
         public string PluginID { get; set; }
 
         public int Init()
