@@ -134,7 +134,9 @@ namespace TeamCord.Core
 
         private Task Client_Log(LogMessage arg)
         {
+#if DEBUG
             Console.WriteLine(arg.Message);
+#endif
             return Task.CompletedTask;
         }
 

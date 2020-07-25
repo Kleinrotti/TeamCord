@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:test="http://wixtoolset.org/schemas/v4/wxs/netfx">
+  
   <Product Id="*" Name="TeamCord" Language="1033" Version="!(bind.FileVersion.TeamCordDLL)" Manufacturer="Kleinrotti" UpgradeCode="b2943214-eac9-4e3f-aa5f-2bc41a380949">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
-
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" Description="TeamCord Teamspeak plugin" />
+    <Condition Message="This application requires .NET Framework 4.8. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK45>=#528040]]>
+    </Condition>
+    
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate />
 
     <Feature Id="ProductFeature" Title="TeamCord" Level="1">
+      
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="NeededComponents" />
     </Feature>
@@ -22,6 +29,10 @@
         </Directory>
       </Directory>
     </Directory>
+  </Fragment>
+
+  <Fragment>
+    <PropertyRef Id="NETFRAMEWORK45" />
   </Fragment>
 
   <Fragment>
