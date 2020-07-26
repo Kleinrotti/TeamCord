@@ -11,7 +11,7 @@ namespace TeamCord.Core
         private WaveOut _waveOut;
 
         public ulong UserID { get; }
-        public string Username { get; set; }
+        public string Nickname { get; set; }
 
         /// <summary>
         /// Volume of the user, 1.0 is full
@@ -37,7 +37,7 @@ namespace TeamCord.Core
             //TODO set volume
             get
             {
-                return new UserVolume(UserID, _volumeSampleProvider.Volume, Username);
+                return new UserVolume(UserID, _volumeSampleProvider.Volume, Nickname);
             }
         }
 
@@ -59,7 +59,7 @@ namespace TeamCord.Core
         public SoundService(ulong userID, string nickname)
         {
             UserID = userID;
-            Username = nickname;
+            Nickname = nickname;
             InitSpeakers();
         }
 
