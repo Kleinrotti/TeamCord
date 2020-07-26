@@ -88,12 +88,12 @@ namespace TeamCord.Plugin
 
         private void TrayIcon_OutputMenuItemClicked(object sender, GenericEventArgs<bool> e)
         {
-            AudioService.AudioOutput = e.Data;
+            VoiceChannelService.AudioOutput = e.Data;
         }
 
         private void TrayIcon_MicMenuItemClicked(object sender, GenericEventArgs<bool> e)
         {
-            AudioService.AudioInput = e.Data;
+            VoiceChannelService.AudioInput = e.Data;
         }
 
         private void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)
@@ -105,7 +105,7 @@ namespace TeamCord.Plugin
 
         private void Control_VolumeChanged(object sender, UserVolume e)
         {
-            AudioService.ChangeVolume(e);
+            VoiceChannelService.ChangeVolume(e);
         }
 
         public void LinkDiscordChannel(ulong serverConnectionHandlerID, ulong ts3ChannelID)

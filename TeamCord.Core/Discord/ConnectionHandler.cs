@@ -14,7 +14,7 @@ namespace TeamCord.Core
     {
         private DiscordSocketClient _client;
         private byte[] _bufferBytes;
-        private AudioService _audioService;
+        private VoiceChannelService _audioService;
         private string _token;
         private short[] _voiceBuffer;
         private IVoiceChannel _currentChannel;
@@ -55,7 +55,7 @@ namespace TeamCord.Core
             _auth = authentication;
             _client = new DiscordSocketClient();
 
-            _audioService = new AudioService(_client);
+            _audioService = new VoiceChannelService(_client);
             _audioService.VoiceConnected += _audioService_VoiceConnected;
             _audioService.VoiceDisconnected += _audioService_VoiceDisconnected;
             _client.Log += Client_Log;
@@ -171,7 +171,7 @@ namespace TeamCord.Core
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
             if (_currentChannel != null)
             {
-                await _audioService.JoinChannel(_currentChannel);
+                _audioService.JoinChannel(_currentChannel);
             }
             else
             {

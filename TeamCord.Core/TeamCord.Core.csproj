@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStorage.cs" />
-    <Compile Include="Discord\AudioService.cs" />
+    <Compile Include="Discord\VoiceChannelService.cs" />
     <Compile Include="Discord\Auth.cs" />
     <Compile Include="Discord\ConnectionHandler.cs" />
     <Compile Include="EventArguments\GenericEventArgs.cs" />
