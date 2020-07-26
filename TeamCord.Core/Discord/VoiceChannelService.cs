@@ -2,7 +2,6 @@
 using Discord.Audio;
 using Discord.Commands;
 using Discord.WebSocket;
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TeamCord.Core
 {
-    public class AudioService : IDisposable
+    public class VoiceChannelService : IDisposable
     {
         private AudioStream _outStream;
         private IAudioClient _audioClient;
@@ -23,7 +22,7 @@ namespace TeamCord.Core
 
         public event EventHandler VoiceDisconnected;
 
-        public AudioService(DiscordSocketClient socketClient, ulong ownUserID = 0)
+        public VoiceChannelService(DiscordSocketClient socketClient, ulong ownUserID = 0)
         {
             OwnUserID = ownUserID;
             _soundServices = new List<SoundService>();
@@ -111,8 +110,8 @@ namespace TeamCord.Core
         {
             if (_audioClient != null && _audioClient.ConnectionState == ConnectionState.Connected)
             {
-                //await _voiceChannel.DisconnectAsync();
-                await _audioClient.StopAsync();
+                await _voiceChannel.DisconnectAsync();
+                //await _audioClient.StopAsync();
             }
         }
 
@@ -161,7 +160,7 @@ namespace TeamCord.Core
                 return;
 
             var user = await _socketClient.Rest.GetGuildUserAsync(_voiceChannel.GuildId, userID);
-            
+
             var soundsrv = new SoundService(userID, user.Nickname);
             _soundServices.Add(soundsrv);
             try
