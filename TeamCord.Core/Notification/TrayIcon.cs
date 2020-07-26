@@ -68,9 +68,9 @@ namespace TeamCord.Core
             Icon = new NotifyIcon();
             _volumeMenuItem = new MenuItem("Volume control", new EventHandler(OnVolumeMenuItemClick));
             _outputMenuItem = new MenuItem("Audio on", new EventHandler(OnOutputMenuItemClick));
-            _volumeMenuItem.Checked = true;
             _outputMenuItem.Checked = true;
             _micMenuItem = new MenuItem("Mic on", new EventHandler(OnMicMenuItemClick));
+            _micMenuItem.Checked = true;
             _volumeMenuItem.Enabled = false;
             Menu = new ContextMenu();
             Menu.MenuItems.Add(_volumeMenuItem);
