@@ -21,7 +21,7 @@ namespace TeamCord.Core.Notification
         /// <param name="channel"></param>
         public void Notify(IChannel channel, ConnectionState connectionState)
         {
-            Message = connectionState.ToString() + ": Channel -> " + channel.Name;
+            Message = connectionState.ToString() + ": Channel -> " + channel.Name ?? "";
             base.Notify();
         }
     }
