@@ -45,8 +45,8 @@ namespace TeamCord.Core
             }
         }
 
-        public static bool AudioOutput { get; set; }
-        public static bool AudioInput { get; set; }
+        public static bool AudioOutput { get; set; } = true;
+        public static bool AudioInput { get; set; } = true;
 
         [Command("join", RunMode = RunMode.Async)]
         public async Task JoinChannel(IVoiceChannel voiceChannel)
