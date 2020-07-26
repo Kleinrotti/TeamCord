@@ -55,7 +55,7 @@ namespace TeamCord.Core
             _auth = authentication;
             _client = new DiscordSocketClient();
 
-            _audioService = new AudioService();
+            _audioService = new AudioService(_client);
             _audioService.VoiceConnected += _audioService_VoiceConnected;
             _audioService.VoiceDisconnected += _audioService_VoiceDisconnected;
             _client.Log += Client_Log;
@@ -79,7 +79,7 @@ namespace TeamCord.Core
             Logging.Log($"Client disconnected from voice");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Disconnected);
-            new ConnectionNotification("TeamCord", "").Notify(_currentChannel, ConnectionState.Disconnected);
+            new ConnectionNotification().Notify(_currentChannel, ConnectionState.Disconnected);
             TrayIcon.VolumeMenuItemEnabled = false;
             _currentChannel = null;
         }
@@ -89,7 +89,7 @@ namespace TeamCord.Core
             Logging.Log($"Client connected to voice");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Connected);
-            new ConnectionNotification("TeamCord", "").Notify(_currentChannel, ConnectionState.Connected);
+            new ConnectionNotification().Notify(_currentChannel, ConnectionState.Connected);
             TrayIcon.VolumeMenuItemEnabled = true;
         }
 
