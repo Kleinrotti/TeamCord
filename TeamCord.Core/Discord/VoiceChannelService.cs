@@ -161,7 +161,8 @@ namespace TeamCord.Core
 
             var user = await _socketClient.Rest.GetGuildUserAsync(_voiceChannel.GuildId, userID);
 
-            var soundsrv = new SoundService(userID, user.Nickname);
+            //if user has no nickname set use username
+            var soundsrv = new SoundService(userID, user.Nickname ?? user.Username);
             _soundServices.Add(soundsrv);
             try
             {
