@@ -20,7 +20,7 @@ namespace TeamCord.Core
         private IVoiceChannel _currentChannel;
         private Auth _auth;
 
-        public event EventHandler<GenericEventArgs<bool>> ConnectionChanged;
+        public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 
         /// <summary>
         /// Returns a list with the usernames w
@@ -97,6 +97,7 @@ namespace TeamCord.Core
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Disconnected);
             new ConnectionNotification().Notify(_currentChannel, ConnectionState.Disconnected);
+            ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Voice, false));
             TrayIcon.VolumeMenuItemEnabled = false;
             _currentChannel = null;
         }
@@ -107,6 +108,7 @@ namespace TeamCord.Core
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Connected);
             new ConnectionNotification().Notify(_currentChannel, ConnectionState.Connected);
+            ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Voice, true));
             TrayIcon.VolumeMenuItemEnabled = true;
         }
 
@@ -115,7 +117,7 @@ namespace TeamCord.Core
             Logging.Log($"Client disconnected");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(_client.LoginState);
-            ConnectionChanged?.Invoke(this, new GenericEventArgs<bool>(false));
+            ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Discord, false));
             return Task.CompletedTask;
         }
 
@@ -130,7 +132,7 @@ namespace TeamCord.Core
 
         private Task _client_Ready()
         {
-            ConnectionChanged?.Invoke(this, new GenericEventArgs<bool>(true));
+            ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Discord, true));
             return Task.CompletedTask;
         }
 

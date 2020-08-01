@@ -93,6 +93,7 @@
     <Compile Include="Discord\Auth.cs" />
     <Compile Include="Discord\ConnectionHandler.cs" />
     <Compile Include="Enums\ConnectionType.cs" />
+    <Compile Include="EventArguments\ConnectionChangedEventArgs.cs" />
     <Compile Include="EventArguments\GenericEventArgs.cs" />
     <Compile Include="ISoundPlayback.cs" />
     <Compile Include="Notification\ConnectionNotification.cs" />

@@ -136,6 +136,7 @@
   <ItemGroup>
     <Compile Include="Exports.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="MenuItems.cs" />
     <Compile Include="Natives\ClientMiniExport.cs" />
     <Compile Include="Natives\FileTransferCallbackExport.cs" />
     <Compile Include="Natives\NativeConstants.cs" />

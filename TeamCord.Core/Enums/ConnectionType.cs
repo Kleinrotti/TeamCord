@@ -5,9 +5,19 @@
     /// </summary>
     public enum ConnectionType
     {
+        /// <summary>
+        /// Connection to discord
+        /// </summary>
+        Discord,
+
+        /// <summary>
+        /// Connection to discord voice channel
+        /// </summary>
         Voice,
+
+        /// <summary>
+        /// Connection to discord text channel
+        /// </summary>
         Text,
-        Login,
-        Logout
     }
 }

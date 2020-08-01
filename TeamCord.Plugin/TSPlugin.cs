@@ -68,8 +68,10 @@ namespace TeamCord.Plugin
                 Logging.DebugLogging = Settings.DebugLogging;
                 ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
                 ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
-                Functions.setPluginMenuEnabled(PluginID, 4, false);
-                Functions.setPluginMenuEnabled(PluginID, 6, false);
+                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, false);
+                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, false);
+                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, false);
+                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, false);
                 TrayIcon.Initialize();
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
@@ -89,12 +91,29 @@ namespace TeamCord.Plugin
             return 0;
         }
 
-        private void ConnectionHandler_ConnectionChanged(object sender, GenericEventArgs<bool> e)
+        private void ConnectionHandler_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
         {
             //Enable/disable teamspeak menuitems
-            Functions.setPluginMenuEnabled(PluginID, 4, e.Data);
-            Functions.setPluginMenuEnabled(PluginID, 5, !e.Data);
-            Functions.setPluginMenuEnabled(PluginID, 6, e.Data);
+            switch (e.ConnectionType)
+            {
+                case ConnectionType.Discord:
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogin, !e.Connected);
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, e.Connected);
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, e.Connected);
+                    break;
+
+                case ConnectionType.Voice:
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, !e.Connected);
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, e.Connected);
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, e.Connected);
+                    break;
+
+                case ConnectionType.Text:
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void TrayIcon_OutputMenuItemClicked(object sender, GenericEventArgs<bool> e)
@@ -133,6 +152,10 @@ namespace TeamCord.Plugin
                 else
                     Functions.flushChannelUpdates(serverConnectionHandlerID, ts3ChannelID, "");
             }
+        }
+
+        public void OpenConnectionInfo()
+        {
         }
 
         public void Shutdown()
