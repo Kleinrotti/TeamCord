@@ -6,7 +6,7 @@ using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
 {
-    public class TSPlugin
+    public sealed class TSPlugin
     {
         #region singleton
 
@@ -67,6 +67,9 @@ namespace TeamCord.Plugin
                 var log = new Logging(Log, Log);
                 Logging.DebugLogging = Settings.DebugLogging;
                 ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
+                ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
+                Functions.setPluginMenuEnabled(PluginID, 4, false);
+                Functions.setPluginMenuEnabled(PluginID, 6, false);
                 TrayIcon.Initialize();
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
@@ -84,6 +87,14 @@ namespace TeamCord.Plugin
             watch.Stop();
             Logging.Log($"Teamcord initialized in {watch.ElapsedMilliseconds}ms", LogLevel.LogLevel_INFO);
             return 0;
+        }
+
+        private void ConnectionHandler_ConnectionChanged(object sender, GenericEventArgs<bool> e)
+        {
+            //Enable/disable teamspeak menuitems
+            Functions.setPluginMenuEnabled(PluginID, 4, e.Data);
+            Functions.setPluginMenuEnabled(PluginID, 5, !e.Data);
+            Functions.setPluginMenuEnabled(PluginID, 6, e.Data);
         }
 
         private void TrayIcon_OutputMenuItemClicked(object sender, GenericEventArgs<bool> e)

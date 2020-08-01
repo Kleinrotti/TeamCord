@@ -10,7 +10,7 @@ using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
 {
-    public class Exports
+    internal sealed class Exports
     {
         private static Thread _settingsThread;
 
@@ -106,11 +106,6 @@ namespace TeamCord.Plugin
         }
 
         [DllExport]
-        public static void ts3plugin_currentServerConnectionChanged(ulong serverConnectionHandlerID)
-        {
-        }
-
-        [DllExport]
         public static void ts3plugin_onConnectStatusChangeEvent(ulong serverConnectionHandlerID, ConnectStatus newStatus, Ts3ErrorType error)
         {
             //Join/leave a server
@@ -196,7 +191,7 @@ namespace TeamCord.Plugin
             return lpstr.ToArray();
         }
 
-        public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, String text, String icon)
+        public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, string text, string icon)
         {
             PluginMenuItem* menuItem = (PluginMenuItem*)Marshal.AllocHGlobal(sizeof(PluginMenuItem));
             menuItem->type = type;
@@ -218,7 +213,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
         {
-            int menuItemCount = 5;
+            int menuItemCount = 7;
             int n = 0;
 
             *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal(sizeof(PluginMenuItem*) * menuItemCount);
@@ -227,6 +222,8 @@ namespace TeamCord.Plugin
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 2, "Join", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 3, "Leave", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, 4, "Link to channel", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 5, "Login", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 6, "Logout", "");
 
             (*menuItems)[n++] = null;
 
@@ -241,19 +238,33 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
         {
-            if (menuItemID == 2)
+            switch (menuItemID)
             {
-                string description;
-                TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, selectedItemID, ChannelProperties.CHANNEL_DESCRIPTION, out description);
-                var channelid = Helpers.ExtractChannelID(description);
-                if (channelid != 0)
-                    TSPlugin.Instance.ConnectionHandler.JoinChannel(channelid);
-            }
-            else if (menuItemID == 3)
-                TSPlugin.Instance.ConnectionHandler.LeaveChannel();
-            else if (menuItemID == 4)
-            {
-                TSPlugin.Instance.LinkDiscordChannel(serverConnectionHandlerID, selectedItemID);
+                case 2:
+                    {
+                        string description;
+                        TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, selectedItemID, ChannelProperties.CHANNEL_DESCRIPTION, out description);
+                        var channelid = Helpers.ExtractChannelID(description);
+                        if (channelid != 0)
+                            TSPlugin.Instance.ConnectionHandler.JoinChannel(channelid);
+                        break;
+                    }
+
+                case 3:
+                    TSPlugin.Instance.ConnectionHandler.LeaveChannel();
+                    break;
+
+                case 4:
+                    TSPlugin.Instance.LinkDiscordChannel(serverConnectionHandlerID, selectedItemID);
+                    break;
+
+                case 5:
+                    TSPlugin.Instance.ConnectionHandler.Connect();
+                    break;
+
+                case 6:
+                    TSPlugin.Instance.ConnectionHandler.Disconnect();
+                    break;
             }
         }
 
@@ -278,6 +289,8 @@ namespace TeamCord.Plugin
                     break;
 
                 case PluginItemType.PLUGIN_CLIENT:
+                    var username = TSPlugin.Instance.ConnectionHandler.Username;
+                    data = "Discord username\n" + username;
                     break;
 
                 case PluginItemType.PLUGIN_SERVER:

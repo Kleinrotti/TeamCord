@@ -1243,7 +1243,7 @@ public delegate uint TS3Functions_getAvatar(ulong scHandlerID, ushort clientID, 
 ///pluginID: char*
 ///menuID: int
 ///enabled: int
-public delegate void TS3Functions_setPluginMenuEnabled([MarshalAs(UnmanagedType.LPStr)] string pluginID, int menuID, int enabled);
+public delegate void TS3Functions_setPluginMenuEnabled([MarshalAs(UnmanagedType.LPStr)] string pluginID, int menuID, bool enabled);
 
 /// Return Type: void
 public delegate void TS3Functions_showHotkeySetup();
