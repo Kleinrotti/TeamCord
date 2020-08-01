@@ -20,6 +20,8 @@ namespace TeamCord.Core
         private IVoiceChannel _currentChannel;
         private Auth _auth;
 
+        public event EventHandler<GenericEventArgs<bool>> ConnectionChanged;
+
         /// <summary>
         /// Returns a list with the usernames w
         /// </summary>
@@ -39,6 +41,17 @@ namespace TeamCord.Core
             }
         }
 
+        public string Username
+        {
+            get
+            {
+                if (_client.CurrentUser != null)
+                    return _client.CurrentUser.Username;
+                else
+                    return "";
+            }
+        }
+
         /// <summary>
         /// Return a list of tuples with each volume, userid and nickname
         /// </summary>
@@ -53,12 +66,16 @@ namespace TeamCord.Core
         public ConnectionHandler(Auth authentication)
         {
             _auth = authentication;
-            _client = new DiscordSocketClient();
+            _client = new DiscordSocketClient(new DiscordSocketConfig
+            {
+                LogLevel = LogSeverity.Debug
+            });
 
             _audioService = new VoiceChannelService(_client);
             _audioService.VoiceConnected += _audioService_VoiceConnected;
             _audioService.VoiceDisconnected += _audioService_VoiceDisconnected;
             _client.Log += Client_Log;
+            _client.Ready += _client_Ready;
             _client.Connected += _client_Connected;
             _client.Disconnected += _client_Disconnected;
             _client.LoggedOut += _client_LoggedOut;
@@ -98,6 +115,7 @@ namespace TeamCord.Core
             Logging.Log($"Client disconnected");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(_client.LoginState);
+            ConnectionChanged?.Invoke(this, new GenericEventArgs<bool>(false));
             return Task.CompletedTask;
         }
 
@@ -107,6 +125,12 @@ namespace TeamCord.Core
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(_client.LoginState);
             _audioService.OwnUserID = _client.CurrentUser.Id;
+            return Task.CompletedTask;
+        }
+
+        private Task _client_Ready()
+        {
+            ConnectionChanged?.Invoke(this, new GenericEventArgs<bool>(true));
             return Task.CompletedTask;
         }
 
@@ -145,12 +169,12 @@ namespace TeamCord.Core
         /// </summary>
         public async Task Connect()
         {
-            if (_client.ConnectionState != ConnectionState.Connected || _client.ConnectionState == ConnectionState.Connecting)
+            if (_client.ConnectionState != ConnectionState.Connected && _client.ConnectionState != ConnectionState.Connecting)
             {
                 try
                 {
                     _token = _auth.RequestToken();
-                    await _client.LoginAsync(0, _token);
+                    await _client.LoginAsync(0, _token, false);
                     await _client.StartAsync();
                 }
                 catch (Exception ex)
