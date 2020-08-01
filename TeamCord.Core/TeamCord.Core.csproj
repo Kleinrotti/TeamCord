@@ -92,13 +92,14 @@
     <Compile Include="Discord\VoiceChannelService.cs" />
     <Compile Include="Discord\Auth.cs" />
     <Compile Include="Discord\ConnectionHandler.cs" />
+    <Compile Include="Enums\ConnectionType.cs" />
     <Compile Include="EventArguments\GenericEventArgs.cs" />
     <Compile Include="ISoundPlayback.cs" />
     <Compile Include="Notification\ConnectionNotification.cs" />
     <Compile Include="Notification\INotification.cs" />
     <Compile Include="Logging.cs" />
-    <Compile Include="LogLevel.cs" />
-    <Compile Include="LogTypes.cs" />
+    <Compile Include="Enums\LogLevel.cs" />
+    <Compile Include="Enums\LogTypes.cs" />
     <Compile Include="Notification\NotificationBase.cs" />
     <Compile Include="Notification\DiscordStatusNotification.cs" />
     <Compile Include="PluginSettings.cs" />
@@ -112,7 +113,7 @@
     </Compile>
     <Compile Include="SoundService.cs" />
     <Compile Include="TS3Device.cs" />
-    <Compile Include="TS3DeviceType.cs" />
+    <Compile Include="Enums\TS3DeviceType.cs" />
     <Compile Include="UserVolume.cs" />
   </ItemGroup>
   <ItemGroup>
