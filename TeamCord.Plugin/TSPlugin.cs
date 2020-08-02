@@ -78,8 +78,6 @@ namespace TeamCord.Plugin
                 TrayIcon.Visible = true;
                 TrayIcon.ShowNotifications = _settings.Notifications;
                 TrayIcon.VolumeMenuItemClicked += TrayIcon_VolumeChangedClicked;
-                TrayIcon.MicMenuItemClicked += TrayIcon_MicMenuItemClicked;
-                TrayIcon.OutputMenuItemClicked += TrayIcon_OutputMenuItemClicked;
             }
             catch (Exception ex)
             {
@@ -114,16 +112,6 @@ namespace TeamCord.Plugin
                 default:
                     break;
             }
-        }
-
-        private void TrayIcon_OutputMenuItemClicked(object sender, GenericEventArgs<bool> e)
-        {
-            VoiceChannelService.AudioOutput = e.Data;
-        }
-
-        private void TrayIcon_MicMenuItemClicked(object sender, GenericEventArgs<bool> e)
-        {
-            VoiceChannelService.AudioInput = e.Data;
         }
 
         private void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)

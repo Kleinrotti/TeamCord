@@ -166,6 +166,22 @@ namespace TeamCord.Plugin
             }
         }
 
+        [DllExport]
+        public static unsafe void ts3plugin_onClientSelfVariableUpdateEvent(ulong serverConnectionHandlerID, int flag, [MarshalAs(UnmanagedType.LPStr)] string oldValue,
+            [MarshalAs(UnmanagedType.LPStr)] string newValue)
+        {
+            if (flag == (int)ClientProperties.CLIENT_OUTPUT_MUTED)
+            {
+                var val = Convert.ToInt32(newValue);
+                VoiceChannelService.AudioOutput = !(val != 0);
+            }
+            else if (flag == (int)ClientProperties.CLIENT_INPUT_MUTED)
+            {
+                var val = Convert.ToInt32(newValue);
+                VoiceChannelService.AudioInput = !(val != 0);
+            }
+        }
+
         private unsafe static char* my_strcpy(char* destination, int buffer, char* source)
         {
             char* p = destination;

@@ -10,16 +10,10 @@ namespace TeamCord.Core
         protected static NotifyIcon Icon;
         protected static ContextMenu Menu;
         protected static MenuItem _volumeMenuItem;
-        protected static MenuItem _outputMenuItem;
-        protected static MenuItem _micMenuItem;
         public static bool ShowNotifications { get; set; }
         public static int BalloonTimeout { get; set; } = 5;
 
         public static event EventHandler VolumeMenuItemClicked;
-
-        public static event EventHandler<GenericEventArgs<bool>> OutputMenuItemClicked;
-
-        public static event EventHandler<GenericEventArgs<bool>> MicMenuItemClicked;
 
         /// <summary>
         /// Visibility of the Trayicon
@@ -67,15 +61,9 @@ namespace TeamCord.Core
         {
             Icon = new NotifyIcon();
             _volumeMenuItem = new MenuItem("Volume control", new EventHandler(OnVolumeMenuItemClick));
-            _outputMenuItem = new MenuItem("Audio on", new EventHandler(OnOutputMenuItemClick));
-            _outputMenuItem.Checked = true;
-            _micMenuItem = new MenuItem("Mic on", new EventHandler(OnMicMenuItemClick));
-            _micMenuItem.Checked = true;
             _volumeMenuItem.Enabled = false;
             Menu = new ContextMenu();
             Menu.MenuItems.Add(_volumeMenuItem);
-            Menu.MenuItems.Add(_outputMenuItem);
-            Menu.MenuItems.Add(_micMenuItem);
             Icon.Text = "TeamCord Status";
             Icon.Icon = Properties.Resource.logo;
             Icon.Visible = true;
@@ -86,24 +74,6 @@ namespace TeamCord.Core
         private static void OnVolumeMenuItemClick(object sender, EventArgs e)
         {
             VolumeMenuItemClicked?.Invoke(sender, e);
-        }
-
-        private static void OnOutputMenuItemClick(object sender, EventArgs e)
-        {
-            if (_outputMenuItem.Checked)
-                _outputMenuItem.Checked = false;
-            else
-                _outputMenuItem.Checked = true;
-            OutputMenuItemClicked?.Invoke(sender, new GenericEventArgs<bool>(_outputMenuItem.Checked));
-        }
-
-        private static void OnMicMenuItemClick(object sender, EventArgs e)
-        {
-            if (_micMenuItem.Checked)
-                _micMenuItem.Checked = false;
-            else
-                _micMenuItem.Checked = true;
-            MicMenuItemClicked?.Invoke(sender, new GenericEventArgs<bool>(_micMenuItem.Checked));
         }
 
         /// <summary>

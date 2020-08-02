@@ -22,7 +22,7 @@ namespace TeamCord.Core
 
         public event EventHandler VoiceDisconnected;
 
-        public int VoiceLatency { get { return _audioClient.Latency; } }
+        public int VoiceLatency { get { return _audioClient.UdpLatency; } }
 
         public VoiceChannelService(DiscordSocketClient socketClient, ulong ownUserID = 0)
         {

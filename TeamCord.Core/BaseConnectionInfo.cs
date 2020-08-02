@@ -8,11 +8,13 @@ namespace TeamCord.Core
     public abstract class BaseConnectionInfo
     {
         protected DiscordSocketClient Client;
+
         /// <summary>
         /// Latency to discord gateway
         /// </summary>
         [Unit("ms")]
         public virtual int Latency { get { return Client.Latency; } }
+
         /// <summary>
         /// Username of the logged in user
         /// </summary>

@@ -35,6 +35,7 @@ namespace TeamCord.GUI
                         .GetProperty(v.Name)
                         .GetCustomAttribute(typeof(UnitAttribute));
                     var attributeValue = attribute?.Unit ?? "";
+                    labelLeft.Content = v.Name;
                     stackPanelLeft.Children.Add(labelLeft);
                     labelRight.Content = v.GetValue(val) + attributeValue;
                     stackPanelRight.Children.Add(labelRight);

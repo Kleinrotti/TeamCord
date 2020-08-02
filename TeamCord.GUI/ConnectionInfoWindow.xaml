@@ -13,11 +13,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="350" />
-        </Grid.RowDefinitions>
-        <StackPanel x:Name="stackPanelLeft" Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" />
-        <StackPanel x:Name="stackPanelRight" Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" />
+        <StackPanel x:Name="stackPanelLeft" Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" />
+        <StackPanel x:Name="stackPanelRight" Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="1" />
     </Grid>
 </Window>
