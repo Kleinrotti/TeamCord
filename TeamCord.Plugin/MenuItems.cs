@@ -8,13 +8,13 @@ namespace TeamCord.Plugin
         /// <summary>
         /// Global
         /// </summary>
-        [MenuItemConnectionAttibute(ConnectionType.Discord)]
+        [MenuItemConnection(ConnectionType.Discord)]
         public const int MenuItemLogin = 1;
 
         /// <summary>
         /// Global
         /// </summary>
-        [MenuItemConnectionAttibute(ConnectionType.Discord)]
+        [MenuItemConnection(ConnectionType.Discord)]
         public const int MenuItemLogout = 2;
 
         /// <summary>
@@ -25,34 +25,34 @@ namespace TeamCord.Plugin
         /// <summary>
         /// Channel
         /// </summary>
-        [MenuItemConnectionAttibute(ConnectionType.Voice)]
+        [MenuItemConnection(ConnectionType.Voice)]
         public const int MenuItemJoin = 4;
 
         /// <summary>
         /// Channel
         /// </summary>
-        [MenuItemConnectionAttibute(ConnectionType.Voice)]
+        [MenuItemConnection(ConnectionType.Voice)]
         public const int MenuItemLeave = 5;
 
         /// <summary>
         /// Channel
         /// </summary>
-        [MenuItemConnectionAttibute(ConnectionType.Voice)]
+        [MenuItemConnection(ConnectionType.Voice)]
         public const int MenuItemLink = 6;
 
         /// <summary>
         /// Channel
         /// </summary>
-        [MenuItemConnectionAttibute(ConnectionType.Voice)]
+        [MenuItemConnection(ConnectionType.Voice)]
         public const int MenuItemConnectionInfo = 7;
     }
 
     [AttributeUsage(AttributeTargets.Field)]
-    public class MenuItemConnectionAttibute : Attribute
+    public class MenuItemConnectionAttribute : Attribute
     {
         private ConnectionType _connectionType;
 
-        public MenuItemConnectionAttibute(ConnectionType connectionType)
+        public MenuItemConnectionAttribute(ConnectionType connectionType)
         {
             _connectionType = connectionType;
         }
