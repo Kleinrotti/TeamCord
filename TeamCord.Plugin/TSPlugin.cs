@@ -156,6 +156,9 @@ namespace TeamCord.Plugin
 
         public void OpenConnectionInfo()
         {
+            var connInfo = ConnectionHandler.ConnectionInfo;
+            ConnectionInfoWindow connectionInfoWindow = new ConnectionInfoWindow(connInfo);
+            connectionInfoWindow.ShowDialog();
         }
 
         public void Shutdown()

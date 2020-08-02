@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseConnectionInfo.cs" />
     <Compile Include="DataStorage.cs" />
     <Compile Include="Discord\VoiceChannelService.cs" />
     <Compile Include="Discord\Auth.cs" />
@@ -115,7 +116,9 @@
     <Compile Include="SoundService.cs" />
     <Compile Include="TS3Device.cs" />
     <Compile Include="Enums\TS3DeviceType.cs" />
+    <Compile Include="UnitAttribute.cs" />
     <Compile Include="UserVolume.cs" />
+    <Compile Include="VoiceConnectionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

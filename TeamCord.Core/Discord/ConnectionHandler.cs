@@ -52,6 +52,17 @@ namespace TeamCord.Core
             }
         }
 
+        public VoiceConnectionInfo ConnectionInfo
+        {
+            get
+            {
+                if (_currentChannel != null && _audioService != null)
+                    return new VoiceConnectionInfo(_client, _currentChannel, _audioService.VoiceLatency);
+                else
+                    return null;
+            }
+        }
+
         /// <summary>
         /// Return a list of tuples with each volume, userid and nickname
         /// </summary>

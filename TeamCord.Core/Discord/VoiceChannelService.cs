@@ -22,6 +22,8 @@ namespace TeamCord.Core
 
         public event EventHandler VoiceDisconnected;
 
+        public int VoiceLatency { get { return _audioClient.Latency; } }
+
         public VoiceChannelService(DiscordSocketClient socketClient, ulong ownUserID = 0)
         {
             OwnUserID = ownUserID;

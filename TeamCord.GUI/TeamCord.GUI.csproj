@@ -58,6 +58,9 @@
     <Compile Include="ChannelConnector.xaml.cs">
       <DependentUpon>ChannelConnector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConnectionInfoWindow.xaml.cs">
+      <DependentUpon>ConnectionInfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,6 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ChannelConnector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConnectionInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
