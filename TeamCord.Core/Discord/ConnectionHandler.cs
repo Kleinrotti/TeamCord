@@ -230,8 +230,15 @@ namespace TeamCord.Core
         {
             if (_audioService != null)
                 await _audioService.LeaveChannel();
-            await _client.StopAsync();
-            await _client.LogoutAsync();
+            try
+            {
+                await _client.StopAsync();
+                await _client.LogoutAsync();
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Logging.Log(ex, LogLevel.LogLevel_DEBUG);
+            }
             _currentChannel = null;
         }
 
