@@ -22,13 +22,13 @@ namespace TeamCord.Plugin
         #region Required functions
 
         [DllExport]
-        public static String ts3plugin_name()
+        public static string ts3plugin_name()
         {
             return TSPlugin.Instance.PluginName;
         }
 
         [DllExport]
-        public static String ts3plugin_version()
+        public static string ts3plugin_version()
         {
             return TSPlugin.Instance.PluginVersion;
         }
@@ -40,13 +40,13 @@ namespace TeamCord.Plugin
         }
 
         [DllExport]
-        public static String ts3plugin_author()
+        public static string ts3plugin_author()
         {
             return TSPlugin.Instance.Author;
         }
 
         [DllExport]
-        public static String ts3plugin_description()
+        public static string ts3plugin_description()
         {
             return TSPlugin.Instance.Description;
         }
@@ -94,7 +94,7 @@ namespace TeamCord.Plugin
         }
 
         [DllExport]
-        public static void ts3plugin_registerPluginID(String id)
+        public static void ts3plugin_registerPluginID(string id)
         {
             TSPlugin.Instance.PluginID = id;
         }
@@ -102,6 +102,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_freeMemory(IntPtr data)
         {
+            Logging.Log($"Freed memory: {data}", LogLevel.LogLevel_DEBUG);
             Marshal.FreeHGlobal(data);
         }
 
@@ -284,7 +285,7 @@ namespace TeamCord.Plugin
                     break;
 
                 case MenuItems.MenuItemConnectionInfo:
-                    TSPlugin.Instance.OpenConnectionInfo();
+                    TSPlugin.Instance.ShowConnectionInfo();
                     break;
             }
         }

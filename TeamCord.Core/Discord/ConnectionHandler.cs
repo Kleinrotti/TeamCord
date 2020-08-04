@@ -14,7 +14,7 @@ namespace TeamCord.Core
     {
         private DiscordSocketClient _client;
         private byte[] _bufferBytes;
-        private VoiceChannelService _audioService;
+        private VoiceChannelService _voiceChannelService;
         private string _token;
         private short[] _voiceBuffer;
         private IVoiceChannel _currentChannel;
@@ -56,8 +56,8 @@ namespace TeamCord.Core
         {
             get
             {
-                if (_currentChannel != null && _audioService != null)
-                    return new VoiceConnectionInfo(_client, _currentChannel, _audioService.VoiceLatency);
+                if (_currentChannel != null && _voiceChannelService != null)
+                    return new VoiceConnectionInfo(_client, _currentChannel, _voiceChannelService.VoiceLatency);
                 else
                     return null;
             }
@@ -70,7 +70,7 @@ namespace TeamCord.Core
         {
             get
             {
-                return _audioService.UserVolumes;
+                return _voiceChannelService.UserVolumes;
             }
         }
 
@@ -82,9 +82,9 @@ namespace TeamCord.Core
                 LogLevel = LogSeverity.Debug
             });
 
-            _audioService = new VoiceChannelService(_client);
-            _audioService.VoiceConnected += _audioService_VoiceConnected;
-            _audioService.VoiceDisconnected += _audioService_VoiceDisconnected;
+            _voiceChannelService = new VoiceChannelService(_client);
+            _voiceChannelService.VoiceConnected += _audioService_VoiceConnected;
+            _voiceChannelService.VoiceDisconnected += _audioService_VoiceDisconnected;
             _client.Log += Client_Log;
             _client.Ready += _client_Ready;
             _client.Connected += _client_Connected;
@@ -137,7 +137,7 @@ namespace TeamCord.Core
             Logging.Log($"Client connected");
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(_client.LoginState);
-            _audioService.OwnUserID = _client.CurrentUser.Id;
+            _voiceChannelService.OwnUserID = _client.CurrentUser.Id;
             return Task.CompletedTask;
         }
 
@@ -208,7 +208,7 @@ namespace TeamCord.Core
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
             if (_currentChannel != null)
             {
-                _audioService.JoinChannel(_currentChannel);
+                _voiceChannelService.JoinChannel(_currentChannel);
             }
             else
             {
@@ -220,7 +220,7 @@ namespace TeamCord.Core
         public async void LeaveChannel()
         {
             Logging.Log($"Leaving discord channel");
-            await _audioService.LeaveChannel();
+            await _voiceChannelService.LeaveChannel();
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace TeamCord.Core
         /// </summary>
         public async void Disconnect()
         {
-            if (_audioService != null)
-                await _audioService.LeaveChannel();
+            if (_voiceChannelService != null)
+                await _voiceChannelService.LeaveChannel();
             try
             {
                 await _client.StopAsync();
@@ -292,7 +292,7 @@ namespace TeamCord.Core
                 }
             }
 
-            Task.Run(() => { _audioService.SendVoiceData(_bufferBytes); });
+            Task.Run(() => { _voiceChannelService.SendVoiceData(_bufferBytes); });
         }
 
         private short[] ToStereo(short[] buf)
@@ -309,8 +309,8 @@ namespace TeamCord.Core
         public void Dispose()
         {
             Disconnect();
+            _voiceChannelService.Dispose();
             _client.Dispose();
-            _audioService.Dispose();
         }
     }
 }

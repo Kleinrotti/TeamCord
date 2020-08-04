@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using TeamCord.Core;
 
 namespace TeamCord.GUI
@@ -47,8 +50,45 @@ namespace TeamCord.GUI
             _settings.Password = PluginUserCredential.StoreData(Encoding.Default.GetBytes(passwordBox_Password.Password));
             var storage = new DataStorage();
             storage.StoreSettings(_settings);
-            MessageBox.Show("Please restart Teamspeak to apply all changed settings.");
+            MessageBox.Show("Please reload TeamCord to apply all changed settings.");
             Close();
+        }
+
+        private void CreateControls()
+        {
+            var properties = typeof(PluginSettings).GetProperties().ToList();
+
+            foreach (var v in properties)
+            {
+                var attribute = (ControlTypeAttribute)
+                    typeof(PluginSettings)
+                    .GetProperty(v.Name)
+                    .GetCustomAttribute(typeof(ControlTypeAttribute));
+                var attributeValue = attribute?.ControlType;
+
+                if (attributeValue == typeof(CheckBox))
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.IsChecked = (bool)v.GetValue(_settings);
+                    checkBox.Content = v.Name;
+                }
+                else if (attributeValue == typeof(TextBox))
+                {
+                    Label labelDescription = new Label();
+                    labelDescription.Content = v.Name;
+                    TextBox textBox = new TextBox();
+                    var val = v.GetValue(_settings);
+                    if (val.GetType() == typeof(PluginUserCredential))
+                    {
+                        var val2 = (PluginUserCredential)val;
+                        textBox.Text = Encoding.Default.GetString(val2.GetStoredData());
+                    }
+                    else
+                    {
+                        textBox.Text = (string)val;
+                    }
+                }
+            }
         }
     }
 }

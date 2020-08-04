@@ -142,7 +142,7 @@ namespace TeamCord.Plugin
             }
         }
 
-        public void OpenConnectionInfo()
+        public void ShowConnectionInfo()
         {
             var connInfo = ConnectionHandler.ConnectionInfo;
             ConnectionInfoWindow connectionInfoWindow = new ConnectionInfoWindow(connInfo);
