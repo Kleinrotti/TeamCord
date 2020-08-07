@@ -29,6 +29,7 @@ namespace TeamCord.Core
             OwnUserID = ownUserID;
             _soundServices = new List<SoundService>();
             _socketClient = socketClient;
+            Logging.Log("VoiceChannelService loaded");
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace TeamCord.Core
 
         private Task _audioClient_StreamDestroyed(ulong arg)
         {
-            Logging.Log($"Stream destroyed {arg}");
+            Logging.Log($"Stream destroyed {arg}", LogLevel.LogLevel_DEBUG);
             var v = _soundServices.SingleOrDefault(x => x.UserID == arg);
             if (v == null)
                 return Task.CompletedTask;
@@ -103,7 +104,7 @@ namespace TeamCord.Core
         private Task _audioClient_StreamCreated(ulong userID, AudioInStream arg2)
         {
             //Triggers when user joined to the channel
-            Logging.Log($"Stream created {userID}");
+            Logging.Log($"Stream created {userID}", LogLevel.LogLevel_DEBUG);
             return Task.Run(() => { ListenUserAsync(arg2, userID); });
         }
 
@@ -198,6 +199,7 @@ namespace TeamCord.Core
                 _outStream.Dispose();
             if (_audioClient != null)
                 _audioClient.Dispose();
+            Logging.Log("VoiceChannelService unloaded");
         }
     }
 }

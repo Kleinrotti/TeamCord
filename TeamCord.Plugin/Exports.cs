@@ -102,7 +102,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_freeMemory(IntPtr data)
         {
-            Logging.Log($"Freed memory: {data}", LogLevel.LogLevel_DEBUG);
+            Logging.Log($"Freeing memory: {data}", LogLevel.LogLevel_DEBUG);
             Marshal.FreeHGlobal(data);
         }
 
@@ -140,7 +140,9 @@ namespace TeamCord.Plugin
                 }
                 else
                 {
-                    if (MessageBox.Show("Would you like to join to discord too?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    var channelName = TSPlugin.Instance.ConnectionHandler.GetChannelName(id);
+                    var serverName = TSPlugin.Instance.ConnectionHandler.GetServerName(id);
+                    if (MessageBox.Show($"Connect to discord channel {channelName} on Server {serverName}?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
                         TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
                     }

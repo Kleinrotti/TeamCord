@@ -52,6 +52,11 @@ namespace TeamCord.Plugin
 
                 return obj.Teamcord.ChannelID;
             }
+            catch (NullReferenceException ex)
+            {
+                Logging.Log(ex.Message, LogLevel.LogLevel_DEBUG);
+                return 0;
+            }
             catch (Exception ex)
             {
                 Logging.Log(ex.Message, LogLevel.LogLevel_WARNING);

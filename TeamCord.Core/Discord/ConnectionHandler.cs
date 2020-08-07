@@ -90,6 +90,7 @@ namespace TeamCord.Core
             _client.Connected += _client_Connected;
             _client.Disconnected += _client_Disconnected;
             _client.LoggedOut += _client_LoggedOut;
+            Logging.Log("ConnectionHandler loaded");
         }
 
         #region Connection events
@@ -195,6 +196,28 @@ namespace TeamCord.Core
                     Logging.Log(ex);
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the channel name
+        /// </summary>
+        /// <param name="channelID"></param>
+        /// <returns></returns>
+        public string GetChannelName(ulong channelID)
+        {
+            var channel = _client.GetChannel(channelID) as IGuildChannel;
+            return channel.Name;
+        }
+
+        /// <summary>
+        /// Get the server name of a channel
+        /// </summary>
+        /// <param name="channelID"></param>
+        /// <returns></returns>
+        public string GetServerName(ulong channelID)
+        {
+            var server = _client.GetChannel(channelID) as IGuildChannel;
+            return server.Guild.Name;
         }
 
         /// <summary>

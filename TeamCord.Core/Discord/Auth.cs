@@ -19,6 +19,7 @@ namespace TeamCord.Core
 
         public string RequestToken()
         {
+            Logging.Log("Requesting login token");
             return requestToken(Encoding.Default.GetString(_email.GetStoredData()),
                 Encoding.Default.GetString(_password.GetStoredData()));
         }
@@ -48,6 +49,7 @@ namespace TeamCord.Core
                     var result = streamReader.ReadToEnd();
                     var definition = new { token = "" };
                     var token = JsonConvert.DeserializeAnonymousType(result, definition).token;
+                    Logging.Log("Token successfully requested");
                     return token;
                 }
             }

@@ -16,8 +16,15 @@ namespace TeamCord.GUI
         public ConnectionInfoWindow(BaseConnectionInfo connectionInfo)
         {
             InitializeComponent();
+            Closed += ConnectionInfoWindow_Closed;
             _connectionInfo = connectionInfo;
             CreateControls();
+            Logging.Log("Connection info window loaded", LogLevel.LogLevel_DEBUG);
+        }
+
+        private void ConnectionInfoWindow_Closed(object sender, System.EventArgs e)
+        {
+            Logging.Log("Connection info window unloaded", LogLevel.LogLevel_DEBUG);
         }
 
         private void CreateControls()

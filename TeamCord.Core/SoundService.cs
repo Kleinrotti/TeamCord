@@ -25,7 +25,7 @@ namespace TeamCord.Core
             set
             {
                 _volumeSampleProvider.Volume = value;
-                Logging.Log($"Volume of userID {UserID} changed to {value}", LogLevel.LogLevel_DEBUG);
+                Logging.Log($"Volume of user {Nickname} changed to {value}", LogLevel.LogLevel_DEBUG);
             }
         }
 
@@ -61,18 +61,19 @@ namespace TeamCord.Core
             UserID = userID;
             Nickname = nickname;
             InitSpeakers();
+            Logging.Log($"SoundService loaded for user {nickname}");
         }
 
         public void StartPlayback()
         {
             _waveOut.Play();
-            Logging.Log($"Playback started of userID {UserID}");
+            Logging.Log($"Playback started of user {Nickname}");
         }
 
         public void StopPlayback()
         {
             _waveOut.Stop();
-            Logging.Log($"Playback stopped of userID {UserID}");
+            Logging.Log($"Playback stopped of user {Nickname}");
         }
 
         private void InitSpeakers()
@@ -96,7 +97,7 @@ namespace TeamCord.Core
         private void _waveOut_PlaybackStopped(object sender, StoppedEventArgs e)
         {
             if (e.Exception == null)
-                Logging.Log($"Sound playback automatically stoppped of userID: {UserID}");
+                Logging.Log($"Sound playback automatically stoppped of user {Nickname}");
             else
                 Logging.Log(e.Exception);
         }
@@ -110,7 +111,7 @@ namespace TeamCord.Core
         {
             _waveOut.Dispose();
             _waveProvider = null;
-            Logging.Log($"Disposed SoundService of userID: {UserID}", LogLevel.LogLevel_DEBUG);
+            Logging.Log($"Unloaded SoundService of user {Nickname}", LogLevel.LogLevel_DEBUG);
         }
     }
 }

@@ -85,7 +85,7 @@ namespace TeamCord.Plugin
                 return 1;
             }
             watch.Stop();
-            Logging.Log($"Teamcord initialized in {watch.ElapsedMilliseconds}ms", LogLevel.LogLevel_INFO);
+            Logging.Log($"Teamcord initialized in {watch.ElapsedMilliseconds}ms");
             return 0;
         }
 
@@ -138,7 +138,10 @@ namespace TeamCord.Plugin
                 if (err != (uint)Ts3ErrorType.ERROR_ok)
                     Logging.Log($"Failed to set ts3channeldescription. Code: {err}", LogLevel.LogLevel_ERROR);
                 else
+                {
                     Functions.flushChannelUpdates(serverConnectionHandlerID, ts3ChannelID, "");
+                    Logging.Log("Linked discord channel successfully");
+                }
             }
         }
 

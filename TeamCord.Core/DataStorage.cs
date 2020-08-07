@@ -20,14 +20,14 @@ namespace TeamCord.Core
 
         public void StoreSettings(PluginSettings settings)
         {
-            Logging.Log("Storing plugin settings...", LogLevel.LogLevel_INFO);
+            Logging.Log("Storing plugin settings...");
             var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(_configPath + @"config.json", json);
         }
 
         public PluginSettings GetSettings()
         {
-            Logging.Log("Reading plugin settings...", LogLevel.LogLevel_INFO);
+            Logging.Log("Reading plugin settings...");
             var jsonString = File.ReadAllText(_configPath + @"config.json");
             return JsonConvert.DeserializeObject<PluginSettings>(jsonString);
         }

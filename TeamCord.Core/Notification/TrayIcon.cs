@@ -124,6 +124,7 @@ namespace TeamCord.Core
         {
             Icon.Dispose();
             Menu.Dispose();
+            Logging.Log("Tray icon unloaded");
         }
     }
 }
