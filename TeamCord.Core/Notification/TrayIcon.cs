@@ -11,7 +11,7 @@ namespace TeamCord.Core
         protected static ContextMenu Menu;
         protected static MenuItem _volumeMenuItem;
         public static bool ShowNotifications { get; set; }
-        public static int BalloonTimeout { get; set; } = 5;
+        public static int BalloonTimeout { get; set; } = 3;
 
         public static event EventHandler VolumeMenuItemClicked;
 
