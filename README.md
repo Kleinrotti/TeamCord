@@ -52,9 +52,15 @@ The only thing you need is a discord account und this plugin installed for Teams
 
 - By default TeamCord asks you by joining a Teamspeak channel if a connection to the linked Discord channel should be established.
 - You can also connect/disconnect to the Discord channel manually by right clicking on the Teamspeak channel -> TeamCord -> Join.
-- To change the volume of a discord user right click the TeamCord tray icon -> Volume control.
 - To see who is currently connected with the discord channel, click on the Teamspeak channel -> a Userlist on the right Teamspeak panel is visible (above the description).
-  - To refresh this Userlist you have re-click on the Teamspeak channel currently.
+  - To refresh the Userlist you have re-click on the Teamspeak channel currently.
+
+### Audio settings
+
+- To change the volume of a discord user right click the TeamCord tray icon -> Volume control.
+- Muting is done via the Teamspeak mute buttons or hotkeys
+- Microphone settings are set by Teamspeak in the settings
+- Audio output goes to your default speakers set in windows control center
 
 ## Issues
 
