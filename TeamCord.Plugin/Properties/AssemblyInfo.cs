@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TeamCord")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Voice channel bridge between Teamspeak and Discord")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Kleinrotti")]
 [assembly: AssemblyProduct("TeamCord TS3 Plugin")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
