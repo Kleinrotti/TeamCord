@@ -27,7 +27,7 @@ namespace TeamCord.Plugin
         #endregion singleton
 
         public TS3Functions Functions { get; set; }
-        public ConnectionHandler ConnectionHandler;
+        public ConnectionHandler ConnectionHandler { get; private set; }
         private PluginSettings _settings;
         private TrayIcon _trayIcon;
 
@@ -89,6 +89,8 @@ namespace TeamCord.Plugin
             return 0;
         }
 
+        #region Events
+
         private void ConnectionHandler_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
         {
             //Enable/disable teamspeak menuitems
@@ -126,6 +128,8 @@ namespace TeamCord.Plugin
             VoiceChannelService.ChangeVolume(e);
         }
 
+        #endregion Events
+
         public void LinkDiscordChannel(ulong serverConnectionHandlerID, ulong ts3ChannelID)
         {
             var list = ConnectionHandler.GetServerVoiceChannelList();
@@ -161,6 +165,8 @@ namespace TeamCord.Plugin
             _settings = null;
         }
 
+        #region Logging
+
         private void Log(string message, LogLevel level)
         {
             Functions.logMessage(message, level, "TeamCord", 0);
@@ -170,5 +176,7 @@ namespace TeamCord.Plugin
         {
             Functions.logMessage("Exception: " + exception.Message + "\nStacktrace: " + exception.StackTrace, level, "TeamCord", 0);
         }
+
+        #endregion Logging
     }
 }
