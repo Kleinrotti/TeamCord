@@ -11,10 +11,12 @@ namespace TeamCord.Core
 
         [ControlType(typeof(CheckBox))]
         [DisplayName("Join discord channels automatically")]
-        public bool AutomaticChannelJoin { get; set; } = true;
+        [Description("When connecting to a Teamspeak channel, TeamCord will join that linked Discord channel too.")]
+        public bool AutomaticChannelJoin { get; set; }
 
         [ControlType(typeof(CheckBox))]
         [DisplayName("Auto login to discord")]
+        [Description("When connecting to a Teamspeak server, TeamCord will log you in to Discord")]
         public bool DiscordAutoLogin { get; set; } = true;
 
         [ControlType(typeof(CheckBox))]
