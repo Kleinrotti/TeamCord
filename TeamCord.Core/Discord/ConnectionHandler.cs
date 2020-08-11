@@ -190,6 +190,11 @@ namespace TeamCord.Core
                     _token = _auth.RequestToken();
                     await _client.LoginAsync(0, _token, false);
                     await _client.StartAsync();
+                    Logging.Log("Waiting for established connection to discord...");
+                    while (_client.ConnectionState != ConnectionState.Connected)
+                    {
+                        await Task.Delay(25);
+                    }
                 }
                 catch (Exception ex)
                 {
