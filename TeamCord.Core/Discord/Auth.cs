@@ -24,7 +24,17 @@ namespace TeamCord.Core
                 Encoding.Default.GetString(_password.GetStoredData()));
         }
 
-        private string requestToken(string email, string password)
+        public static bool ValidateCredentials(string email, string password)
+        {
+            Logging.Log("Validating credentials");
+            var token = requestToken(email, password);
+            if (token != "")
+                return true;
+            else
+                return false;
+        }
+
+        private static string requestToken(string email, string password)
         {
             try
             {

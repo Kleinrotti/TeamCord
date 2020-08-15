@@ -37,6 +37,9 @@ namespace TeamCord.GUI
 
         private void button_Save_Click(object sender, RoutedEventArgs e)
         {
+            var valid = Auth.ValidateCredentials(textBox_Email.Text, passwordBox_Password.Password);
+            if (!valid)
+                MessageBox.Show("Warning: Entered credentials are not valid!");
             var newSettings = new PluginSettings
             {
                 AutomaticChannelJoin = checkBox_Autojoin.IsChecked ?? false,
