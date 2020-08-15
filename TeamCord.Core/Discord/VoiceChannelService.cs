@@ -125,6 +125,7 @@ namespace TeamCord.Core
                 try
                 {
                     await _outStream.WriteAsync(buffer, 0, buffer.Length);
+                    await _outStream.FlushAsync();
                 }
                 catch (Exception ex)
                 {
