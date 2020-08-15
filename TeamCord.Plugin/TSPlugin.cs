@@ -66,6 +66,8 @@ namespace TeamCord.Plugin
                 //logging with callback to ts3 client log
                 var log = new Logging(Log, Log);
                 Logging.DebugLogging = Settings.DebugLogging;
+                Logging.Log("TeamCord " + typeof(TSPlugin).Assembly.GetName().Version.ToString());
+                Logging.Log("Runtime CLR: " + Environment.Version);
                 ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
                 ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, false);
@@ -154,6 +156,12 @@ namespace TeamCord.Plugin
             var connInfo = ConnectionHandler.ConnectionInfo;
             ConnectionInfoWindow connectionInfoWindow = new ConnectionInfoWindow(connInfo);
             connectionInfoWindow.ShowDialog();
+        }
+
+        public void ShowAboutWindow()
+        {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
         }
 
         public void Shutdown()

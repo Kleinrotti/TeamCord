@@ -1137,22 +1137,22 @@ public delegate uint TS3Functions_serverPropertyStringToFlag([MarshalAs(Unmanage
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getAppPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
+public delegate void TS3Functions_getAppPath(IntPtr path, uint maxLen);
 
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getResourcesPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
+public delegate void TS3Functions_getResourcesPath(IntPtr path, uint maxLen);
 
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getConfigPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
+public delegate void TS3Functions_getConfigPath(IntPtr path, uint maxLen);
 
 /// Return Type: void
 ///path: char*
 ///maxLen: size_t->unsigned int
-public delegate void TS3Functions_getPluginPath([MarshalAs(UnmanagedType.LPStr)] out string path, uint maxLen);
+public delegate void TS3Functions_getPluginPath(IntPtr path, uint maxLen, [MarshalAs(UnmanagedType.LPStr)] string pluginID);
 
 /// Return Type: uint64->unsigned __int64
 public delegate ulong TS3Functions_getCurrentServerConnectionHandlerID();

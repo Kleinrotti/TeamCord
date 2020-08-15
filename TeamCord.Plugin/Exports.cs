@@ -289,6 +289,10 @@ namespace TeamCord.Plugin
                 case MenuItems.MenuItemConnectionInfo:
                     TSPlugin.Instance.ShowConnectionInfo();
                     break;
+
+                case MenuItems.MenuItemAbout:
+                    TSPlugin.Instance.ShowAboutWindow();
+                    break;
             }
         }
 
