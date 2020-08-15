@@ -41,7 +41,7 @@ namespace TeamCord.GUI
                 var sl = new Slider
                 {
                     Minimum = 0,
-                    Maximum = 1.0,
+                    Maximum = 1.5,
                     Width = 50,
                     Height = 180,
                     Orientation = Orientation.Vertical,
