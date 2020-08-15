@@ -25,7 +25,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -119,6 +119,8 @@
     <Compile Include="TS3Device.cs" />
     <Compile Include="Enums\TS3DeviceType.cs" />
     <Compile Include="UnitAttribute.cs" />
+    <Compile Include="Updater.cs" />
+    <Compile Include="UpdaterBase.cs" />
     <Compile Include="UserVolume.cs" />
     <Compile Include="VoiceConnectionInfo.cs" />
   </ItemGroup>
