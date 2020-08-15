@@ -84,7 +84,7 @@ namespace TeamCord.Core
             };
             _waveOut = new WaveOut
             {
-                DesiredLatency = 700,
+                DesiredLatency = 800,
                 NumberOfBuffers = 3
             };
             _waveOut.PlaybackStopped += _waveOut_PlaybackStopped;
