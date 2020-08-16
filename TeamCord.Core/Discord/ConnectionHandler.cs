@@ -311,6 +311,7 @@ namespace TeamCord.Core
                 _bufferBytes = new byte[sizeof(short) * _voiceBuffer.Length];
             }
 
+            //stereo short buffer needs to be converted to stereo byte buffer
             fixed (short* fo = _voiceBuffer)
             {
                 byte* sample = (byte*)fo;
@@ -325,7 +326,9 @@ namespace TeamCord.Core
 
         private short[] ToStereo(short[] buf)
         {
+            //new buffer needs to be twice as large because of stereo data
             short[] buffer = new short[buf.Length * 2];
+            //start at the end and copy each short twice to the new stereo buffer
             for (int i = buf.Length - 1, j = buffer.Length - 1; i >= 0; --i)
             {
                 buffer[j--] = buf[i];
@@ -339,6 +342,12 @@ namespace TeamCord.Core
             Disconnect();
             _voiceChannelService.Dispose();
             _client.Dispose();
+            _client = null;
+            _bufferBytes = null;
+            _voiceChannelService = null;
+            _token = null;
+            _voiceBuffer = null;
+            _auth = null;
         }
     }
 }
