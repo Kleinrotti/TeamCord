@@ -83,7 +83,7 @@ namespace TeamCord.Plugin
             }
             catch (Exception ex)
             {
-                Logging.Log(ex);
+                Instance.Functions.logMessage(ex.Message, LogLevel.LogLevel_ERROR, "TeamCord", 0);
                 return 1;
             }
             watch.Stop();
