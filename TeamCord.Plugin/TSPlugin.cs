@@ -166,13 +166,13 @@ namespace TeamCord.Plugin
 
         public void Shutdown()
         {
-            ConnectionHandler.ConnectionChanged -= ConnectionHandler_ConnectionChanged;
-            TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
             if (ConnectionHandler != null)
                 ConnectionHandler.Dispose();
             TrayIcon.Visible = false;
             _trayIcon.Dispose();
             _settings = null;
+            ConnectionHandler.ConnectionChanged -= ConnectionHandler_ConnectionChanged;
+            TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
         }
 
         #region Logging

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
 using TeamCord.Core;
 
@@ -10,13 +9,11 @@ namespace TeamCord.GUI
     /// </summary>
     public sealed partial class SettingsWindow : Window
     {
-        public Action<PluginSettings> Callback { get; set; }
         private PluginSettings _settings;
 
         public SettingsWindow(PluginSettings settings)
         {
             InitializeComponent();
-            this.Closed += SettingsWindow_Closed;
             _settings = settings;
             checkBox_Autojoin.IsChecked = _settings.AutomaticChannelJoin;
             checkBox_AutoLoginDiscord.IsChecked = _settings.DiscordAutoLogin;
@@ -28,11 +25,6 @@ namespace TeamCord.GUI
                 textBox_Email.Text = Encoding.Default.GetString(_settings.Email.GetStoredData());
             if (_settings.Password.Entropy != null && _settings.Password.CipherText != null)
                 passwordBox_Password.Password = Encoding.Default.GetString(_settings.Password.GetStoredData());
-        }
-
-        private void SettingsWindow_Closed(object sender, EventArgs e)
-        {
-            Callback(_settings);
         }
 
         private void button_Save_Click(object sender, RoutedEventArgs e)

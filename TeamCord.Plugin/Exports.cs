@@ -2,18 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
-using System.Windows.Threading;
 using TeamCord.Core;
+using TeamCord.GUI;
 using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
 {
     internal sealed class Exports
     {
-        private static Thread _settingsThread;
-
         private static bool Is64Bit()
         {
             return Marshal.SizeOf(typeof(IntPtr)) == 8;
@@ -74,23 +71,14 @@ namespace TeamCord.Plugin
         [DllExport]
         public static int ts3plugin_offersConfigure()
         {
-            return (int)PluginConfigureOffer.PLUGIN_OFFERS_CONFIGURE_NEW_THREAD;
+            return (int)PluginConfigureOffer.PLUGIN_OFFERS_CONFIGURE_QT_THREAD;
         }
 
         [DllExport]
         public static unsafe void ts3plugin_configure(void* handle, void* qParentWidget)
         {
-            Action<PluginSettings> act;
-            act = GetSettingsCallback;
-            //ensure that only one settings window can be opened at the same time
-            if (_settingsThread == null || !_settingsThread.IsAlive)
-                _settingsThread = Helpers.CreateSTAWindow(act);
-        }
-
-        private static void GetSettingsCallback(PluginSettings settings)
-        {
-            //Exit STA thread of the window when settings are received, if its not exited no more settings window can be opened
-            Dispatcher.FromThread(_settingsThread).InvokeShutdown();
+            SettingsWindow w = new SettingsWindow(TSPlugin.Instance.Settings);
+            w.ShowDialog();
         }
 
         [DllExport]
