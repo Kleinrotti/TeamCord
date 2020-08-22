@@ -89,7 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseConnectionInfo.cs" />
+    <Compile Include="Discord\BaseConnectionInfo.cs" />
     <Compile Include="ControlTypeAttribute.cs" />
     <Compile Include="DataStorage.cs" />
     <Compile Include="Discord\VoiceChannelService.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Enums\ConnectionType.cs" />
     <Compile Include="EventArguments\ConnectionChangedEventArgs.cs" />
     <Compile Include="EventArguments\GenericEventArgs.cs" />
-    <Compile Include="ISoundPlayback.cs" />
+    <Compile Include="Audio\ISoundPlayback.cs" />
     <Compile Include="Notification\ConnectionNotification.cs" />
     <Compile Include="Notification\INotification.cs" />
     <Compile Include="Logging.cs" />
@@ -115,14 +115,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="SoundService.cs" />
-    <Compile Include="TS3Device.cs" />
+    <Compile Include="Audio\SoundService.cs" />
     <Compile Include="Enums\TS3DeviceType.cs" />
     <Compile Include="UnitAttribute.cs" />
-    <Compile Include="Updater.cs" />
-    <Compile Include="UpdaterBase.cs" />
-    <Compile Include="UserVolume.cs" />
-    <Compile Include="VoiceConnectionInfo.cs" />
+    <Compile Include="Updater\Updater.cs" />
+    <Compile Include="Updater\UpdaterBase.cs" />
+    <Compile Include="Audio\UserVolume.cs" />
+    <Compile Include="Discord\VoiceConnectionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -151,5 +150,6 @@
   <ItemGroup>
     <None Include="Resources\logo_voice.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

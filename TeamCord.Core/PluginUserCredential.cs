@@ -16,7 +16,7 @@ namespace TeamCord.Core
         }
 
         /// <summary>
-        /// Encrypts the given password
+        /// Encrypts the given data
         /// </summary>
         /// <param name="secureData"></param>
         /// <param name="cipherText"></param>
@@ -35,7 +35,7 @@ namespace TeamCord.Core
         }
 
         /// <summary>
-        /// Decrypts the stored password and returns it as byte array
+        /// Decrypts the stored data and returns it as byte array
         /// </summary>
         /// <param name="cipherText"></param>
         /// <param name="entropy"></param>

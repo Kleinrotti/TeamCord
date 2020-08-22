@@ -9,6 +9,10 @@ namespace TeamCord.Core
     {
         private static Action<string, LogLevel> logCallback;
         private static Action<Exception, LogLevel> logCallbackException;
+
+        /// <summary>
+        /// Indicates wether debug logging is enabled or not
+        /// </summary>
         public static bool DebugLogging { get; set; }
 
         /// <summary>
@@ -33,7 +37,7 @@ namespace TeamCord.Core
         }
 
         /// <summary>
-        /// Log a exception
+        /// Log an exception
         /// </summary>
         /// <param name="exception"></param>
         /// <param name="logLevel"></param>
