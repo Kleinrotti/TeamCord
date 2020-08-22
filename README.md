@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/Kleinrotti/TeamCord/blob/master/plugin.JPG)
 
-## First to say
+## First things to say
 
 This plugin is in a very early state and could contain bugs or even cause a Teamspeak crash!
 If you experience bugs or crashes please read the Issues section below for more information.
@@ -15,7 +15,7 @@ But you use it at your own risk.
 
 TeamCord is a Teamspeak plugin which brings Discord and Teamspeak together.
 This means, you have the ability to create a connection/link between a Teamspeak and a Discord voice channel for cross voice communication.
-The only thing you need is a discord account und this plugin installed for Teamspeak.
+The only things you need is a discord account and this plugin installed for Teamspeak.
 
 ## Install requirements
 
@@ -34,7 +34,7 @@ The only thing you need is a discord account und this plugin installed for Teams
 ### General
 
 - When opening Teamspeak, a new tray icon should appear which indicates the TeamCord connection status
-- Firstly you have to login to discord. You can do this by opening the Addon settings.
+- First you have to login to discord. You can do this by opening the Addon settings.
   - Open Teamspeak -> Tools -> Options -> Addons -> TeamCord and click on "Settings".
 - If you connect to a Teamspeak server, TeamCord will automatically log you into discord (you can disable this in the settings and login manually via -> Plugins -> TeamCord -> Login).
 - Before you can connect to a Discord channel you have to be a member of that server first with the needed permissions!
@@ -57,14 +57,17 @@ The only thing you need is a discord account und this plugin installed for Teams
 
 ### Audio settings
 
-- To change the volume of a discord user right click the TeamCord tray icon -> Volume control.
+- To change the volume of a discord user, right click the TeamCord tray icon -> Volume control.
 - Muting is done via the Teamspeak mute buttons or hotkeys
-- Microphone settings are set by Teamspeak in the settings
+- Microphone settings are set by Teamspeak itself in the settings
 - Audio output goes to your default speakers set in windows control center
+- NOTE: Only users who have TeamCord installed can hear/speak to users in the linked Discord channel!
 
 ## Issues
 
 If you found a bug please append the Teamspeak log file to your Issue (%appdata%\TS3Client\logs).
 For a better understanding you can enable Debug logging in the TeamCord settings which gives more detailed logs.
+
+If you have ideas for new features, you can also post them there!
 
 Trayicon made by Freepik from www.flaticon.com
