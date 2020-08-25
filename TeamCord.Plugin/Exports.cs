@@ -115,6 +115,8 @@ namespace TeamCord.Plugin
         public static void ts3plugin_onClientMoveEvent(ulong serverConnectionHandlerID, short clientID, ulong oldChannelID, ulong newChannelID,
             int visibility, [MarshalAs(UnmanagedType.LPStr)] string moveMessage)
         {
+            if (!TSPlugin.Instance.ConnectionHandler.Connected)
+                return;
             string description;
             TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, ChannelProperties.CHANNEL_DESCRIPTION, out description);
 

@@ -71,6 +71,7 @@ namespace TeamCord.Plugin
                 ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
                 ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, false);
+                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, false);
@@ -100,6 +101,7 @@ namespace TeamCord.Plugin
             {
                 case ConnectionType.Discord:
                     Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogin, !e.Connected);
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, e.Connected);
                     Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, e.Connected);
                     Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, e.Connected);
                     break;

@@ -22,6 +22,8 @@ namespace TeamCord.Core
 
         public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 
+        public bool Connected { get; private set; }
+
         /// <summary>
         /// Returns a list with the usernames w
         /// </summary>
@@ -86,11 +88,21 @@ namespace TeamCord.Core
             _voiceChannelService.VoiceConnected += _audioService_VoiceConnected;
             _voiceChannelService.VoiceDisconnected += _audioService_VoiceDisconnected;
             _client.Log += Client_Log;
+            _client.UserVoiceStateUpdated += _client_UserVoiceStateUpdated;
             _client.Ready += _client_Ready;
             _client.Connected += _client_Connected;
             _client.Disconnected += _client_Disconnected;
             _client.LoggedOut += _client_LoggedOut;
             Logging.Log("ConnectionHandler loaded");
+        }
+
+        private Task _client_UserVoiceStateUpdated(SocketUser arg1, SocketVoiceState arg2, SocketVoiceState arg3)
+        {
+            if (arg2.VoiceChannel.Id != arg3.VoiceChannel.Id)
+            {
+                //handle voice channel moving of user
+            }
+            return Task.CompletedTask;
         }
 
         #region Connection events
@@ -127,6 +139,7 @@ namespace TeamCord.Core
         private Task _client_Disconnected(Exception arg)
         {
             Logging.Log($"Client disconnected");
+            Connected = false;
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(_client.LoginState);
             ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Discord, false));
@@ -136,6 +149,7 @@ namespace TeamCord.Core
         private Task _client_Connected()
         {
             Logging.Log($"Client connected");
+            Connected = true;
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(_client.LoginState);
             _voiceChannelService.OwnUserID = _client.CurrentUser.Id;
@@ -211,7 +225,10 @@ namespace TeamCord.Core
         public string GetChannelName(ulong channelID)
         {
             var channel = _client.GetChannel(channelID) as IGuildChannel;
-            return channel.Name;
+            if (channel != null)
+                return channel.Name;
+            else
+                return string.Empty;
         }
 
         /// <summary>
@@ -222,7 +239,10 @@ namespace TeamCord.Core
         public string GetServerName(ulong channelID)
         {
             var server = _client.GetChannel(channelID) as IGuildChannel;
-            return server.Guild.Name;
+            if (server != null)
+                return server.Guild.Name;
+            else
+                return string.Empty;
         }
 
         /// <summary>
