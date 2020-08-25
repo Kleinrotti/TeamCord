@@ -38,7 +38,8 @@ namespace TeamCord.Core
         {
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://discordapp.com/api/v6/auth/login");
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://discord.com/api/v8/auth/login");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
 
