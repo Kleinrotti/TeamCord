@@ -20,7 +20,7 @@ namespace TeamCord.Core
             }
         }
 
-        public UpdaterBase(Version currentVersion)
+        internal UpdaterBase(Version currentVersion)
         {
             CurrentVersion = currentVersion;
         }
