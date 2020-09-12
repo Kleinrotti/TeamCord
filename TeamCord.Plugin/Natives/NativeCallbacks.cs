@@ -440,7 +440,7 @@ public delegate uint TS3Functions_getClientSelfVariableAsInt(ulong serverConnect
 ///serverConnectionHandlerID: uint64->unsigned __int64
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getClientSelfVariableAsString(ulong serverConnectionHandlerID, ClientProperties flag, ref IntPtr result);
+public delegate uint TS3Functions_getClientSelfVariableAsString(ulong serverConnectionHandlerID, ClientProperties flag, [MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
@@ -478,7 +478,7 @@ public delegate uint TS3Functions_getClientVariableAsUInt64(ulong serverConnecti
 ///clientID: anyID->unsigned short
 ///flag: size_t->unsigned int
 ///result: char**
-public delegate uint TS3Functions_getClientVariableAsString(ulong serverConnectionHandlerID, ushort clientID, ClientProperties flag, [MarshalAs(UnmanagedType.LPStr)] out string result);
+public delegate uint TS3Functions_getClientVariableAsString(ulong serverConnectionHandlerID, ushort clientID, ClientProperties flag, [MarshalAs(UnmanagedType.LPStr)] ref string result);
 
 /// Return Type: unsigned int
 ///serverConnectionHandlerID: uint64->unsigned __int64
