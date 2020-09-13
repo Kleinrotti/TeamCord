@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using TeamCord.Core.Notification;
 
@@ -15,14 +16,21 @@ namespace TeamCord.Core
         private DiscordSocketClient _client;
         private byte[] _bufferBytes;
         private VoiceChannelService _voiceChannelService;
-        private string _token;
+        private string _token = "";
         private short[] _voiceBuffer;
         private IVoiceChannel _currentChannel;
-        private Auth _auth;
 
         public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 
         public bool Connected { get; private set; }
+
+        public VoiceChannelService CurrentVoiceChannelService
+        {
+            get
+            {
+                return _voiceChannelService;
+            }
+        }
 
         /// <summary>
         /// Returns a list with the usernames w
@@ -76,14 +84,13 @@ namespace TeamCord.Core
             }
         }
 
-        public ConnectionHandler(Auth authentication)
+        public ConnectionHandler(PluginUserCredential token)
         {
-            _auth = authentication;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = LogSeverity.Debug
             });
-
+            _token = Encoding.Default.GetString(token.GetStoredData());
             _voiceChannelService = new VoiceChannelService(_client);
             _voiceChannelService.VoiceConnected += _audioService_VoiceConnected;
             _voiceChannelService.VoiceDisconnected += _audioService_VoiceDisconnected;
@@ -201,7 +208,6 @@ namespace TeamCord.Core
             {
                 try
                 {
-                    _token = _auth.RequestToken();
                     await _client.LoginAsync(0, _token, false);
                     await _client.StartAsync();
                     Logging.Log("Waiting for established connection to discord...");
@@ -367,7 +373,6 @@ namespace TeamCord.Core
             _voiceChannelService = null;
             _token = null;
             _voiceBuffer = null;
-            _auth = null;
         }
     }
 }
