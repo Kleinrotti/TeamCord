@@ -16,15 +16,15 @@ namespace TeamCord.Core
         private IVoiceChannel _voiceChannel;
         private static IList<SoundService> _soundServices;
         private DiscordSocketClient _socketClient;
-        public ulong OwnUserID { get; set; }
+        internal ulong OwnUserID { get; set; }
 
-        public event EventHandler VoiceConnected;
+        internal event EventHandler VoiceConnected;
 
-        public event EventHandler VoiceDisconnected;
+        internal event EventHandler VoiceDisconnected;
 
-        public int VoiceLatency { get { return _audioClient.UdpLatency; } }
+        internal int VoiceLatency { get { return _audioClient.UdpLatency; } }
 
-        public VoiceChannelService(DiscordSocketClient socketClient, ulong ownUserID = 0)
+        internal VoiceChannelService(DiscordSocketClient socketClient, ulong ownUserID = 0)
         {
             OwnUserID = ownUserID;
             _soundServices = new List<SoundService>();
@@ -48,11 +48,52 @@ namespace TeamCord.Core
             }
         }
 
-        public static bool AudioOutput { get; set; } = true;
-        public static bool AudioInput { get; set; } = true;
+        public bool Deaf
+        {
+            //get
+            //{
+            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
+            //    if (user == null) return false;
+
+            //    return user.IsSelfDeafened;
+            //}
+            //set
+            //{
+            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
+            //    if (user != null)
+            //        user.ModifyAsync(x =>
+            //        {
+            //            //TODO: set SelfDeaf
+            //            x.Deaf = value;
+            //        });
+            //}
+            get; set;
+        }
+
+        public bool Mute
+        {
+            //get
+            //{
+            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
+            //    if (user == null) return false;
+
+            //    return user.IsSelfMuted;
+            //}
+            //set
+            //{
+            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
+            //    if (user != null)
+            //        user.ModifyAsync(x =>
+            //        {
+            //            //TODO: set SelfMute
+            //            x.Mute = value;
+            //        });
+            //}
+            get; set;
+        }
 
         [Command("join", RunMode = RunMode.Async)]
-        public async Task JoinChannel(IVoiceChannel voiceChannel)
+        internal async Task JoinChannel(IVoiceChannel voiceChannel)
         {
             try
             {
@@ -109,7 +150,7 @@ namespace TeamCord.Core
         }
 
         [Command("leave", RunMode = RunMode.Async)]
-        public async Task LeaveChannel()
+        internal async Task LeaveChannel()
         {
             if (_audioClient != null && _audioClient.ConnectionState == ConnectionState.Connected)
             {
@@ -118,9 +159,9 @@ namespace TeamCord.Core
             }
         }
 
-        public async void SendVoiceData(byte[] buffer)
+        internal async void SendVoiceData(byte[] buffer)
         {
-            if (_audioClient != null && _outStream != null && _audioClient.ConnectionState == ConnectionState.Connected && AudioInput)
+            if (_audioClient != null && _outStream != null && _audioClient.ConnectionState == ConnectionState.Connected && !Mute)
             {
                 try
                 {
@@ -139,7 +180,7 @@ namespace TeamCord.Core
         /// </summary>
         /// <param name="streamID"></param>
         /// <param name="volume"></param>
-        public static void ChangeVolume(ulong userID, float volume)
+        public void ChangeVolume(ulong userID, float volume)
         {
             var sound = _soundServices.SingleOrDefault(x => x.UserID == userID);
             if (sound != null)
@@ -150,7 +191,7 @@ namespace TeamCord.Core
         /// Change the audio output volume of the specified stream
         /// </summary>
         /// <param name="userVolume"></param>
-        public static void ChangeVolume(UserVolume userVolume)
+        public void ChangeVolume(UserVolume userVolume)
         {
             var sound = _soundServices.SingleOrDefault(x => x.UserID == userVolume.UserID);
             if (sound != null)
@@ -174,7 +215,7 @@ namespace TeamCord.Core
                 soundsrv.StartPlayback();
                 while (await stream.ReadAsync(buffer, 0, buffer.Length) > 0)
                 {
-                    if (AudioOutput)
+                    if (!Deaf)
                         soundsrv.AddSamples(buffer);
                 }
             }

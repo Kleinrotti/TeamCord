@@ -6,7 +6,7 @@ using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
 {
-    public sealed class TSPlugin
+    public sealed class TSPlugin : IPlugin
     {
         #region singleton
 
@@ -46,15 +46,15 @@ namespace TeamCord.Plugin
             }
         }
 
-        public string PluginName = "TeamCord";
+        public string PluginName { get; } = "TeamCord";
 #if DEBUG
-        public string PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
+        public string PluginVersion { get; } = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
 #else
-        public string PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString();
+        public string PluginVersion { get; set; }= typeof(TSPlugin).Assembly.GetName().Version.ToString();
 #endif
-        public int ApiVersion = 23;
-        public string Author = "Kleinrotti";
-        public string Description = "Voice channel bridge between Teamspeak and Discord";
+        public int ApiVersion { get; } = 23;
+        public string Author { get; } = "Kleinrotti";
+        public string Description { get; } = "Voice channel bridge between Teamspeak and Discord";
         public string PluginID { get; set; }
 
         public int Init()
@@ -68,13 +68,21 @@ namespace TeamCord.Plugin
                 Logging.DebugLogging = Settings.DebugLogging;
                 Logging.Log("TeamCord " + typeof(TSPlugin).Assembly.GetName().Version.ToString());
                 Logging.Log("Runtime CLR: " + Environment.Version);
-                ConnectionHandler = new ConnectionHandler(new Auth(Settings.Email, Settings.Password));
-                ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
-                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, false);
+                //if credentials are not stored disable login button and don't create ConnectionHandler
+                if (Settings.Token == null)
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnect, false);
+                else
+                {
+                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnect, true);
+                    ConnectionHandler = new ConnectionHandler(Settings.Token);
+                    ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
+                }
+                Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemDisconnect, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, false);
+
                 TrayIcon.Initialize();
                 _trayIcon = new TrayIcon();
                 TrayIcon.BalloonTimeout = 3;
@@ -87,7 +95,10 @@ namespace TeamCord.Plugin
                 Instance.Functions.logMessage(ex.Message, LogLevel.LogLevel_ERROR, "TeamCord", 0);
                 return 1;
             }
-            watch.Stop();
+            finally
+            {
+                watch.Stop();
+            }
             Logging.Log($"Teamcord initialized in {watch.ElapsedMilliseconds}ms");
             return 0;
         }
@@ -97,27 +108,33 @@ namespace TeamCord.Plugin
         private void ConnectionHandler_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
         {
             //Enable/disable teamspeak menuitems
-            switch (e.ConnectionType)
+            try
             {
-                case ConnectionType.Discord:
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogin, !e.Connected);
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, e.Connected);
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLogout, e.Connected);
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, e.Connected);
-                    break;
+                switch (e.ConnectionType)
+                {
+                    case ConnectionType.Discord:
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnect, !e.Connected);
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, e.Connected);
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemDisconnect, e.Connected);
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLink, e.Connected);
+                        break;
 
-                case ConnectionType.Voice:
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, !e.Connected);
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, e.Connected);
-                    Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, e.Connected);
-                    break;
+                    case ConnectionType.Voice:
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, !e.Connected);
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, e.Connected);
+                        Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, e.Connected);
+                        ApplyTs3MuteStateToDiscord();
+                        break;
 
-                case ConnectionType.Text:
-                    break;
+                    case ConnectionType.Text:
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
+            //When Teamspeak will be closed/exited and a discord user is logged in, this could trigger an access violation before teamspeak is exited
+            catch (AccessViolationException) { }
         }
 
         private void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)
@@ -129,7 +146,7 @@ namespace TeamCord.Plugin
 
         private void Control_VolumeChanged(object sender, UserVolume e)
         {
-            VoiceChannelService.ChangeVolume(e);
+            ConnectionHandler.CurrentVoiceChannelService.ChangeVolume(e);
         }
 
         #endregion Events
@@ -169,12 +186,38 @@ namespace TeamCord.Plugin
         public void Shutdown()
         {
             if (ConnectionHandler != null)
+            {
+                ConnectionHandler.ConnectionChanged -= ConnectionHandler_ConnectionChanged;
                 ConnectionHandler.Dispose();
-            TrayIcon.Visible = false;
-            _trayIcon.Dispose();
+            }
+            if (_trayIcon != null)
+            {
+                TrayIcon.Visible = false;
+                _trayIcon.Dispose();
+                TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
+            }
             _settings = null;
-            ConnectionHandler.ConnectionChanged -= ConnectionHandler_ConnectionChanged;
-            TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
+        }
+
+        public void Deaf(bool value)
+        {
+            ConnectionHandler.CurrentVoiceChannelService.Deaf = value;
+        }
+
+        public void Mute(bool value)
+        {
+            ConnectionHandler.CurrentVoiceChannelService.Mute = value;
+        }
+
+        public void ApplyTs3MuteStateToDiscord()
+        {
+            int input = 0;
+            int output = 0;
+            ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
+            Functions.getClientSelfVariableAsInt(srvHandler, ClientProperties.CLIENT_INPUT_MUTED, ref input);
+            Functions.getClientSelfVariableAsInt(srvHandler, ClientProperties.CLIENT_OUTPUT_MUTED, ref output);
+            ConnectionHandler.CurrentVoiceChannelService.Mute = input != 0;
+            ConnectionHandler.CurrentVoiceChannelService.Deaf = output != 0;
         }
 
         #region Logging
