@@ -1,10 +1,18 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace TeamCord.Core
 {
     public class PluginSettings
     {
+        /// <summary>
+        /// Current version of the config file
+        /// </summary>
+        public static Version CurrentConfigVersion { get; } = new Version(1, 1, 0, 0);
+
+        public Version ConfigVersion { get; set; }
+
         [ControlType(typeof(CheckBox))]
         [DisplayName("Use Teamspeaks voice activation")]
         public bool UseTeamspeakVoiceActivation { get; set; } = true;
@@ -23,13 +31,8 @@ namespace TeamCord.Core
         [DisplayName("")]
         public bool ShowConnectionStatus { get; set; }
 
-        [ControlType(typeof(TextBox))]
-        [DisplayName("Email")]
-        public PluginUserCredential Email { get; set; }
-
-        [ControlType(typeof(PasswordBox))]
-        [DisplayName("Password")]
-        public PluginUserCredential Password { get; set; }
+        [DisplayName("Token")]
+        public PluginUserCredential Token { get; set; }
 
         [ControlType(typeof(CheckBox))]
         [DisplayName("Debug log")]

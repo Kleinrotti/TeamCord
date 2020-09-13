@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace TeamCord.Core
 {
-    public struct PluginUserCredential
+    public class PluginUserCredential
     {
         public byte[] Entropy { get; }
         public byte[] CipherText { get; }
@@ -49,7 +49,7 @@ namespace TeamCord.Core
             catch (Exception ex)
             {
                 Logging.Log(ex);
-                return null;
+                return new byte[0];
             }
         }
     }

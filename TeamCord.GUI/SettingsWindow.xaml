@@ -8,29 +8,30 @@
         WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Title="Settings" Height="400" Width="300">
+        Title="Settings" Height="300" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-            <DockPanel>
-                <Label Content="Email:" DockPanel.Dock="Left" />
-                <TextBox Name="textBox_Email" DockPanel.Dock="Top" />
-                <Label Content="Password:" DockPanel.Dock="Left" />
-                <PasswordBox Name="passwordBox_Password" DockPanel.Dock="Right" Height="18" Width="150" />
-            </DockPanel>
+        <StackPanel Name="stackPanelLogin" Grid.Row="0" HorizontalAlignment="Center">
+            <Label Content="Email" />
+            <TextBox Name="textBox_Email" Width="150" />
+            <Label Content="Password" />
+            <PasswordBox Name="passwordBox_Password"  Height="18" Width="150" />
+            <Button Name="buttonLogin" Content="Login" Click="buttonLogin_Click" Width="50" Height="20" />
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="20">
             <CheckBox Name="checkBox_Autojoin" Content="Auto join channels" />
             <CheckBox Name="checkBox_AutoLoginDiscord" Content="Auto login discord" />
             <CheckBox Name="checkBox_RawAudio" Content="Use Ts3 voice activation" />
             <CheckBox Name="checkBox_ConnectionStatus" Content="Show connection status" />
             <CheckBox Name="checkBox_DebugLogging" Content="Debug logging" />
             <CheckBox Name="checkBox_Notifications" Content="Notifications" />
+            <Button Grid.Row="1" Name="button_Save" Content="Apply" Width="50" Click="button_Save_Click" />
         </StackPanel>
-        <Button Grid.Row="1" Name="button_Save" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" Click="button_Save_Click" />
+        <Button Name="buttonLogout" Grid.Row="1" Content="Logout" Click="buttonLogout_Click" Visibility="Collapsed" Width="50" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </Window>

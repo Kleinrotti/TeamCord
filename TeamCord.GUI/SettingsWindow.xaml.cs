@@ -10,10 +10,12 @@ namespace TeamCord.GUI
     public sealed partial class SettingsWindow : Window
     {
         private PluginSettings _settings;
+        private bool _changed;
 
         public SettingsWindow(PluginSettings settings)
         {
             InitializeComponent();
+            Closed += SettingsWindow_Closed;
             _settings = settings;
             checkBox_Autojoin.IsChecked = _settings.AutomaticChannelJoin;
             checkBox_AutoLoginDiscord.IsChecked = _settings.DiscordAutoLogin;
@@ -21,33 +23,64 @@ namespace TeamCord.GUI
             checkBox_RawAudio.IsChecked = _settings.UseTeamspeakVoiceActivation;
             checkBox_DebugLogging.IsChecked = _settings.DebugLogging;
             checkBox_Notifications.IsChecked = _settings.Notifications;
-            if (_settings.Email.Entropy != null && _settings.Email.CipherText != null)
-                textBox_Email.Text = Encoding.Default.GetString(_settings.Email.GetStoredData());
-            if (_settings.Password.Entropy != null && _settings.Password.CipherText != null)
-                passwordBox_Password.Password = Encoding.Default.GetString(_settings.Password.GetStoredData());
+            if (_settings.Token != null)
+            {
+                stackPanelLogin.Visibility = Visibility.Collapsed;
+                buttonLogout.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void SettingsWindow_Closed(object sender, System.EventArgs e)
+        {
+            if (_changed)
+                MessageBox.Show("Please reload TeamCord to apply all changed settings.");
         }
 
         private void button_Save_Click(object sender, RoutedEventArgs e)
         {
-            var valid = Auth.ValidateCredentials(textBox_Email.Text, passwordBox_Password.Password);
-            if (!valid)
-                MessageBox.Show("Warning: Entered credentials are not valid!");
-            var newSettings = new PluginSettings
-            {
-                AutomaticChannelJoin = checkBox_Autojoin.IsChecked ?? false,
-                UseTeamspeakVoiceActivation = checkBox_RawAudio.IsChecked ?? false,
-                DiscordAutoLogin = checkBox_AutoLoginDiscord.IsChecked ?? false,
-                ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false,
-                DebugLogging = checkBox_DebugLogging.IsChecked ?? false,
-                Notifications = checkBox_Notifications.IsChecked ?? false,
-                Email = PluginUserCredential.StoreData(Encoding.Default.GetBytes(textBox_Email.Text)),
-                Password = PluginUserCredential.StoreData(Encoding.Default.GetBytes(passwordBox_Password.Password))
-            };
+            var newSettings = _settings;
+            newSettings.AutomaticChannelJoin = checkBox_Autojoin.IsChecked ?? false;
+            newSettings.UseTeamspeakVoiceActivation = checkBox_RawAudio.IsChecked ?? false;
+            newSettings.DiscordAutoLogin = checkBox_AutoLoginDiscord.IsChecked ?? false;
+            newSettings.ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false;
+            newSettings.DebugLogging = checkBox_DebugLogging.IsChecked ?? false;
+            newSettings.Notifications = checkBox_Notifications.IsChecked ?? false;
             var storage = new DataStorage();
             storage.StoreSettings(newSettings);
-            _settings = newSettings;
-            MessageBox.Show("Please reload TeamCord to apply all changed settings.");
+            _changed = true;
             Close();
+        }
+
+        private void buttonLogin_Click(object sender, RoutedEventArgs e)
+        {
+            using (var auth = new Auth(textBox_Email.Text, passwordBox_Password.Password))
+            {
+                var token = auth.RequestToken();
+                if (token != string.Empty)
+                {
+                    MessageBox.Show("Credentials are valid and login token stored encrypted.");
+                    stackPanelLogin.Visibility = Visibility.Collapsed;
+                    buttonLogout.Visibility = Visibility.Visible;
+                    var storage = new DataStorage();
+                    _settings.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(token));
+                    storage.StoreSettings(_settings);
+                    _changed = true;
+                }
+                else
+                {
+                    MessageBox.Show("Entered credentials are not valid!");
+                }
+            }
+        }
+
+        private void buttonLogout_Click(object sender, RoutedEventArgs e)
+        {
+            _settings.Token = null;
+            var storage = new DataStorage();
+            storage.StoreSettings(_settings);
+            _changed = true;
+            stackPanelLogin.Visibility = Visibility.Visible;
+            buttonLogout.Visibility = Visibility.Collapsed;
         }
     }
 }
