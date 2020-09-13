@@ -2,43 +2,55 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Text;
 
 namespace TeamCord.Core
 {
-    public class Auth
+    /// <summary>
+    /// Authentication logic for discord
+    /// </summary>
+    public class Auth : IDisposable
     {
-        private PluginUserCredential _email;
-        private PluginUserCredential _password;
+        private string _email;
+        private string _password;
 
-        public Auth(PluginUserCredential email, PluginUserCredential password)
+        public Auth(string email, string password)
         {
             _email = email;
             _password = password;
         }
 
+        /// <summary>
+        /// Request a discord login token
+        /// </summary>
+        /// <returns>Token</returns>
         public string RequestToken()
         {
             Logging.Log("Requesting login token");
-            return requestToken(Encoding.Default.GetString(_email.GetStoredData()),
-                Encoding.Default.GetString(_password.GetStoredData()));
+            return getToken();
         }
 
-        public static bool ValidateCredentials(string email, string password)
+        /// <summary>
+        /// Check if the credentials are valid
+        /// </summary>
+        /// <returns>True if valid, false if not</returns>
+        public bool ValidateCredentials()
         {
             Logging.Log("Validating credentials");
-            var token = requestToken(email, password);
+            var token = getToken();
             if (token != "")
+            {
+                token = null;
                 return true;
+            }
             else
                 return false;
         }
 
-        private static string requestToken(string email, string password)
+        private string getToken()
         {
             try
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://discord.com/api/v8/auth/login");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
@@ -47,8 +59,8 @@ namespace TeamCord.Core
                 {
                     string json = JsonConvert.SerializeObject(new
                     {
-                        email,
-                        password,
+                        email = _email,
+                        password = _password,
                     });
 
                     streamWriter.Write(json);
@@ -69,6 +81,12 @@ namespace TeamCord.Core
                 Logging.Log(ex);
                 return string.Empty;
             }
+        }
+
+        public void Dispose()
+        {
+            _email = null;
+            _password = null;
         }
     }
 }
