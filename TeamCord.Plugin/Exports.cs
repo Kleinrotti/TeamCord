@@ -172,12 +172,12 @@ namespace TeamCord.Plugin
             if (flag == (int)ClientProperties.CLIENT_OUTPUT_MUTED)
             {
                 var val = Convert.ToInt32(newValue);
-                VoiceChannelService.AudioOutput = !(val != 0);
+                TSPlugin.Instance.Deaf(val != 0);
             }
             else if (flag == (int)ClientProperties.CLIENT_INPUT_MUTED)
             {
                 var val = Convert.ToInt32(newValue);
-                VoiceChannelService.AudioInput = !(val != 0);
+                TSPlugin.Instance.Mute(val != 0);
             }
         }
 
@@ -237,8 +237,8 @@ namespace TeamCord.Plugin
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, MenuItems.MenuItemJoin, "Join", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, MenuItems.MenuItemLeave, "Leave", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, MenuItems.MenuItemLink, "Link to channel", "");
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, MenuItems.MenuItemLogin, "Login", "");
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, MenuItems.MenuItemLogout, "Logout", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, MenuItems.MenuItemConnect, "Connect", "");
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, MenuItems.MenuItemDisconnect, "Disconnect", "");
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_CHANNEL, MenuItems.MenuItemConnectionInfo, "Connection info", "");
 
             (*menuItems)[n++] = null;
@@ -274,11 +274,11 @@ namespace TeamCord.Plugin
                     TSPlugin.Instance.LinkDiscordChannel(serverConnectionHandlerID, selectedItemID);
                     break;
 
-                case MenuItems.MenuItemLogin:
+                case MenuItems.MenuItemConnect:
                     TSPlugin.Instance.ConnectionHandler.Connect();
                     break;
 
-                case MenuItems.MenuItemLogout:
+                case MenuItems.MenuItemDisconnect:
                     TSPlugin.Instance.ConnectionHandler.Disconnect();
                     break;
 

@@ -9,13 +9,13 @@ namespace TeamCord.Plugin
         /// Global
         /// </summary>
         [MenuItemConnection(ConnectionType.Discord)]
-        public const int MenuItemLogin = 1;
+        public const int MenuItemConnect = 1;
 
         /// <summary>
         /// Global
         /// </summary>
         [MenuItemConnection(ConnectionType.Discord)]
-        public const int MenuItemLogout = 2;
+        public const int MenuItemDisconnect = 2;
 
         /// <summary>
         /// Global
