@@ -4,7 +4,7 @@ using System;
 
 namespace TeamCord.Core
 {
-    internal class SoundService : ISoundPlayback, IDisposable
+    internal class SoundService : ISoundPlayback, ISoundUser, IDisposable
     {
         private BufferedWaveProvider _waveProvider;
         private VolumeSampleProvider _volumeSampleProvider;
@@ -13,9 +13,6 @@ namespace TeamCord.Core
         public ulong UserID { get; }
         public string Nickname { get; set; }
 
-        /// <summary>
-        /// Volume of the user, 1.0 is full
-        /// </summary>
         public float Volume
         {
             get
@@ -29,9 +26,6 @@ namespace TeamCord.Core
             }
         }
 
-        /// <summary>
-        /// User audio volume object
-        /// </summary>
         public UserVolume UserVolume
         {
             //TODO set volume
