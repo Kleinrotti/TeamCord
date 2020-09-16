@@ -211,11 +211,17 @@ namespace TeamCord.Plugin
 
         public void ApplyTs3MuteStateToDiscord()
         {
+            Logging.Log("Applying ts3 mute state...", LogLevel.LogLevel_DEBUG);
             int input = 0;
             int output = 0;
+            ulong err = 0;
             ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
-            Functions.getClientSelfVariableAsInt(srvHandler, ClientProperties.CLIENT_INPUT_MUTED, ref input);
-            Functions.getClientSelfVariableAsInt(srvHandler, ClientProperties.CLIENT_OUTPUT_MUTED, ref output);
+            err = Functions.getClientSelfVariableAsInt(srvHandler, ClientProperties.CLIENT_INPUT_MUTED, ref input);
+            err += Functions.getClientSelfVariableAsInt(srvHandler, ClientProperties.CLIENT_OUTPUT_MUTED, ref output);
+            if (err != (ulong)Ts3ErrorType.ERROR_ok)
+            {
+                Logging.Log($"Can't get ts3 mute state {err}");
+            }
             ConnectionHandler.CurrentVoiceChannelService.Mute = input != 0;
             ConnectionHandler.CurrentVoiceChannelService.Deaf = output != 0;
         }

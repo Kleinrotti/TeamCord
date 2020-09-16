@@ -14,6 +14,7 @@ namespace TeamCord.GUI
 
         public SettingsWindow(PluginSettings settings)
         {
+            Logging.Log("Initializing SettingsWindow", LogLevel.LogLevel_DEBUG);
             InitializeComponent();
             Closed += SettingsWindow_Closed;
             _settings = settings;

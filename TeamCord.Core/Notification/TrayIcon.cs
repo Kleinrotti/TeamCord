@@ -10,7 +10,15 @@ namespace TeamCord.Core
         protected static NotifyIcon Icon;
         protected static ContextMenu Menu;
         protected static MenuItem _volumeMenuItem;
+
+        /// <summary>
+        /// Enable or disable notifications
+        /// </summary>
         public static bool ShowNotifications { get; set; }
+
+        /// <summary>
+        /// Timeout when the notification should disappear (default 3 sec.)
+        /// </summary>
         public static int BalloonTimeout { get; set; } = 3;
 
         public static event EventHandler VolumeMenuItemClicked;
