@@ -62,6 +62,14 @@ namespace TeamCord.Core
             }
         }
 
+        public ulong OwnID
+        {
+            get
+            {
+                return _client?.CurrentUser?.Id ?? 0;
+            }
+        }
+
         public VoiceConnectionInfo ConnectionInfo
         {
             get

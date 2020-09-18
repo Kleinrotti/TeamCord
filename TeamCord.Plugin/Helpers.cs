@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TeamCord.Core;
 
 namespace TeamCord.Plugin
@@ -11,7 +12,7 @@ namespace TeamCord.Plugin
         {
             try
             {
-                var obj = JsonConvert.DeserializeObject<TS3ChannelJson>(channelDescription);
+                var obj = JsonConvert.DeserializeObject<TS3Json<TS3ChannelJson>>(channelDescription);
 
                 return obj.Teamcord.ChannelID;
             }
@@ -29,11 +30,15 @@ namespace TeamCord.Plugin
 
         public static string ChannelIDToJsonString(ulong channelID)
         {
-            var obj = new TS3ChannelJson();
-            var val = new Teamcord();
-            val.ChannelID = channelID;
-            obj.Teamcord = val;
-            var json = JsonConvert.SerializeObject(obj);
+            var val = new TS3Json<TS3ChannelJson>(new TS3ChannelJson(channelID));
+            var json = JsonConvert.SerializeObject(val);
+            return json;
+        }
+
+        public static string DiscordIDToJsonString(ulong discordID)
+        {
+            var val = new TS3Json<TS3ClientJson>(new TS3ClientJson(discordID));
+            var json = JsonConvert.SerializeObject(val);
             return json;
         }
 

@@ -46,6 +46,19 @@ namespace TeamCord.Plugin
             }
         }
 
+        private ushort ClientID
+        {
+            get
+            {
+                ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
+                ushort id = 0;
+                var err = Functions.getClientID(srvHandler, ref id);
+                if (err != 0)
+                    Logging.Log($"Requesting clientID failed: {err}");
+                return id;
+            }
+        }
+
         public string PluginName { get; } = "TeamCord";
 #if DEBUG
         public string PluginVersion { get; } = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
@@ -124,6 +137,7 @@ namespace TeamCord.Plugin
                         Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemLeave, e.Connected);
                         Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, e.Connected);
                         ApplyTs3MuteStateToDiscord();
+                        UpdateClientDescription();
                         break;
 
                     case ConnectionType.Text:
@@ -224,6 +238,19 @@ namespace TeamCord.Plugin
             }
             ConnectionHandler.CurrentVoiceChannelService.Mute = input != 0;
             ConnectionHandler.CurrentVoiceChannelService.Deaf = output != 0;
+        }
+
+        private void UpdateClientDescription()
+        {
+            if (ConnectionHandler.OwnID == 0)
+                return;
+            ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
+
+            var value = Helpers.DiscordIDToJsonString(ConnectionHandler.OwnID);
+            string test = "";
+            var err = Functions.requestClientEditDescription(srvHandler, ClientID, value, test);
+            if (err != 0)
+                Logging.Log($"Updating client description failed: {err}");
         }
 
         #region Logging
