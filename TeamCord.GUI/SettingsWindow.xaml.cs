@@ -24,6 +24,7 @@ namespace TeamCord.GUI
             checkBox_RawAudio.IsChecked = _settings.UseTeamspeakVoiceActivation;
             checkBox_DebugLogging.IsChecked = _settings.DebugLogging;
             checkBox_Notifications.IsChecked = _settings.Notifications;
+            checkBox_Discordid.IsChecked = _settings.EnableDiscordID;
             if (_settings.Token != null)
             {
                 stackPanelLogin.Visibility = Visibility.Collapsed;
@@ -46,6 +47,7 @@ namespace TeamCord.GUI
             newSettings.ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false;
             newSettings.DebugLogging = checkBox_DebugLogging.IsChecked ?? false;
             newSettings.Notifications = checkBox_Notifications.IsChecked ?? false;
+            newSettings.EnableDiscordID = checkBox_Discordid.IsChecked ?? false;
             var storage = new DataStorage();
             storage.StoreSettings(newSettings);
             _changed = true;

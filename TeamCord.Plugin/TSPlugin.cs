@@ -242,7 +242,7 @@ namespace TeamCord.Plugin
 
         private void UpdateClientDescription()
         {
-            if (ConnectionHandler.OwnID == 0)
+            if (ConnectionHandler.OwnID == 0 || !Settings.EnableDiscordID)
                 return;
             ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
 

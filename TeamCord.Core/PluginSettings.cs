@@ -9,7 +9,7 @@ namespace TeamCord.Core
         /// <summary>
         /// Current version of the config file
         /// </summary>
-        public static Version CurrentConfigVersion { get; } = new Version(1, 1, 0, 0);
+        public static Version CurrentConfigVersion { get; } = new Version(1, 1, 0, 1);
 
         public Version ConfigVersion { get; set; }
 
@@ -41,5 +41,11 @@ namespace TeamCord.Core
         [ControlType(typeof(CheckBox))]
         [DisplayName("Notifications")]
         public bool Notifications { get; set; } = true;
+
+        [ControlType(typeof(CheckBox))]
+        [DisplayName("Show discord id")]
+        [Description("When enabled, TeamCord creates a client description for your teamspeak user with your discord id.\n" +
+            " This allows automuting when other users using TeamCord too and are also connected to that same channel to avoid doubled audio. \nNOTE: Other teamspeak users can find your discord profile this way too!")]
+        public bool EnableDiscordID { get; set; }
     }
 }
