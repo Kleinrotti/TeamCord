@@ -34,6 +34,11 @@ namespace TeamCord.GUI
 
         private void CreateSliders()
         {
+            if (_userList.Count < 1)
+            {
+                textBlock_noUsers.Visibility = Visibility.Visible;
+                return;
+            }
             _sliders = new List<Slider>();
             foreach (var v in _userList)
             {
