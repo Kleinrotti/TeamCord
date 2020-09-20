@@ -145,7 +145,6 @@
     <Compile Include="Natives\NativeEnums\MytsDataUnsetFlags.cs" />
     <Compile Include="Natives\NativeEnums\LicenseIssue.cs" />
     <Compile Include="Natives\NativeEnums\ChannelPropertiesRare.cs" />
-    <Compile Include="Natives\NativeEnums\ClientPropertiesRare.cs" />
     <Compile Include="Natives\NativeEnums\BBCodeTags.cs" />
     <Compile Include="Natives\NativeEnums\ConnectionPropertiesRare.cs" />
     <Compile Include="Natives\NativeEnums\ServerInstanceProperties.cs" />

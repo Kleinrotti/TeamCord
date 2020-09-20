@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using TeamCord.Core;
 using TeamCord.GUI;
 using TeamCord.Plugin.Natives;
@@ -46,7 +48,7 @@ namespace TeamCord.Plugin
             }
         }
 
-        private ushort ClientID
+        public ushort ClientID
         {
             get
             {
@@ -56,6 +58,19 @@ namespace TeamCord.Plugin
                 if (err != 0)
                     Logging.Log($"Requesting clientID failed: {err}");
                 return id;
+            }
+        }
+
+        public ulong CurrentChannel
+        {
+            get
+            {
+                ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
+                ulong result = 0;
+                var err = Functions.getChannelOfClient(srvHandler, ClientID, ref result);
+                if (err != 0)
+                    Logging.Log($"Getting current ts3 channel failed {err}", LogLevel.LogLevel_WARNING);
+                return result;
             }
         }
 
@@ -138,6 +153,7 @@ namespace TeamCord.Plugin
                         Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnectionInfo, e.Connected);
                         ApplyTs3MuteStateToDiscord();
                         UpdateClientDescription();
+                        DiscordAutoMuteAll();
                         break;
 
                     case ConnectionType.Text:
@@ -251,6 +267,75 @@ namespace TeamCord.Plugin
             var err = Functions.requestClientEditDescription(srvHandler, ClientID, value, test);
             if (err != 0)
                 Logging.Log($"Updating client description failed: {err}");
+        }
+
+        /// <summary>
+        /// Mute discord user in the same channel (to avoid doubled audio)
+        /// </summary>
+        /// <param name="serverConnectionHandler"></param>
+        /// <param name="ts3UserId"></param>
+        public void DiscordAutoMuteUser(ulong serverConnectionHandler, ushort ts3UserId)
+        {
+            if (ConnectionHandler.OwnID == 0 || !Settings.EnableDiscordID)
+                return;
+            string clientDescription = "";
+            var err = Functions.getClientVariableAsString(serverConnectionHandler, ts3UserId, ClientProperties.CLIENT_DESCRIPTION, ref clientDescription);
+            if (err != 0)
+            {
+                Logging.Log("DiscordAutoMuteUser: Could not get ts3 client description", LogLevel.LogLevel_WARNING);
+                return;
+            }
+            var discordId = Helpers.ExtractClientID(clientDescription);
+            if (discordId != 0)
+                ConnectionHandler.CurrentVoiceChannelService.ChangeVolume(discordId, 0);
+        }
+
+        /// <summary>
+        /// Mute all discord users which are in the same channel as the teamspeak users (to avoid doubled audio)
+        /// </summary>
+        private void DiscordAutoMuteAll()
+        {
+            if (ConnectionHandler.OwnID == 0 || !Settings.EnableDiscordID)
+                return;
+            var clients = GetDiscordClientIds();
+
+            foreach (var v in clients)
+            {
+                ConnectionHandler.CurrentVoiceChannelService.ChangeVolume(v.Value, 0);
+            }
+        }
+
+        private Dictionary<ushort, ulong> GetDiscordClientIds()
+        {
+            ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
+            ulong currentChannel = 0;
+            IntPtr ptr = new IntPtr();
+            var err = Functions.getChannelOfClient(srvHandler, ClientID, ref currentChannel) != 0;
+
+            err = Functions.getChannelClientList(srvHandler, currentChannel, ref ptr) != 0;
+
+            //store ts3 client id and discord id
+            Dictionary<ushort, ulong> clients = new Dictionary<ushort, ulong>();
+            string clientDescription = "";
+            //we dont know the array size so we looping up to 100 users in a ts3 channel and break later
+            for (int i = 0; i < 100; i++)
+            {
+                var id = (ushort)Marshal.ReadInt16(ptr, i);
+                //at value 0 array end is reached
+                if (id == 0)
+                    break;
+                err = Functions.getClientVariableAsString(srvHandler, id, ClientProperties.CLIENT_DESCRIPTION, ref clientDescription) != 0;
+                var discordid = Helpers.ExtractClientID(clientDescription);
+
+                //add to dictionary if a discord id was found in the client description
+                if (discordid != 0)
+                    clients.Add(id, discordid);
+            }
+
+            Marshal.FreeHGlobal(ptr);
+            if (err)
+                Logging.Log("Reading clients descriptions failed", LogLevel.LogLevel_WARNING);
+            return clients;
         }
 
         #region Logging

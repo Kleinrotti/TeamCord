@@ -27,6 +27,26 @@ namespace TeamCord.Plugin
             }
         }
 
+        public static ulong ExtractClientID(string clientDescription)
+        {
+            try
+            {
+                var obj = JsonConvert.DeserializeObject<TS3Json<TS3ClientJson>>(clientDescription);
+
+                return obj.Teamcord.ClientID;
+            }
+            catch (NullReferenceException ex)
+            {
+                Logging.Log(ex.Message, LogLevel.LogLevel_DEBUG);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log(ex.Message, LogLevel.LogLevel_WARNING);
+                return 0;
+            }
+        }
+
         public static string ChannelIDToJsonString(ulong channelID)
         {
             var val = new TS3Json<TS3ChannelJson>(new TS3ChannelJson(channelID));
