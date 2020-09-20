@@ -79,7 +79,7 @@ namespace TeamCord.Core
             catch (Exception ex)
             {
                 Logging.Log(ex);
-                return string.Empty;
+                return null;
             }
         }
 

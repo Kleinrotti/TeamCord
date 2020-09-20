@@ -59,19 +59,19 @@ namespace TeamCord.GUI
             using (var auth = new Auth(textBox_Email.Text, passwordBox_Password.Password))
             {
                 var token = auth.RequestToken();
-                if (token != string.Empty)
+                if (token != null)
                 {
                     MessageBox.Show("Credentials are valid and login token stored encrypted.");
-                    stackPanelLogin.Visibility = Visibility.Collapsed;
-                    buttonLogout.Visibility = Visibility.Visible;
                     var storage = new DataStorage();
-                    _settings.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(token));
+                    _settings.Token = PluginUserCredential.StoreData(Encoding.Unicode.GetBytes(token));
                     storage.StoreSettings(_settings);
                     _changed = true;
+                    stackPanelLogin.Visibility = Visibility.Collapsed;
+                    buttonLogout.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    MessageBox.Show("Entered credentials are not valid!");
+                    MessageBox.Show("Entered credentials are not valid or MFA is enabled!");
                 }
             }
         }
