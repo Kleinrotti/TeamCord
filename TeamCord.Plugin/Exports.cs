@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows;
 using TeamCord.Core;
 using TeamCord.GUI;
 using TeamCord.Plugin.Natives;
@@ -115,50 +114,7 @@ namespace TeamCord.Plugin
         public static void ts3plugin_onClientMoveEvent(ulong serverConnectionHandlerID, ushort clientID, ulong oldChannelID, ulong newChannelID,
             int visibility, [MarshalAs(UnmanagedType.LPStr)] string moveMessage)
         {
-            //when own client joins or leaves a ts3 channel
-            if (TSPlugin.Instance.ClientID == clientID)
-            {
-                if (!TSPlugin.Instance.ConnectionHandler.Connected)
-                    return;
-                string description;
-                TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, newChannelID, ChannelProperties.CHANNEL_DESCRIPTION, out description);
-
-                if (description == null)
-                    return;
-                var id = Helpers.ExtractChannelID(description);
-
-                if (id == 0)
-                {
-                    TSPlugin.Instance.ConnectionHandler.LeaveChannel();
-                }
-                else
-                {
-                    TSPlugin.Instance.ConnectionHandler.LeaveChannel();
-                    if (TSPlugin.Instance.Settings.AutomaticChannelJoin)
-                    {
-                        TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
-                    }
-                    else
-                    {
-                        var channelName = TSPlugin.Instance.ConnectionHandler.GetChannelName(id);
-                        var serverName = TSPlugin.Instance.ConnectionHandler.GetServerName(id);
-                        if (MessageBox.Show($"Connect to discord channel {channelName} on Server {serverName}?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        {
-                            TSPlugin.Instance.ConnectionHandler.JoinChannel(id);
-                        }
-                    }
-                }
-            }
-            //when another user joins or leaves the ts3 channel where own client is connected to
-            else
-            {
-                //we only need to do that if another other joins our channel
-                if (TSPlugin.Instance.CurrentChannel == newChannelID)
-                {
-                    Logging.Log("TS3 User joined channel, trying to apply DiscordAutoMuteUser");
-                    TSPlugin.Instance.DiscordAutoMuteUser(serverConnectionHandlerID, clientID);
-                }
-            }
+            TSPlugin.Instance.Ts3ChannelChanged(serverConnectionHandlerID, clientID, newChannelID);
         }
 
         [DllExport]
@@ -181,7 +137,7 @@ namespace TeamCord.Plugin
         }
 
         [DllExport]
-        public static unsafe void ts3plugin_onClientSelfVariableUpdateEvent(ulong serverConnectionHandlerID, int flag, [MarshalAs(UnmanagedType.LPStr)] string oldValue,
+        public static void ts3plugin_onClientSelfVariableUpdateEvent(ulong serverConnectionHandlerID, int flag, [MarshalAs(UnmanagedType.LPStr)] string oldValue,
             [MarshalAs(UnmanagedType.LPStr)] string newValue)
         {
             if (flag == (int)ClientProperties.CLIENT_OUTPUT_MUTED)

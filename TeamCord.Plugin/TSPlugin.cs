@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows;
 using TeamCord.Core;
 using TeamCord.GUI;
 using TeamCord.Plugin.Natives;
@@ -131,6 +132,22 @@ namespace TeamCord.Plugin
             return 0;
         }
 
+        public void Shutdown()
+        {
+            if (ConnectionHandler != null)
+            {
+                ConnectionHandler.ConnectionChanged -= ConnectionHandler_ConnectionChanged;
+                ConnectionHandler.Dispose();
+            }
+            if (_trayIcon != null)
+            {
+                TrayIcon.Visible = false;
+                _trayIcon.Dispose();
+                TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
+            }
+            _settings = null;
+        }
+
         #region Events
 
         private void ConnectionHandler_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
@@ -181,6 +198,11 @@ namespace TeamCord.Plugin
 
         #endregion Events
 
+        /// <summary>
+        /// Creates a ts3 channel description with a selected discord channel id as json string
+        /// </summary>
+        /// <param name="serverConnectionHandlerID"></param>
+        /// <param name="ts3ChannelID"></param>
         public void LinkDiscordChannel(ulong serverConnectionHandlerID, ulong ts3ChannelID)
         {
             var list = ConnectionHandler.GetServerVoiceChannelList();
@@ -200,6 +222,63 @@ namespace TeamCord.Plugin
             }
         }
 
+        /// <summary>
+        /// Call this function when own client joins or leaves a ts3 channel to handle the discord connection
+        /// </summary>
+        /// <param name="serverConnectionHandler"></param>
+        /// <param name="clientId"></param>
+        /// <param name="newChannel"></param>
+        public void Ts3ChannelChanged(ulong serverConnectionHandler, ushort clientId, ulong newChannel)
+        {
+            //when own client joins or leaves a ts3 channel
+            if (Instance.ClientID == clientId)
+            {
+                if (!Instance.ConnectionHandler.Connected)
+                    return;
+                string description;
+                Instance.Functions.getChannelVariableAsString(serverConnectionHandler, newChannel, ChannelProperties.CHANNEL_DESCRIPTION, out description);
+
+                if (description == null)
+                    return;
+                var id = Helpers.ExtractChannelID(description);
+
+                if (id == 0)
+                {
+                    Instance.ConnectionHandler.LeaveChannel();
+                }
+                else
+                {
+                    Instance.ConnectionHandler.LeaveChannel();
+                    if (Instance.Settings.AutomaticChannelJoin)
+                    {
+                        Instance.ConnectionHandler.JoinChannel(id);
+                    }
+                    else
+                    {
+                        var channelName = Instance.ConnectionHandler.GetChannelName(id);
+                        var serverName = Instance.ConnectionHandler.GetServerName(id);
+                        if (MessageBox.Show($"Connect to discord channel {channelName} on Server {serverName}?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        {
+                            Instance.ConnectionHandler.JoinChannel(id);
+                        }
+                    }
+                }
+            }
+            //when another user joins or leaves the ts3 channel where own client is connected to
+            else
+            {
+                //we only need to do that if another other joins our channel
+                if (TSPlugin.Instance.CurrentChannel == newChannel)
+                {
+                    Logging.Log("TS3 User joined channel, trying to apply DiscordAutoMuteUser");
+                    TSPlugin.Instance.DiscordAutoMuteUser(serverConnectionHandler, clientId);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Opens a new window with information of the current connected discord channel
+        /// </summary>
         public void ShowConnectionInfo()
         {
             var connInfo = ConnectionHandler.ConnectionInfo;
@@ -207,38 +286,36 @@ namespace TeamCord.Plugin
             connectionInfoWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// Opens the TeamCord About window
+        /// </summary>
         public void ShowAboutWindow()
         {
             AboutWindow aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
 
-        public void Shutdown()
-        {
-            if (ConnectionHandler != null)
-            {
-                ConnectionHandler.ConnectionChanged -= ConnectionHandler_ConnectionChanged;
-                ConnectionHandler.Dispose();
-            }
-            if (_trayIcon != null)
-            {
-                TrayIcon.Visible = false;
-                _trayIcon.Dispose();
-                TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
-            }
-            _settings = null;
-        }
-
+        /// <summary>
+        /// Turn of speakers in discord
+        /// </summary>
+        /// <param name="value"></param>
         public void Deaf(bool value)
         {
             ConnectionHandler.CurrentVoiceChannelService.Deaf = value;
         }
 
+        /// <summary>
+        /// Turn off microphone in discord
+        /// </summary>
+        /// <param name="value"></param>
         public void Mute(bool value)
         {
             ConnectionHandler.CurrentVoiceChannelService.Mute = value;
         }
 
+        /// <summary>
+        /// Check if speakers or microphone are muted in teamspeak and apply it state to discord too
+        /// </summary>
         public void ApplyTs3MuteStateToDiscord()
         {
             Logging.Log("Applying ts3 mute state...", LogLevel.LogLevel_DEBUG);
@@ -254,8 +331,12 @@ namespace TeamCord.Plugin
             }
             ConnectionHandler.CurrentVoiceChannelService.Mute = input != 0;
             ConnectionHandler.CurrentVoiceChannelService.Deaf = output != 0;
+            Logging.Log($"Current ts3 mute state: Deaf={output} Mute={input}", LogLevel.LogLevel_DEBUG);
         }
 
+        /// <summary>
+        /// Creates own ts3 client description with the discord id as json string (required for auto mute)
+        /// </summary>
         private void UpdateClientDescription()
         {
             if (ConnectionHandler.OwnID == 0 || !Settings.EnableDiscordID)
@@ -305,6 +386,10 @@ namespace TeamCord.Plugin
             }
         }
 
+        /// <summary>
+        /// Reads the ts3 client descriptions and checks for discord id (json string)
+        /// </summary>
+        /// <returns>TS3 Client ID and Discord Client ID</returns>
         private Dictionary<ushort, ulong> GetDiscordClientIds()
         {
             ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
