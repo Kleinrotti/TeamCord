@@ -33,7 +33,7 @@ namespace TeamCord.Core
         }
 
         /// <summary>
-        /// Returns a list with the usernames w
+        /// Get all users in the current connected channel
         /// </summary>
         public IList<string> UsersInCurrentChannel
         {
@@ -179,6 +179,11 @@ namespace TeamCord.Core
 
         #endregion Connection events
 
+        /// <summary>
+        /// Gets all users in the given channel
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns>A list of usernames</returns>
         public IList<string> GetUsersInChannel(ulong channelId)
         {
             IList<string> list = new List<string>();
@@ -354,8 +359,7 @@ namespace TeamCord.Core
                     _bufferBytes[i] = sample[i];
                 }
             }
-
-            Task.Run(() => { _voiceChannelService.SendVoiceData(_bufferBytes); });
+            _voiceChannelService.SendVoiceData(_bufferBytes);
         }
 
         private short[] ToStereo(short[] buf)

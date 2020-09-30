@@ -21,6 +21,9 @@ namespace TeamCord.Core
         /// </summary>
         public static int BalloonTimeout { get; set; } = 3;
 
+        /// <summary>
+        /// Handles clicks on the volume menu
+        /// </summary>
         public static event EventHandler VolumeMenuItemClicked;
 
         /// <summary>
@@ -38,6 +41,9 @@ namespace TeamCord.Core
             }
         }
 
+        /// <summary>
+        /// Get or sets a value wether the volume menu is enabled or not
+        /// </summary>
         public static bool VolumeMenuItemEnabled
         {
             get
@@ -65,6 +71,9 @@ namespace TeamCord.Core
             }
         }
 
+        /// <summary>
+        /// Initializes the tray icon
+        /// </summary>
         public static void Initialize()
         {
             Icon = new NotifyIcon();
