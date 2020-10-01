@@ -22,35 +22,13 @@ namespace TeamCord.Core
         /// <summary>
         /// Request a discord login token
         /// </summary>
-        /// <returns>Token</returns>
-        public string RequestToken()
+        /// <returns>AuthResult object which could store the token or indicates if MFA is enabled</returns>
+        public AuthResult RequestToken()
         {
             Logging.Log("Requesting login token");
-            return getToken();
-        }
-
-        /// <summary>
-        /// Check if the credentials are valid
-        /// </summary>
-        /// <returns>True if valid, false if not</returns>
-        public bool ValidateCredentials()
-        {
-            Logging.Log("Validating credentials");
-            var token = getToken();
-            if (token != "")
-            {
-                token = null;
-                return true;
-            }
-            else
-                return false;
-        }
-
-        private string getToken()
-        {
             try
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://discord.com/api/v8/auth/login");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
@@ -70,9 +48,55 @@ namespace TeamCord.Core
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
+                    var definition = new { token = "", mfa = false, ticket = "" };
+                    var r = JsonConvert.DeserializeObject<AuthResult>(result);
+                    Logging.Log("Received json response", LogLevel.LogLevel_DEBUG);
+                    return r;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Request a discord mfa login token. Be sure that you set Totp property before.
+        /// </summary>
+        /// <param name="OAuthCode"></param>
+        /// <returns></returns>
+        public string RequestMfaToken(AuthResult authResult)
+        {
+            Logging.Log("Requesting mfa login token");
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://discord.com/api/v8/auth/mfa/totp");
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "POST";
+
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string json = JsonConvert.SerializeObject(new
+                    {
+                        code = authResult.Totp,
+                        authResult.ticket,
+                    });
+
+                    streamWriter.Write(json);
+                }
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
                     var definition = new { token = "" };
                     var token = JsonConvert.DeserializeAnonymousType(result, definition).token;
-                    Logging.Log("Token successfully requested");
+                    if (token != null)
+                        Logging.Log("MFA token successfully requested");
+                    else
+                        Logging.Log("Invalid 2fa code");
                     return token;
                 }
             }

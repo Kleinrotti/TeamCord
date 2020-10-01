@@ -12,7 +12,7 @@
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Center">
             <StackPanel x:Name="stackPanelSliders" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Name="textBlock_noUsers" Text="No other users in discord channel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                <TextBlock Name="textBlock_noUsers" Text="No other users in discord channel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

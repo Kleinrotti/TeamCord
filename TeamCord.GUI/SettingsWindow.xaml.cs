@@ -59,20 +59,42 @@ namespace TeamCord.GUI
             using (var auth = new Auth(textBox_Email.Text, passwordBox_Password.Password))
             {
                 var token = auth.RequestToken();
-                if (token != null)
+                if (token == null)
                 {
-                    MessageBox.Show("Credentials are valid and login token stored encrypted.");
-                    var storage = new DataStorage();
-                    _settings.Token = PluginUserCredential.StoreData(Encoding.Unicode.GetBytes(token));
-                    storage.StoreSettings(_settings);
-                    _changed = true;
-                    stackPanelLogin.Visibility = Visibility.Collapsed;
-                    buttonLogout.Visibility = Visibility.Visible;
+                    MessageBox.Show("Login failed. Possible reasons:\n- Wrong credentials" +
+                        "\n- Login from new IP address (go to discord.com and login there once to complete a captcha and try again then)");
+                    return;
                 }
-                else
+                if (token.token != null)
                 {
-                    MessageBox.Show("Entered credentials are not valid or MFA is enabled!");
+                    Store(token.token);
                 }
+                else if (token.mfa && token.ticket != null)
+                {
+                    TotpWindow totpWindow = new TotpWindow(totpCallback);
+                    totpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    totpWindow.ShowDialog();
+
+                    void totpCallback(string totp)
+                    {
+                        token.Totp = totp;
+                        var mfaToken = auth.RequestMfaToken(token);
+                        if (mfaToken != null)
+                            Store(mfaToken);
+                        else
+                            MessageBox.Show("Invalid 2fa code");
+                    }
+                }
+            }
+            void Store(string token)
+            {
+                MessageBox.Show("Successfull logged in");
+                var storage = new DataStorage();
+                _settings.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(token));
+                storage.StoreSettings(_settings);
+                _changed = true;
+                stackPanelLogin.Visibility = Visibility.Collapsed;
+                buttonLogout.Visibility = Visibility.Visible;
             }
         }
 

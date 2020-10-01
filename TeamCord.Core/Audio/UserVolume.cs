@@ -9,10 +9,12 @@
         /// Unique identifier of the user
         /// </summary>
         public ulong UserID { get; protected set; }
+
         /// <summary>
         /// Current volume of the user
         /// </summary>
         public float Volume { get; protected set; }
+
         /// <summary>
         /// Users username
         /// </summary>

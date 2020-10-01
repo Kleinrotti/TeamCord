@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\ISoundUser.cs" />
+    <Compile Include="Discord\AuthResult.cs" />
     <Compile Include="Discord\BaseConnectionInfo.cs" />
     <Compile Include="ControlTypeAttribute.cs" />
     <Compile Include="DataStorage.cs" />
