@@ -337,7 +337,7 @@ namespace TeamCord.Core
         /// </summary>
         /// <param name="samples"></param>
         /// <param name="channels"></param>
-        public unsafe void VoiceData(short[] samples, int channels)
+        public unsafe void SendVoiceData(short[] samples, int channels)
         {
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)

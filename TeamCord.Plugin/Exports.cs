@@ -127,12 +127,12 @@ namespace TeamCord.Plugin
                 if (*edited == 2)
                 {
                     //channels is always 1
-                    TSPlugin.Instance.ConnectionHandler.VoiceData(samples, channels);
+                    TSPlugin.Instance.ConnectionHandler.SendVoiceData(samples, channels);
                 }
             }
             else
             {
-                TSPlugin.Instance.ConnectionHandler.VoiceData(samples, channels);
+                TSPlugin.Instance.ConnectionHandler.SendVoiceData(samples, channels);
             }
         }
 
