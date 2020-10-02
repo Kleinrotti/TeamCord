@@ -34,6 +34,9 @@ namespace TeamCord.Core
         {
             if ((logLevel == LogLevel.LogLevel_DEBUG && DebugLogging) || logLevel != LogLevel.LogLevel_DEBUG)
                 logCallback(message, logLevel);
+#if DEBUG
+            Console.WriteLine("<Teamcord>" + message);
+#endif
         }
 
         /// <summary>
@@ -48,6 +51,9 @@ namespace TeamCord.Core
                 logCallbackException(exception, logLevel);
             else
                 logCallback(exception.Message, logLevel);
+#if DEBUG
+            Console.WriteLine("<Teamcord>" + exception.Message);
+#endif
         }
     }
 }

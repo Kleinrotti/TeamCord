@@ -79,7 +79,7 @@ namespace TeamCord.Plugin
 #if DEBUG
         public string PluginVersion { get; } = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
 #else
-        public string PluginVersion { get; set; }= typeof(TSPlugin).Assembly.GetName().Version.ToString();
+        public string PluginVersion { get; set; } = typeof(TSPlugin).Assembly.GetName().Version.ToString();
 #endif
         public int ApiVersion { get; } = 23;
         public string Author { get; } = "Kleinrotti";
@@ -155,9 +155,11 @@ namespace TeamCord.Plugin
             //Enable/disable teamspeak menuitems
             try
             {
+                Logging.Log($"Connection changed -> Type: {e.ConnectionType} Connected: {e.Connected}", LogLevel.LogLevel_DEBUG);
                 switch (e.ConnectionType)
                 {
                     case ConnectionType.Discord:
+
                         Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnect, !e.Connected);
                         Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, e.Connected);
                         Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemDisconnect, e.Connected);
