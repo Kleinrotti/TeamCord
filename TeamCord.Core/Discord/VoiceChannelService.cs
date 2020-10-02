@@ -97,7 +97,6 @@ namespace TeamCord.Core
         {
             try
             {
-                //await LeaveChannel();
                 _voiceChannel = voiceChannel;
                 _audioClient = await _voiceChannel.ConnectAsync();
                 _audioClient.Disconnected += _audioClient_Disconnected;
@@ -155,7 +154,6 @@ namespace TeamCord.Core
             if (_audioClient != null && _audioClient.ConnectionState == ConnectionState.Connected)
             {
                 await _voiceChannel.DisconnectAsync();
-                //await _audioClient.StopAsync();
             }
         }
 
@@ -211,13 +209,16 @@ namespace TeamCord.Core
             _soundServices.Add(soundsrv);
             try
             {
-                var buffer = new byte[3840];
-                soundsrv.StartPlayback();
-                while (await stream.ReadAsync(buffer, 0, buffer.Length) > 0)
+                await Task.Run(async () =>
                 {
-                    if (!Deaf)
-                        soundsrv.AddSamples(buffer);
-                }
+                    var buffer = new byte[3840];
+                    soundsrv.StartPlayback();
+                    while (await stream.ReadAsync(buffer, 0, buffer.Length) > 0)
+                    {
+                        if (!Deaf)
+                            soundsrv.AddSamples(buffer);
+                    }
+                });
             }
             catch (Exception ex)
             {

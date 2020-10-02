@@ -41,8 +41,10 @@ namespace TeamCord.Core
             {
                 if (_currentChannel == null)
                     return new List<string>();
-                var users = _client.GetChannel(_currentChannel.Id).Users;
+                var users = _client.GetChannel(_currentChannel.Id)?.Users;
                 IList<string> list = new List<string>();
+                if (users == null)
+                    return list;
                 foreach (var v in users)
                 {
                     list.Add(v.Username);
@@ -113,7 +115,7 @@ namespace TeamCord.Core
 
         private Task _client_UserVoiceStateUpdated(SocketUser arg1, SocketVoiceState arg2, SocketVoiceState arg3)
         {
-            if (arg2.VoiceChannel.Id != arg3.VoiceChannel.Id)
+            if (arg2.VoiceChannel?.Id != arg3.VoiceChannel?.Id)
             {
                 //handle voice channel moving of user
             }
@@ -126,7 +128,7 @@ namespace TeamCord.Core
         {
             Logging.Log($"Client logged out");
             var status = new DiscordStatusNotification("TeamCord", "Status");
-            status.UpdateStatus(_client.LoginState);
+            status.UpdateStatus(LoginState.LoggedOut);
             return Task.CompletedTask;
         }
 
@@ -156,7 +158,7 @@ namespace TeamCord.Core
             Logging.Log($"Client disconnected");
             Connected = false;
             var status = new DiscordStatusNotification("TeamCord", "Status");
-            status.UpdateStatus(_client.LoginState);
+            status.UpdateStatus(LoginState.LoggedOut);
             ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Discord, false));
             return Task.CompletedTask;
         }
@@ -187,27 +189,24 @@ namespace TeamCord.Core
         public IList<string> GetUsersInChannel(ulong channelId)
         {
             IList<string> list = new List<string>();
-            try
+
+            if (_client.ConnectionState != ConnectionState.Connected)
+                return list;
+            var users = _client.GetChannel(channelId)?.Users;
+            if (users == null)
+                return list;
+            foreach (var v in users)
             {
-                if (_client.ConnectionState != ConnectionState.Connected)
-                    return list;
-                var users = _client.GetChannel(channelId).Users;
-                foreach (var v in users)
-                {
-                    list.Add(v.Username);
-                }
+                list.Add(v.Username);
             }
-            catch (NullReferenceException ex)
-            {
-                Logging.Log(ex, LogLevel.LogLevel_DEBUG);
-            }
+
             return list;
         }
 
         private Task Client_Log(LogMessage arg)
         {
 #if DEBUG
-            Console.WriteLine(arg.Message);
+            Console.WriteLine("<Discord.net>" + arg.Message);
 #endif
             return Task.CompletedTask;
         }
@@ -224,10 +223,12 @@ namespace TeamCord.Core
                     await _client.LoginAsync(0, _token, false);
                     await _client.StartAsync();
                     Logging.Log("Waiting for established connection to discord...");
+                    //wait for connection
                     while (_client.ConnectionState != ConnectionState.Connected)
                     {
                         await Task.Delay(25);
                     }
+                    Logging.Log("Connection established to discord");
                 }
                 catch (Exception ex)
                 {
@@ -317,6 +318,8 @@ namespace TeamCord.Core
         {
             var guilds = _client.Guilds;
             Dictionary<string, IDictionary<ulong, string>> values = new Dictionary<string, IDictionary<ulong, string>>();
+            if (guilds == null)
+                return values;
             foreach (var v in guilds)
             {
                 var guildChannels = v.Channels;
