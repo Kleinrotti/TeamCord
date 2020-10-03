@@ -20,6 +20,7 @@
             <TextBlock Name="textBlockGithub" Height="27" />
             <TextBlock Name="textBlockUpdate" Height="27" />
         </StackPanel>
+        <TextBlock Name="textBlockBugReport" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="9" />
         <Label Content="Trayicon made by Freepik from www.flaticon.com" Grid.Row="2" VerticalAlignment="Bottom" FontSize="9" HorizontalAlignment="Right" />
     </Grid>
 </Window>

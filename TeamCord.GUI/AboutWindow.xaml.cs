@@ -29,6 +29,11 @@ namespace TeamCord.GUI
             github.Inlines.Add("https://github.com/Kleinrotti/TeamCord");
             github.RequestNavigate += Github_RequestNavigate;
             textBlockGithub.Inlines.Add(github);
+            Hyperlink bugReport = new Hyperlink();
+            bugReport.NavigateUri = new Uri("https://github.com/Kleinrotti/TeamCord/issues");
+            bugReport.Inlines.Add("Report a bug");
+            bugReport.RequestNavigate += BugReport_RequestNavigate;
+            textBlockBugReport.Inlines.Add(bugReport);
             Updater u = new Updater(_version);
             u.CheckUpdate();
             if (u.UpdateAvailable)
@@ -43,6 +48,12 @@ namespace TeamCord.GUI
             {
                 textBlockUpdate.Text = "You have the latest version";
             }
+        }
+
+        private void BugReport_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.AbsoluteUri);
+            e.Handled = true;
         }
 
         private void Github_RequestNavigate(object sender, RequestNavigateEventArgs e)
