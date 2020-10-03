@@ -108,6 +108,7 @@
     <Compile Include="Enums\LogTypes.cs" />
     <Compile Include="Notification\NotificationBase.cs" />
     <Compile Include="Notification\DiscordStatusNotification.cs" />
+    <Compile Include="Notification\UpdateNotification.cs" />
     <Compile Include="PluginSettings.cs" />
     <Compile Include="PluginUserCredential.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

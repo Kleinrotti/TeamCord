@@ -47,5 +47,10 @@ namespace TeamCord.Core
         [Description("When enabled, TeamCord creates a client description for your teamspeak user with your discord id.\n" +
             " This allows automuting when other users using TeamCord too and are also connected to that same channel to avoid doubled audio. \nNOTE: Other teamspeak users can find your discord profile this way too!")]
         public bool EnableDiscordID { get; set; }
+
+        [ControlType(typeof(CheckBox))]
+        [DisplayName("Check for updates on startup")]
+        [Description("Automatically check for Teamcord updates when Teamspeak starts.")]
+        public bool AutoUpdateCheck { get; set; }
     }
 }

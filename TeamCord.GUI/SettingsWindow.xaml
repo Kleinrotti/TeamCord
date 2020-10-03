@@ -8,7 +8,7 @@
         WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Title="Settings" Height="300" Width="300">
+        Title="Settings" Height="350" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
@@ -31,6 +31,7 @@
             <CheckBox Name="checkBox_DebugLogging" Content="Debug logging" />
             <CheckBox Name="checkBox_Notifications" Content="Notifications" />
             <CheckBox Name="checkBox_Discordid" Content="Discord auto mute" />
+            <CheckBox Name="checkBox_AutoUpdateCheck" Content="Check for updates on startup" />
             <Button Grid.Row="1" Name="button_Save" Content="Apply" Width="50" Click="button_Save_Click" />
         </StackPanel>
         <Button Name="buttonLogout" Grid.Row="1" Content="Logout" Click="buttonLogout_Click" Visibility="Collapsed" Width="50" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" />

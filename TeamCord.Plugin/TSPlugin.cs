@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TeamCord.Core;
@@ -118,6 +119,18 @@ namespace TeamCord.Plugin
                 TrayIcon.Visible = true;
                 TrayIcon.ShowNotifications = _settings.Notifications;
                 TrayIcon.VolumeMenuItemClicked += TrayIcon_VolumeChangedClicked;
+                if (Settings.AutoUpdateCheck)
+                {
+                    Updater update = new Updater(new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+                    update.CheckUpdate();
+                    if (update.UpdateAvailable)
+                    {
+                        new UpdateNotification(update.Version.ToString()).Notify(new Action(() =>
+                        {
+                            Process.Start(update.LatestVersionUrl.AbsoluteUri);
+                        }));
+                    }
+                }
             }
             catch (Exception ex)
             {
