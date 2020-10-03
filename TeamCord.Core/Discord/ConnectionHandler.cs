@@ -114,9 +114,12 @@ namespace TeamCord.Core
 
         private Task _client_UserVoiceStateUpdated(SocketUser arg1, SocketVoiceState arg2, SocketVoiceState arg3)
         {
-            if (arg2.VoiceChannel?.Id != arg3.VoiceChannel?.Id)
+            //handle voice channel moving of user
+            if (arg2.VoiceChannel != null && arg3.VoiceChannel != null)
             {
-                //handle voice channel moving of user
+                //leave discord channel when another users moves me
+                LeaveChannel();
+                arg3.VoiceChannel.DisconnectAsync();
             }
             return Task.CompletedTask;
         }
