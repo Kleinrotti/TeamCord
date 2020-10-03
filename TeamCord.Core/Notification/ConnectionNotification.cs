@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace TeamCord.Core.Notification
+namespace TeamCord.Core
 {
     public class ConnectionNotification : NotificationBase
     {

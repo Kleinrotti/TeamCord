@@ -1,4 +1,6 @@
-﻿namespace TeamCord.Core
+﻿using System;
+
+namespace TeamCord.Core
 {
     /// <summary>
     /// Base class for Notifications objects
@@ -16,6 +18,11 @@
         public string Title { get; protected set; }
 
         protected TrayIcon trayIcon { get; set; }
+
+        /// <summary>
+        /// Action which should be executed when the balloon tip is clicked
+        /// </summary>
+        public Action BalloonClick { get; protected set; }
 
         /// <summary>
         /// Initializes a new notification object

@@ -10,6 +10,7 @@ namespace TeamCord.Core
         protected static NotifyIcon Icon;
         protected static ContextMenu Menu;
         protected static MenuItem _volumeMenuItem;
+        protected static Action OnBalloonClick;
 
         /// <summary>
         /// Enable or disable notifications
@@ -85,7 +86,13 @@ namespace TeamCord.Core
             Icon.Icon = Properties.Resource.logo;
             Icon.Visible = true;
             Icon.ContextMenu = Menu;
+            Icon.BalloonTipClicked += Icon_BalloonTipClicked;
             Logging.Log("Tray icon loaded");
+        }
+
+        private static void Icon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            OnBalloonClick?.Invoke();
         }
 
         private static void OnVolumeMenuItemClick(object sender, EventArgs e)
@@ -100,7 +107,10 @@ namespace TeamCord.Core
         public void ShowNotification(INotification notification)
         {
             if (ShowNotifications)
+            {
+                OnBalloonClick = notification.BalloonClick;
                 Icon.ShowBalloonTip(BalloonTimeout, notification.Title, notification.Message, ToolTipIcon.Info);
+            }
         }
 
         /// <summary>
