@@ -28,7 +28,6 @@ namespace TeamCord.Core
 
         public UserVolume UserVolume
         {
-            //TODO set volume
             get
             {
                 return new UserVolume(UserID, _volumeSampleProvider.Volume, Nickname);
@@ -78,8 +77,8 @@ namespace TeamCord.Core
             };
             _waveOut = new WaveOut
             {
-                DesiredLatency = 800,
-                NumberOfBuffers = 3
+                DesiredLatency = 900,
+                NumberOfBuffers = 4
             };
             _waveOut.PlaybackStopped += _waveOut_PlaybackStopped;
             _volumeSampleProvider = new VolumeSampleProvider(_waveProvider.ToSampleProvider());
