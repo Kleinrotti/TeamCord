@@ -364,7 +364,7 @@ namespace TeamCord.Core
                     _bufferBytes[i] = sample[i];
                 }
             }
-            _voiceChannelService.SendVoiceData(_bufferBytes);
+            Task.Run(() => { _voiceChannelService.SendVoiceData(_bufferBytes); });
         }
 
         private short[] ToStereo(short[] buf)
