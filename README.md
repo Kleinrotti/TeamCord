@@ -34,7 +34,7 @@ The only things you need is a discord account and this plugin installed for Team
 ### General
 - All operations with discord (linking a channel, joining and so on) are only available when you are logged in! Described below.
 - When opening Teamspeak, a new tray icon should appear which indicates the TeamCord connection status
-- First you have to login to discord. You can do this by opening the Addon settings. NOTE: Currently no accounts with 2FA enabled are supported!
+- First you have to login to discord. You can do this by opening the Addon settings.
   - Open Teamspeak -> Tools -> Options -> Addons -> TeamCord and click on "Settings".
 - If you connect to a Teamspeak server, TeamCord will automatically log you into discord (you can disable this in the settings and login manually via -> Plugins -> TeamCord -> Login).
 - Before you can connect to a Discord channel you have to be a member of that Discord server first with the needed permissions!
