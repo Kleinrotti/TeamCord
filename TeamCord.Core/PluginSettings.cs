@@ -25,7 +25,7 @@ namespace TeamCord.Core
         [ControlType(typeof(CheckBox))]
         [DisplayName("Auto login to discord")]
         [Description("When connecting to a Teamspeak server, TeamCord will log you in to Discord")]
-        public bool DiscordAutoLogin { get; set; } = true;
+        public bool DiscordAutoLogin { get; set; }
 
         [ControlType(typeof(CheckBox))]
         [DisplayName("")]
@@ -51,6 +51,6 @@ namespace TeamCord.Core
         [ControlType(typeof(CheckBox))]
         [DisplayName("Check for updates on startup")]
         [Description("Automatically check for Teamcord updates when Teamspeak starts.")]
-        public bool AutoUpdateCheck { get; set; }
+        public bool AutoUpdateCheck { get; set; } = true;
     }
 }
