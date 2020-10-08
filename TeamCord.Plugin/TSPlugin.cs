@@ -121,7 +121,7 @@ namespace TeamCord.Plugin
                 TrayIcon.VolumeMenuItemClicked += TrayIcon_VolumeChangedClicked;
                 if (Settings.AutoUpdateCheck)
                 {
-                    Updater update = new Updater(new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+                    Updater update = new Updater(Assembly.GetExecutingAssembly().GetName().Version);
                     update.CheckUpdate();
                     if (update.UpdateAvailable)
                     {
