@@ -11,6 +11,9 @@ namespace TeamCord.Core
 {
     public class VoiceChannelService : IDisposable
     {
+        private const string _audioJoin = "https://discordapp.com/assets/5dd43c946894005258d85770f0d10cff.mp3﻿";
+        private const string _audioLeave = "https://discordapp.com/assets/7e125dc075ec6e5ae796e4c3ab83abb3.mp3﻿";
+
         private AudioStream _outStream;
         private IAudioClient _audioClient;
         private IVoiceChannel _voiceChannel;
@@ -102,8 +105,13 @@ namespace TeamCord.Core
                 _audioClient.Disconnected += _audioClient_Disconnected;
                 _audioClient.StreamCreated += _audioClient_StreamCreated;
                 _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
-                _outStream = _audioClient.CreatePCMStream(AudioApplication.Mixed, null, 100, 5);
+                _outStream = _audioClient.CreatePCMStream(AudioApplication.Voice);
                 VoiceConnected?.Invoke(this, EventArgs.Empty);
+                using (WebSoundEffect joinSound = new WebSoundEffect(_audioJoin))
+                {
+                    joinSound.LoadStream();
+                    joinSound.Play();
+                }
                 await ListenToUsersAsync();
             }
             catch (Exception ex) { Logging.Log(ex); }
@@ -117,12 +125,24 @@ namespace TeamCord.Core
                 return Task.CompletedTask;
             _soundServices.Remove(v);
             v.Dispose();
+            //play sound when a users leaves the channel
+            using (WebSoundEffect leaveSound = new WebSoundEffect(_audioLeave))
+            {
+                leaveSound.LoadStream();
+                leaveSound.Play();
+            }
             return Task.CompletedTask;
         }
 
         private Task _audioClient_Disconnected(Exception arg)
         {
             VoiceDisconnected?.Invoke(this, EventArgs.Empty);
+
+            using (WebSoundEffect leaveSound = new WebSoundEffect(_audioLeave))
+            {
+                leaveSound.LoadStream();
+                leaveSound.Play();
+            }
             return Task.CompletedTask;
         }
 
@@ -145,6 +165,11 @@ namespace TeamCord.Core
         {
             //Triggers when user joined to the channel
             Logging.Log($"Stream created {userID}", LogLevel.LogLevel_DEBUG);
+            using (WebSoundEffect joinSound = new WebSoundEffect(_audioJoin))
+            {
+                joinSound.LoadStream();
+                joinSound.Play();
+            }
             return Task.Run(() => { ListenUserAsync(arg2, userID); });
         }
 
