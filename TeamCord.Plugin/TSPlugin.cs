@@ -87,12 +87,25 @@ namespace TeamCord.Plugin
         public string Description { get; } = "Voice channel bridge between Teamspeak and Discord";
         public string PluginID { get; set; }
 
+        public string PluginDirectory
+        {
+            get
+            {
+                var p = Marshal.AllocHGlobal(255);
+                Functions.getPluginPath(p, 255, PluginID);
+                var path = Marshal.PtrToStringAnsi(p);
+                Marshal.FreeHGlobal(p);
+                return path;
+            }
+        }
+
         public int Init()
         {
             Stopwatch watch = new Stopwatch();
             try
             {
                 watch.Start();
+                Environment.CurrentDirectory = PluginDirectory + "TeamCord";
                 //logging with callback to ts3 client log
                 var log = new Logging(Log, Log);
                 Logging.DebugLogging = Settings.DebugLogging;

@@ -11,8 +11,9 @@ namespace TeamCord.Core
 {
     public class VoiceChannelService : IDisposable
     {
-        private const string _audioJoin = "https://discordapp.com/assets/5dd43c946894005258d85770f0d10cff.mp3﻿";
-        private const string _audioLeave = "https://discordapp.com/assets/7e125dc075ec6e5ae796e4c3ab83abb3.mp3﻿";
+        private const string _audioJoin = "user_join.mp3";
+        private const string _audioLeave = "user_leave.mp3";
+        private const string _audioDisconnected = "voice_disconnected.mp3";
 
         private AudioStream _outStream;
         private IAudioClient _audioClient;
@@ -107,7 +108,7 @@ namespace TeamCord.Core
                 _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
                 _outStream = _audioClient.CreatePCMStream(AudioApplication.Voice);
                 VoiceConnected?.Invoke(this, EventArgs.Empty);
-                using (WebSoundEffect joinSound = new WebSoundEffect(_audioJoin))
+                using (SoundEffect joinSound = new SoundEffect(_audioJoin))
                 {
                     joinSound.LoadStream();
                     joinSound.Play();
@@ -126,7 +127,7 @@ namespace TeamCord.Core
             _soundServices.Remove(v);
             v.Dispose();
             //play sound when a users leaves the channel
-            using (WebSoundEffect leaveSound = new WebSoundEffect(_audioLeave))
+            using (SoundEffect leaveSound = new SoundEffect(_audioLeave))
             {
                 leaveSound.LoadStream();
                 leaveSound.Play();
@@ -138,7 +139,7 @@ namespace TeamCord.Core
         {
             VoiceDisconnected?.Invoke(this, EventArgs.Empty);
 
-            using (WebSoundEffect leaveSound = new WebSoundEffect(_audioLeave))
+            using (SoundEffect leaveSound = new SoundEffect(_audioDisconnected))
             {
                 leaveSound.LoadStream();
                 leaveSound.Play();
@@ -165,7 +166,7 @@ namespace TeamCord.Core
         {
             //Triggers when user joined to the channel
             Logging.Log($"Stream created {userID}", LogLevel.LogLevel_DEBUG);
-            using (WebSoundEffect joinSound = new WebSoundEffect(_audioJoin))
+            using (SoundEffect joinSound = new SoundEffect(_audioJoin))
             {
                 joinSound.LoadStream();
                 joinSound.Play();
