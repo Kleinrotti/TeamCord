@@ -37,7 +37,7 @@ namespace TeamCord.Core
         }
 
         /// <summary>
-        /// Return a list of tuples with each volume, userid and nickname
+        /// Returns a list of UserVolume objects
         /// </summary>
         public IList<UserVolume> UserVolumes
         {
@@ -108,7 +108,7 @@ namespace TeamCord.Core
                 _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
                 _outStream = _audioClient.CreatePCMStream(AudioApplication.Voice);
                 VoiceConnected?.Invoke(this, EventArgs.Empty);
-                using (SoundEffect joinSound = new SoundEffect(_audioJoin))
+                using (IEffectPlayback joinSound = new Mp3SoundEffect(_audioJoin))
                 {
                     joinSound.LoadStream();
                     joinSound.Play();
@@ -127,7 +127,7 @@ namespace TeamCord.Core
             _soundServices.Remove(v);
             v.Dispose();
             //play sound when a users leaves the channel
-            using (SoundEffect leaveSound = new SoundEffect(_audioLeave))
+            using (IEffectPlayback leaveSound = new Mp3SoundEffect(_audioLeave))
             {
                 leaveSound.LoadStream();
                 leaveSound.Play();
@@ -139,7 +139,7 @@ namespace TeamCord.Core
         {
             VoiceDisconnected?.Invoke(this, EventArgs.Empty);
 
-            using (SoundEffect leaveSound = new SoundEffect(_audioDisconnected))
+            using (IEffectPlayback leaveSound = new Mp3SoundEffect(_audioDisconnected))
             {
                 leaveSound.LoadStream();
                 leaveSound.Play();
@@ -166,7 +166,7 @@ namespace TeamCord.Core
         {
             //Triggers when user joined to the channel
             Logging.Log($"Stream created {userID}", LogLevel.LogLevel_DEBUG);
-            using (SoundEffect joinSound = new SoundEffect(_audioJoin))
+            using (IEffectPlayback joinSound = new Mp3SoundEffect(_audioJoin))
             {
                 joinSound.LoadStream();
                 joinSound.Play();

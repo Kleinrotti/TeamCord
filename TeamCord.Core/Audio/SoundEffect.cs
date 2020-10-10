@@ -7,7 +7,7 @@ namespace TeamCord.Core
     /// <summary>
     /// Playback mp3 audio files
     /// </summary>
-    internal class SoundEffect : IDisposable
+    internal class Mp3SoundEffect : IEffectPlayback
     {
         protected WaveOut WaveOut;
         protected WaveStream Stream;
@@ -17,23 +17,17 @@ namespace TeamCord.Core
         /// Creates a new SoundEffect instance with a given url to mp3 file. Always use this class in a using block!
         /// </summary>
         /// <param name="url"></param>
-        public SoundEffect(string url)
+        public Mp3SoundEffect(string url)
         {
             Url = url;
         }
 
-        /// <summary>
-        /// Initiates the stream for playback
-        /// </summary>
         public virtual void LoadStream()
         {
             Stream = new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(
                 new Mp3FileReader(Url)));
         }
 
-        /// <summary>
-        /// Playback the audio data
-        /// </summary>
         public virtual void Play()
         {
             try

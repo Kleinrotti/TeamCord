@@ -8,7 +8,7 @@ namespace TeamCord.Core
     /// <summary>
     /// Playback mp3 audio from the web
     /// </summary>
-    internal class WebSoundEffect : SoundEffect
+    internal class WebMp3SoundEffect : Mp3SoundEffect
     {
         protected Stream WebStream;
 
@@ -16,7 +16,7 @@ namespace TeamCord.Core
         /// Creates a new WebSoundEffect instance with a given url to web mp3 file. Always use this class in a using block!
         /// </summary>
         /// <param name="url"></param>
-        public WebSoundEffect(string url) : base(url)
+        public WebMp3SoundEffect(string url) : base(url)
         {
             Url = url;
         }

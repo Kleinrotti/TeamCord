@@ -89,6 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\IEffectPlayback.cs" />
     <Compile Include="Audio\ISoundUser.cs" />
     <Compile Include="Audio\SoundEffect.cs" />
     <Compile Include="Audio\WebSoundEffect.cs" />
