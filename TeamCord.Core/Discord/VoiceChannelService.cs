@@ -15,7 +15,7 @@ namespace TeamCord.Core
         private const string _audioLeave = "user_leave.mp3";
         private const string _audioDisconnected = "voice_disconnected.mp3";
 
-        private AudioStream _outStream;
+        private AudioOutStream _outStream;
         private IAudioClient _audioClient;
         private IVoiceChannel _voiceChannel;
         private static IList<SoundService> _soundServices;
@@ -183,9 +183,10 @@ namespace TeamCord.Core
             }
         }
 
+        [Command(RunMode = RunMode.Async)]
         internal async void SendVoiceData(byte[] buffer)
         {
-            if (_audioClient != null && _outStream != null && _audioClient.ConnectionState == ConnectionState.Connected && !Mute)
+            if (_audioClient != null && _outStream != null && !Mute)
             {
                 try
                 {
