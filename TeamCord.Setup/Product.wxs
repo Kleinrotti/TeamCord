@@ -66,6 +66,18 @@
         <File Id="logo.png" Source="..\TeamCord.Plugin\logo.png" Checksum="no" />
       </Component>
 
+      <Component Id="audio_join" Guid="{90E57E1B-0EC6-4E05-BCC0-57BD89F2E93A}">
+        <File Id="user_join.mp3" Source="user_join.mp3" Checksum="no" />
+      </Component>
+
+      <Component Id="audio_leave" Guid="{A6F0D04D-F147-42FE-9DC2-0801B8DAAF46}">
+        <File Id="user_leave.mp3" Source="user_leave.mp3" Checksum="no" />
+      </Component>
+
+      <Component Id="audio_disconnected" Guid="{5B60B7F8-5761-4543-A625-F50D73F9686F}">
+        <File Id="voice_disconnected.mp3" Source="voice_disconnected.mp3" Checksum="no" />
+      </Component>
+
       <Component Id="Path" Guid="{9112EC61-7526-4F79-BF7C-11884DD7A78D}">
         <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="no" />
       </Component>

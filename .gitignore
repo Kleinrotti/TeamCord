@@ -351,3 +351,4 @@ MigrationBackup/
 /libsodium.dll
 /opus.dll
 *.dll
+*.mp3
