@@ -2,6 +2,8 @@
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,10 +20,24 @@ namespace TeamCord.Core
         private string _token = "";
         private short[] _voiceBuffer;
         private IVoiceChannel _currentChannel;
+        private Stopwatch _sw;
+        private int _counter = 0;
+        private double[] _times = new double[50];
 
         public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 
         public bool Connected { get; private set; }
+
+        /// <summary>
+        /// Returns the average time (us) to process a voice packet
+        /// </summary>
+        public int AverageVoiceProcessTime
+        {
+            get
+            {
+                return (int)_times.Average();
+            }
+        }
 
         public VoiceChannelService CurrentVoiceChannelService
         {
@@ -344,6 +360,7 @@ namespace TeamCord.Core
         /// <param name="channels"></param>
         public unsafe void SendVoiceData(short[] samples, int channels)
         {
+            _sw = Stopwatch.StartNew();
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)
                 _voiceBuffer = ToStereo(samples);
@@ -365,6 +382,18 @@ namespace TeamCord.Core
                 }
             }
             _voiceChannelService.SendVoiceData(_bufferBytes);
+            //measure performance
+            _times[_counter] = _sw.Elapsed.TotalMilliseconds * 1000; //us
+            if (_counter >= _times.Length - 1)
+            {
+                _counter = 0;
+                Logging.Log($"Voice processing time: {AverageVoiceProcessTime}us", LogLevel.LogLevel_DEBUG);
+            }
+            else
+            {
+                _counter++;
+            }
+            _sw.Stop();
         }
 
         private short[] ToStereo(short[] buf)
