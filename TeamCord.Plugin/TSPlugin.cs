@@ -310,8 +310,15 @@ namespace TeamCord.Plugin
         public void ShowConnectionInfo()
         {
             var connInfo = ConnectionHandler.ConnectionInfo;
+
             ConnectionInfoWindow connectionInfoWindow = new ConnectionInfoWindow(connInfo);
+            ConnectionHandler.AverageVoiceProcessTimeChanged += ConnectionHandler_VoiceProcessTimeChanged;
+            void ConnectionHandler_VoiceProcessTimeChanged(object sender, GenericEventArgs<int> e)
+            {
+                connectionInfoWindow.UpdateVoiceProcessTime(e.Data);
+            }
             connectionInfoWindow.ShowDialog();
+            ConnectionHandler.AverageVoiceProcessTimeChanged -= ConnectionHandler_VoiceProcessTimeChanged;
         }
 
         /// <summary>

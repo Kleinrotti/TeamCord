@@ -26,6 +26,8 @@ namespace TeamCord.Core
 
         public event EventHandler<ConnectionChangedEventArgs> ConnectionChanged;
 
+        public event EventHandler<GenericEventArgs<int>> AverageVoiceProcessTimeChanged;
+
         public bool Connected { get; private set; }
 
         /// <summary>
@@ -387,6 +389,7 @@ namespace TeamCord.Core
             if (_counter >= _times.Length - 1)
             {
                 _counter = 0;
+                OnProcessTimeChanged(this, new GenericEventArgs<int>(AverageVoiceProcessTime));
                 Logging.Log($"Voice processing time: {AverageVoiceProcessTime}us", LogLevel.LogLevel_DEBUG);
             }
             else
@@ -394,6 +397,11 @@ namespace TeamCord.Core
                 _counter++;
             }
             _sw.Stop();
+        }
+
+        private void OnProcessTimeChanged(object sender, GenericEventArgs<int> e)
+        {
+            AverageVoiceProcessTimeChanged?.Invoke(sender, e);
         }
 
         private short[] ToStereo(short[] buf)

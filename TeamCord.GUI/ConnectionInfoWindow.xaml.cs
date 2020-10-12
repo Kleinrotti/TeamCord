@@ -12,6 +12,7 @@ namespace TeamCord.GUI
     public partial class ConnectionInfoWindow : Window
     {
         private BaseConnectionInfo _connectionInfo;
+        private Label labelProcessTime = new Label();
 
         public ConnectionInfoWindow(BaseConnectionInfo connectionInfo)
         {
@@ -27,10 +28,22 @@ namespace TeamCord.GUI
             Logging.Log("Connection info window unloaded", LogLevel.LogLevel_DEBUG);
         }
 
+        public void UpdateVoiceProcessTime(int time)
+        {
+            labelProcessTime.Dispatcher.Invoke(() =>
+            {
+                labelProcessTime.Content = time + "us";
+            });
+        }
+
         private void CreateControls()
         {
             if (_connectionInfo is VoiceConnectionInfo val)
             {
+                var lbl = new Label();
+                labelProcessTime = new Label();
+                lbl.Content = "Voice process time";
+                labelProcessTime.Content = "0us";
                 var properties = typeof(VoiceConnectionInfo).GetProperties().ToList();
 
                 foreach (var v in properties)
@@ -47,6 +60,8 @@ namespace TeamCord.GUI
                     labelRight.Content = v.GetValue(val) + attributeValue;
                     stackPanelRight.Children.Add(labelRight);
                 }
+                stackPanelLeft.Children.Add(lbl);
+                stackPanelRight.Children.Add(labelProcessTime);
             }
         }
     }
