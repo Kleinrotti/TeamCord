@@ -9,104 +9,94 @@ namespace TeamCord.GUI
     /// </summary>
     public sealed partial class SettingsWindow : Window
     {
-        private PluginSettings _settings;
-        private bool _changed;
+        public SettingsModel SettingsModelBind { get; }
 
-        public SettingsWindow(PluginSettings settings)
+        public SettingsWindow(SettingsModel settings)
         {
-            Logging.Log("Initializing SettingsWindow", LogLevel.LogLevel_DEBUG);
             InitializeComponent();
-            Closed += SettingsWindow_Closed;
-            _settings = settings;
-            checkBox_Autojoin.IsChecked = _settings.AutomaticChannelJoin;
-            checkBox_AutoLoginDiscord.IsChecked = _settings.DiscordAutoLogin;
-            checkBox_ConnectionStatus.IsChecked = _settings.ShowConnectionStatus;
-            checkBox_RawAudio.IsChecked = _settings.UseTeamspeakVoiceActivation;
-            checkBox_DebugLogging.IsChecked = _settings.DebugLogging;
-            checkBox_Notifications.IsChecked = _settings.Notifications;
-            checkBox_Discordid.IsChecked = _settings.EnableDiscordID;
-            checkBox_AutoUpdateCheck.IsChecked = _settings.AutoUpdateCheck;
-            if (_settings.Token != null)
+            SettingsModelBind = settings;
+            Logging.Log("Initializing SettingsWindow", LogLevel.LogLevel_DEBUG);
+
+            if (SettingsModelBind.Token == null)
             {
-                stackPanelLogin.Visibility = Visibility.Collapsed;
+                Logging.Log("Token missing. Opening login prompt...");
+                var r = Forge.Forms.Show.Window().For(new LoginModel()).Result;
+                if ((string)r.Action == "login")
+                    Login(r.Model.Username, r.Model.Password);
+            }
+            else
+            {
                 buttonLogout.Visibility = Visibility.Visible;
             }
+            ControlSettings.Model = SettingsModelBind;
+            ControlSettings.OnAction += MyForm_OnAction;
+            Closed += SettingsWindow_Closed;
+        }
+
+        private void MyForm_OnAction(object sender, Forge.Forms.ActionEventArgs e)
+        {
+            var storage = new DataStorage<SettingsModel>();
+            storage.Store(SettingsModelBind);
+            Close();
         }
 
         private void SettingsWindow_Closed(object sender, System.EventArgs e)
         {
-            if (_changed)
-                MessageBox.Show("Please reload TeamCord to apply all changed settings.");
         }
 
-        private void button_Save_Click(object sender, RoutedEventArgs e)
+        private bool Login(string username, string password)
         {
-            var newSettings = _settings;
-            newSettings.AutomaticChannelJoin = checkBox_Autojoin.IsChecked ?? false;
-            newSettings.UseTeamspeakVoiceActivation = checkBox_RawAudio.IsChecked ?? false;
-            newSettings.DiscordAutoLogin = checkBox_AutoLoginDiscord.IsChecked ?? false;
-            newSettings.ShowConnectionStatus = checkBox_ConnectionStatus.IsChecked ?? false;
-            newSettings.DebugLogging = checkBox_DebugLogging.IsChecked ?? false;
-            newSettings.Notifications = checkBox_Notifications.IsChecked ?? false;
-            newSettings.EnableDiscordID = checkBox_Discordid.IsChecked ?? false;
-            newSettings.AutoUpdateCheck = checkBox_AutoUpdateCheck.IsChecked ?? false;
-            var storage = new DataStorage();
-            storage.StoreSettings(newSettings);
-            _changed = true;
-            Close();
-        }
-
-        private void buttonLogin_Click(object sender, RoutedEventArgs e)
-        {
-            using (var auth = new Auth(textBox_Email.Text, passwordBox_Password.Password))
+            //TODO
+            using (var auth = new Auth(username, password))
             {
                 var token = auth.RequestToken();
                 if (token == null)
                 {
                     MessageBox.Show("Login failed. Possible reasons:\n- Wrong credentials" +
                         "\n- Login from new IP address (go to discord.com and login there once to complete a captcha and try again then)");
-                    return;
+                    return false;
                 }
                 if (token.token != null)
                 {
                     Store(token.token);
+                    return true;
                 }
                 else if (token.mfa && token.ticket != null)
                 {
-                    TotpWindow totpWindow = new TotpWindow(totpCallback);
-                    totpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    totpWindow.ShowDialog();
-
-                    void totpCallback(string totp)
+                retry:
+                    var r = Forge.Forms.Show.Window().For(new Forge.Forms.Prompt<string> { Title = "Insert two factor code" }).Result;
+                    if (!r.Model.Confirmed)
+                        return false;
+                    token.Totp = r.Model.Value;
+                    var mfaToken = auth.RequestMfaToken(token);
+                    if (mfaToken != null)
                     {
-                        token.Totp = totp;
-                        var mfaToken = auth.RequestMfaToken(token);
-                        if (mfaToken != null)
-                            Store(mfaToken);
-                        else
-                            MessageBox.Show("Invalid 2fa code");
+                        Store(mfaToken);
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid 2fa code");
+                        goto retry;
                     }
                 }
+                return false;
             }
             void Store(string token)
             {
                 MessageBox.Show("Successfull logged in");
-                var storage = new DataStorage();
-                _settings.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(token));
-                storage.StoreSettings(_settings);
-                _changed = true;
-                stackPanelLogin.Visibility = Visibility.Collapsed;
+                var storage = new DataStorage<SettingsModel>();
+                SettingsModelBind.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(token));
+                storage.Store(SettingsModelBind);
                 buttonLogout.Visibility = Visibility.Visible;
             }
         }
 
         private void buttonLogout_Click(object sender, RoutedEventArgs e)
         {
-            _settings.Token = null;
-            var storage = new DataStorage();
-            storage.StoreSettings(_settings);
-            _changed = true;
-            stackPanelLogin.Visibility = Visibility.Visible;
+            var storage = new DataStorage<SettingsModel>();
+            SettingsModelBind.Token = null;
+            storage.Store(SettingsModelBind);
             buttonLogout.Visibility = Visibility.Collapsed;
         }
     }

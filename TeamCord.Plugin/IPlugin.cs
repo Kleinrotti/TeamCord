@@ -7,7 +7,7 @@ namespace TeamCord.Plugin
         /// <summary>
         /// Settings of the plugin
         /// </summary>
-        PluginSettings Settings { get; }
+        SettingsModel Settings { get; }
 
         /// <summary>
         /// Plugin name

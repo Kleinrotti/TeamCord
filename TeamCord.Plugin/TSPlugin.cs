@@ -32,17 +32,17 @@ namespace TeamCord.Plugin
 
         public TS3Functions Functions { get; set; }
         public ConnectionHandler ConnectionHandler { get; private set; }
-        private PluginSettings _settings;
+        private SettingsModel _settings;
         private TrayIcon _trayIcon;
 
-        public PluginSettings Settings
+        public SettingsModel Settings
         {
             get
             {
                 if (_settings == null)
                 {
-                    var v = new DataStorage();
-                    _settings = v.GetSettings();
+                    var v = new DataStorage<SettingsModel>();
+                    _settings = v.Get();
                     return _settings;
                 }
                 else
@@ -112,6 +112,7 @@ namespace TeamCord.Plugin
                 Logging.Log("TeamCord " + typeof(TSPlugin).Assembly.GetName().Version.ToString());
                 Logging.Log("Runtime CLR: " + Environment.Version);
                 //if credentials are not stored disable login button and don't create ConnectionHandler
+
                 if (Settings.Token == null)
                     Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnect, false);
                 else

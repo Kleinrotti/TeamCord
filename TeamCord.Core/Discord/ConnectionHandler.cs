@@ -320,8 +320,8 @@ namespace TeamCord.Core
                 await _voiceChannelService.LeaveChannel();
             try
             {
-                await _client.StopAsync();
-                await _client.LogoutAsync();
+                await _client?.StopAsync();
+                await _client?.LogoutAsync();
             }
             catch (ObjectDisposedException ex)
             {
@@ -420,7 +420,7 @@ namespace TeamCord.Core
         public void Dispose()
         {
             Disconnect();
-            _voiceChannelService.Dispose();
+            _voiceChannelService?.Dispose();
             _client.Dispose();
             _client = null;
             _bufferBytes = null;
