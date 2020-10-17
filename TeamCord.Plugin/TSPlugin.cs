@@ -297,10 +297,10 @@ namespace TeamCord.Plugin
             else
             {
                 //we only need to do that if another other joins our channel
-                if (TSPlugin.Instance.CurrentChannel == newChannel)
+                if (Instance.CurrentChannel == newChannel)
                 {
                     Logging.Log("TS3 User joined channel, trying to apply DiscordAutoMuteUser");
-                    TSPlugin.Instance.DiscordAutoMuteUser(serverConnectionHandler, clientId);
+                    Instance.DiscordAutoMuteUser(serverConnectionHandler, clientId);
                 }
             }
         }

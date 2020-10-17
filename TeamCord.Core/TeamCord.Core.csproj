@@ -150,6 +150,9 @@
     </Compile>
     <Compile Include="Audio\SoundService.cs" />
     <Compile Include="Enums\TS3DeviceType.cs" />
+    <Compile Include="Dialogs\TCDialogResult.cs" />
+    <Compile Include="Dialogs\TCMessageBox.cs" />
+    <Compile Include="Dialogs\TCPrompt.cs" />
     <Compile Include="UnitAttribute.cs" />
     <Compile Include="Updater\Updater.cs" />
     <Compile Include="Updater\UpdaterBase.cs" />

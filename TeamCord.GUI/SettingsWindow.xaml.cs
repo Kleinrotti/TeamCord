@@ -42,18 +42,18 @@ namespace TeamCord.GUI
 
         private void SettingsWindow_Closed(object sender, System.EventArgs e)
         {
+            TCMessageBox.Show("To apply all settings, a reload of TeamCord is required.");
         }
 
         private bool Login(string username, string password)
         {
-            //TODO
             using (var auth = new Auth(username, password))
             {
                 var token = auth.RequestToken();
                 if (token == null)
                 {
-                    MessageBox.Show("Login failed. Possible reasons:\n- Wrong credentials" +
-                        "\n- Login from new IP address (go to discord.com and login there once to complete a captcha and try again then)");
+                    TCMessageBox.Show("Login failed. Possible reasons:\n-Wrong credentials" +
+                        "\n-Login from new IP address (go to discord.com and login there once to complete a captcha and try again then)");
                     return false;
                 }
                 if (token.token != null)
@@ -64,10 +64,10 @@ namespace TeamCord.GUI
                 else if (token.mfa && token.ticket != null)
                 {
                 retry:
-                    var r = Forge.Forms.Show.Window().For(new Forge.Forms.Prompt<string> { Title = "Insert two factor code" }).Result;
-                    if (!r.Model.Confirmed)
+                    var result = TCPrompt.Show("Insert two factor code");
+                    if (!result.Confirmed)
                         return false;
-                    token.Totp = r.Model.Value;
+                    token.Totp = result.Value;
                     var mfaToken = auth.RequestMfaToken(token);
                     if (mfaToken != null)
                     {
@@ -76,7 +76,7 @@ namespace TeamCord.GUI
                     }
                     else
                     {
-                        MessageBox.Show("Invalid 2fa code");
+                        TCMessageBox.Show("Invalid 2fa code");
                         goto retry;
                     }
                 }
@@ -84,7 +84,7 @@ namespace TeamCord.GUI
             }
             void Store(string token)
             {
-                MessageBox.Show("Successfull logged in");
+                TCMessageBox.Show("Successfull logged in");
                 var storage = new DataStorage<SettingsModel>();
                 SettingsModelBind.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(token));
                 storage.Store(SettingsModelBind);
