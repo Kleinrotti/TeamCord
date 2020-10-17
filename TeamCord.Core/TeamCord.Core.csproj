@@ -117,6 +117,7 @@
     <Compile Include="Audio\ISoundUser.cs" />
     <Compile Include="Audio\SoundEffect.cs" />
     <Compile Include="Audio\WebSoundEffect.cs" />
+    <Compile Include="Dialogs\TCConfirmation.cs" />
     <Compile Include="Discord\AuthResult.cs" />
     <Compile Include="Discord\BaseConnectionInfo.cs" />
     <Compile Include="ControlTypeAttribute.cs" />

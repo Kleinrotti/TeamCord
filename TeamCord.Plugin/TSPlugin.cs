@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows;
 using TeamCord.Core;
 using TeamCord.GUI;
 using TeamCord.Plugin.Natives;
@@ -286,7 +285,7 @@ namespace TeamCord.Plugin
                     {
                         var channelName = Instance.ConnectionHandler.GetChannelName(id);
                         var serverName = Instance.ConnectionHandler.GetServerName(id);
-                        if (MessageBox.Show($"Connect to discord channel {channelName} on Server {serverName}?", "TeamCord", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        if (TCConfirmation.Show($"Connect to discord channel {channelName} on Server {serverName}?").Value)
                         {
                             Instance.ConnectionHandler.JoinChannel(id);
                         }
