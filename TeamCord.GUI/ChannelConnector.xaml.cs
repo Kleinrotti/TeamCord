@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using TeamCord.Core;
 
 namespace TeamCord.GUI
 {
@@ -10,12 +11,12 @@ namespace TeamCord.GUI
     /// </summary>
     public partial class ChannelConnector : Window
     {
-        private IDictionary<string, IDictionary<ulong, string>> _channels;
+        private IList<TCServer> _servers;
         private Action<ulong> _resultCallback;
 
-        public ChannelConnector(IDictionary<string, IDictionary<ulong, string>> channels, Action<ulong> resultCallback)
+        public ChannelConnector(IList<TCServer> servers, Action<ulong> resultCallback)
         {
-            _channels = channels;
+            _servers = servers;
             _resultCallback = resultCallback;
             InitializeComponent();
             LoadItems();
@@ -23,16 +24,16 @@ namespace TeamCord.GUI
 
         private void LoadItems()
         {
-            foreach (var v in _channels)
+            foreach (var v in _servers)
             {
                 var mItem = new TreeViewItem();
-                mItem.Header = v.Key;
-                foreach (var x in v.Value)
+                mItem.Header = v.Name;
+                foreach (var x in v.VoiceChannels)
                 {
                     var subItem = new RadioButton
                     {
                         DataContext = x,
-                        Content = x.Value,
+                        Content = x.Name,
                         GroupName = "channels"
                     };
                     mItem.Items.Add(subItem);

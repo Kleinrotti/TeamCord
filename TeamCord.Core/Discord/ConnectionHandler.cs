@@ -334,23 +334,23 @@ namespace TeamCord.Core
         /// Returns all servers that the client is in with all voice channels
         /// </summary>
         /// <returns></returns>
-        public IDictionary<string, IDictionary<ulong, string>> GetServerVoiceChannelList()
+        public IList<TCServer> GetServerVoiceChannelList()
         {
             var guilds = _client.Guilds;
-            Dictionary<string, IDictionary<ulong, string>> values = new Dictionary<string, IDictionary<ulong, string>>();
+            var values = new List<TCServer>();
             if (guilds == null)
                 return values;
             foreach (var v in guilds)
             {
                 var guildChannels = v.Channels;
-                var channels = new Dictionary<ulong, string>();
+                var voiceServer = new TCServer(v.Id, v.Name);
                 foreach (var x in guildChannels)
                 {
                     //only add voice channels
                     if (x.GetType() == typeof(SocketVoiceChannel))
-                        channels.Add(x.Id, x.Name);
+                        voiceServer.VoiceChannels.Add(new TCChannel(x.Id, x.Name));
                 }
-                values.Add(v.Name, channels);
+                values.Add(voiceServer);
             }
             return values;
         }

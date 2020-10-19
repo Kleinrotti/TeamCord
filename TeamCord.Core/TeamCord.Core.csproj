@@ -122,6 +122,8 @@
     <Compile Include="Discord\BaseConnectionInfo.cs" />
     <Compile Include="ControlTypeAttribute.cs" />
     <Compile Include="Configs\LoginModel.cs" />
+    <Compile Include="Discord\TCChannel.cs" />
+    <Compile Include="Discord\TCServer.cs" />
     <Compile Include="Storage\DataStorage.cs" />
     <Compile Include="Discord\VoiceChannelService.cs" />
     <Compile Include="Discord\Auth.cs" />
