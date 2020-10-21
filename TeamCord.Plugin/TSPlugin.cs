@@ -240,11 +240,11 @@ namespace TeamCord.Plugin
             {
                 var description = Helpers.ChannelIDToJsonString(channelID);
                 var err = Functions.setChannelVariableAsString(serverConnectionHandlerID, ts3ChannelID, ChannelProperties.CHANNEL_DESCRIPTION, description);
+                err = Functions.flushChannelUpdates(serverConnectionHandlerID, ts3ChannelID, "");
                 if (err != (uint)Ts3ErrorType.ERROR_ok)
                     Logging.Log($"Failed to set ts3channeldescription. Code: {err}", LogLevel.LogLevel_ERROR);
                 else
                 {
-                    Functions.flushChannelUpdates(serverConnectionHandlerID, ts3ChannelID, "");
                     Logging.Log("Linked discord channel successfully");
                 }
             }

@@ -52,7 +52,7 @@ namespace TeamCord.GUI
                 {
                     if (x.IsChecked ?? false)
                     {
-                        var id = ((KeyValuePair<ulong, string>)x.DataContext).Key;
+                        var id = ((TCChannel)x.DataContext).Id;
                         _resultCallback(id);
                         Close();
                         return;

@@ -15,6 +15,7 @@ namespace TeamCord.Core
         {
             Id = id;
             Name = name;
+            VoiceChannels = new List<TCChannel>();
         }
     }
 }
