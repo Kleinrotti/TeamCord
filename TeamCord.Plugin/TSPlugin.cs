@@ -261,7 +261,7 @@ namespace TeamCord.Plugin
             //when own client joins or leaves a ts3 channel
             if (Instance.ClientID == clientId)
             {
-                if (!Instance.ConnectionHandler.Connected)
+                if (ConnectionHandler == null || !Instance.ConnectionHandler.Connected)
                     return;
                 string description;
                 Instance.Functions.getChannelVariableAsString(serverConnectionHandler, newChannel, ChannelProperties.CHANNEL_DESCRIPTION, out description);
@@ -392,7 +392,7 @@ namespace TeamCord.Plugin
         /// <param name="ts3UserId"></param>
         public void DiscordAutoMuteUser(ulong serverConnectionHandler, ushort ts3UserId)
         {
-            if (ConnectionHandler.OwnID == 0 || !Settings.EnableDiscordID)
+            if (ConnectionHandler?.OwnID == 0 || !Settings.EnableDiscordID)
                 return;
             string clientDescription = "";
             var err = Functions.getClientVariableAsString(serverConnectionHandler, ts3UserId, ClientProperties.CLIENT_DESCRIPTION, ref clientDescription);

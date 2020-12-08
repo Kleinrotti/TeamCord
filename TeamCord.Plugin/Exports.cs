@@ -104,10 +104,10 @@ namespace TeamCord.Plugin
         {
             //Join/leave a server
             if (newStatus == ConnectStatus.STATUS_DISCONNECTED)
-                TSPlugin.Instance.ConnectionHandler.Disconnect();
+                TSPlugin.Instance.ConnectionHandler?.Disconnect();
             else if (newStatus == ConnectStatus.STATUS_CONNECTION_ESTABLISHED)
                 if (TSPlugin.Instance.Settings.DiscordAutoLogin)
-                    TSPlugin.Instance.ConnectionHandler.Connect();
+                    TSPlugin.Instance.ConnectionHandler?.Connect();
         }
 
         [DllExport]
@@ -127,12 +127,12 @@ namespace TeamCord.Plugin
                 if (*edited == 2)
                 {
                     //channels is always 1
-                    TSPlugin.Instance.ConnectionHandler.SendVoiceData(samples, channels);
+                    TSPlugin.Instance.ConnectionHandler?.SendVoiceData(samples, channels);
                 }
             }
             else
             {
-                TSPlugin.Instance.ConnectionHandler.SendVoiceData(samples, channels);
+                TSPlugin.Instance.ConnectionHandler?.SendVoiceData(samples, channels);
             }
         }
 
@@ -276,6 +276,8 @@ namespace TeamCord.Plugin
             switch (type)
             {
                 case PluginItemType.PLUGIN_CHANNEL:
+                    if (TSPlugin.Instance.ConnectionHandler == null)
+                        return;
                     string description;
                     TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, id, ChannelProperties.CHANNEL_DESCRIPTION, out description);
                     var channelid = Helpers.ExtractChannelID(description);
