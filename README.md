@@ -7,9 +7,10 @@
 This plugin is in a very early state and could contain bugs or even cause a Teamspeak crash!
 If you experience bugs or crashes please read the Issues section below for more information.
 
+## Important
 This plugin could be interpreted as [self-bot](https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-) by discord.
-I wouldn't classify TeamCord as "self-bot", because no automated actions are made like a bot does. It is only a small discord client integrated in Teamspeak for cross voice communication.
-But you use it at your own risk.
+I wouldn't classify TeamCord as "self-bot", because no automated actions are made like a bot does.
+But you use it at your own risk!
 
 ## What is this?
 
