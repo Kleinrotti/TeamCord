@@ -43,7 +43,7 @@ The only things you need is a discord account and this plugin installed for Team
 
 ### Link a discord channel
 
-- Right click on a Teamspeak channel -> Click on TeamCord -> Link to channel (other text elements in the ts3 channel description will be overriden!)
+- Right click on a Teamspeak channel -> Click on TeamCord -> Link to channel (other text elements in the ts3 channel description will be overridden!)
 - You can currently only link Discord channels of server where you are a member of
 - Alternatively you can manually paste this json string into a Teamspeak channel description (replace the zeroes with the Discord channel ID):
   > {"Teamcord":{"Channel":000000000}}
