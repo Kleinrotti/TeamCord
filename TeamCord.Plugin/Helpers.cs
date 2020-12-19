@@ -1,16 +1,28 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TeamCord.Core;
 
 namespace TeamCord.Plugin
 {
     public static class Helpers
     {
+        private static string _pattern = @"\{""Teamcord(.|\s$)*}}";
+
         public static ulong ExtractChannelID(string channelDescription)
         {
             try
             {
+                //search for a json match in the channel description
+                var match = Regex.Match(channelDescription, _pattern);
+                if (!match.Success)
+                {
+                    Logging.Log("No regex match found in channelDescription", LogLevel.LogLevel_DEBUG);
+                    return 0;
+                }
+                channelDescription = match.Value;
+                Console.WriteLine(channelDescription);
                 var obj = JsonConvert.DeserializeObject<TS3Json<TS3ChannelJson>>(channelDescription);
 
                 return obj.Teamcord.ChannelID;
@@ -25,6 +37,26 @@ namespace TeamCord.Plugin
                 Logging.Log(ex.Message, LogLevel.LogLevel_WARNING);
                 return 0;
             }
+        }
+
+        /// <summary>
+        /// Removes all channelID entries of a string
+        /// </summary>
+        /// <param name="channelDescription"></param>
+        /// <returns></returns>
+        public static string RemoveChannelID(string channelDescription)
+        {
+            var matches = Regex.Matches(channelDescription, _pattern);
+            if (matches.Count < 1)
+            {
+                Logging.Log("No channelID was removed due to no regex matches", LogLevel.LogLevel_DEBUG);
+                return channelDescription;
+            }
+            foreach (Match m in matches)
+            {
+                channelDescription = channelDescription.Replace(m.Value, "");
+            }
+            return channelDescription;
         }
 
         public static ulong ExtractClientID(string clientDescription)

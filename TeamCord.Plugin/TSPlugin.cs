@@ -238,8 +238,12 @@ namespace TeamCord.Plugin
             c.ShowDialog();
             void callback(ulong channelID)
             {
-                var description = Helpers.ChannelIDToJsonString(channelID);
-                var err = Functions.setChannelVariableAsString(serverConnectionHandlerID, ts3ChannelID, ChannelProperties.CHANNEL_DESCRIPTION, description);
+                var jsonString = Helpers.ChannelIDToJsonString(channelID);
+                var err = Functions.getChannelVariableAsString(serverConnectionHandlerID, ts3ChannelID, ChannelProperties.CHANNEL_DESCRIPTION, out var currentDescription);
+                //first remove all channelIDs which were set before in the description
+                currentDescription = Helpers.RemoveChannelID(currentDescription).TrimEnd(null);
+                var newDescription = currentDescription + "\n" + jsonString;
+                err = Functions.setChannelVariableAsString(serverConnectionHandlerID, ts3ChannelID, ChannelProperties.CHANNEL_DESCRIPTION, newDescription);
                 err = Functions.flushChannelUpdates(serverConnectionHandlerID, ts3ChannelID, "");
                 if (err != (uint)Ts3ErrorType.ERROR_ok)
                     Logging.Log($"Failed to set ts3channeldescription. Code: {err}", LogLevel.LogLevel_ERROR);
