@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace TeamCord.Core
 {
@@ -23,6 +24,8 @@ namespace TeamCord.Core
         {
             logCallback = ts3LogCallback;
             logCallbackException = ts3LogCallbackException;
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.Title = "Teamcord Debug Console";
         }
 
         /// <summary>
@@ -34,9 +37,38 @@ namespace TeamCord.Core
         {
             if ((logLevel == LogLevel.LogLevel_DEBUG && DebugLogging) || logLevel != LogLevel.LogLevel_DEBUG)
                 logCallback(message, logLevel);
-#if DEBUG
-            Console.WriteLine("<Teamcord>" + message);
-#endif
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("[Teamcord] ");
+            switch (logLevel)
+            {
+                case LogLevel.LogLevel_CRITICAL:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    break;
+
+                case LogLevel.LogLevel_ERROR:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+
+                case LogLevel.LogLevel_WARNING:
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    break;
+
+                case LogLevel.LogLevel_DEBUG:
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    break;
+
+                case LogLevel.LogLevel_INFO:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+
+                case LogLevel.LogLevel_DEVEL:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+
+                default:
+                    break;
+            }
+            Console.Write(message + "\n");
         }
 
         /// <summary>
@@ -51,9 +83,10 @@ namespace TeamCord.Core
                 logCallbackException(exception, logLevel);
             else
                 logCallback(exception.Message, logLevel);
-#if DEBUG
-            Console.WriteLine("<Teamcord>" + exception.Message);
-#endif
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("[Teamcord] ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(exception.Message + "\n");
         }
     }
 }
