@@ -22,10 +22,37 @@ namespace TeamCord.Plugin
                     return 0;
                 }
                 channelDescription = match.Value;
-                Console.WriteLine(channelDescription);
                 var obj = JsonConvert.DeserializeObject<TS3Json<TS3ChannelJson>>(channelDescription);
 
                 return obj.Teamcord.ChannelID;
+            }
+            catch (NullReferenceException ex)
+            {
+                Logging.Log(ex.Message, LogLevel.LogLevel_DEBUG);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log(ex.Message, LogLevel.LogLevel_WARNING);
+                return 0;
+            }
+        }
+
+        public static ulong ExtractClientID(string clientDescription)
+        {
+            try
+            {
+                //search for a json match in the channel description
+                var match = Regex.Match(clientDescription, _pattern);
+                if (!match.Success)
+                {
+                    Logging.Log("No regex match found in clientDescription", LogLevel.LogLevel_DEBUG);
+                    return 0;
+                }
+                clientDescription = match.Value;
+                var obj = JsonConvert.DeserializeObject<TS3Json<TS3ClientJson>>(clientDescription);
+
+                return obj.Teamcord.ClientID;
             }
             catch (NullReferenceException ex)
             {
@@ -59,24 +86,24 @@ namespace TeamCord.Plugin
             return channelDescription;
         }
 
-        public static ulong ExtractClientID(string clientDescription)
+        /// <summary>
+        /// Removes all clientID entries of a string
+        /// </summary>
+        /// <param name="channelDescription"></param>
+        /// <returns></returns>
+        public static string RemoveClientID(string clientDescription)
         {
-            try
+            var matches = Regex.Matches(clientDescription, _pattern);
+            if (matches.Count < 1)
             {
-                var obj = JsonConvert.DeserializeObject<TS3Json<TS3ClientJson>>(clientDescription);
-
-                return obj.Teamcord.ClientID;
+                Logging.Log("No clientID was removed due to no regex matches", LogLevel.LogLevel_DEBUG);
+                return clientDescription;
             }
-            catch (NullReferenceException ex)
+            foreach (Match m in matches)
             {
-                Logging.Log(ex.Message, LogLevel.LogLevel_DEBUG);
-                return 0;
+                clientDescription = clientDescription.Replace(m.Value, "");
             }
-            catch (Exception ex)
-            {
-                Logging.Log(ex.Message, LogLevel.LogLevel_WARNING);
-                return 0;
-            }
+            return clientDescription;
         }
 
         public static string ChannelIDToJsonString(ulong channelID)

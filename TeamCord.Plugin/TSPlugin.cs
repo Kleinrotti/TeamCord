@@ -383,10 +383,12 @@ namespace TeamCord.Plugin
             ulong srvHandler = Functions.getCurrentServerConnectionHandlerID();
 
             var value = Helpers.DiscordIDToJsonString(ConnectionHandler.OwnID);
-            string test = "";
-            var err = Functions.requestClientEditDescription(srvHandler, ClientID, value, test);
+            var currentDescription = "";
+            var err = Functions.getClientVariableAsString(srvHandler, ClientID, ClientProperties.CLIENT_DESCRIPTION, ref currentDescription);
+            value = Helpers.RemoveClientID(currentDescription) + value;
+            err = Functions.requestClientEditDescription(srvHandler, ClientID, value, "");
             if (err != 0)
-                Logging.Log($"Updating client description failed: {err}");
+                Logging.Log($"Updating client description failed: {err}", LogLevel.LogLevel_WARNING);
         }
 
         /// <summary>
