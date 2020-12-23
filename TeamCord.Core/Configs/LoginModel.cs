@@ -8,7 +8,7 @@ namespace TeamCord.Core
     [Action("login", "Login", IsDefault = true, ClosesDialog = true, Validates = true)]
     public class LoginModel
     {
-        [Field(Icon = "Account",Name = "E-Mail")]
+        [Field(Icon = "Account", Name = "E-Mail")]
         [Value(Must.NotBeEmpty)]
         public string Username { get; set; }
 

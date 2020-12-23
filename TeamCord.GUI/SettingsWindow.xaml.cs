@@ -42,7 +42,7 @@ namespace TeamCord.GUI
 
         private void SettingsWindow_Closed(object sender, System.EventArgs e)
         {
-            TCMessageBox.Show("To apply all settings, a restart of Teamspeak is required!");
+            TCMessageBox.Show("To apply changed settings, a restart of Teamspeak is required!");
         }
 
         private bool Login(string username, string password)
