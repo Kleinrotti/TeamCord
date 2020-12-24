@@ -158,9 +158,9 @@ namespace TeamCord.Core
             var status = new DiscordStatusNotification("TeamCord", "Status");
             status.UpdateStatus(ConnectionState.Disconnected);
             new ConnectionNotification().Notify(_currentChannel, ConnectionState.Disconnected);
+            _currentChannel = null;
             ConnectionChanged?.Invoke(this, new ConnectionChangedEventArgs(ConnectionType.Voice, false));
             TrayIcon.VolumeMenuItemEnabled = false;
-            _currentChannel = null;
         }
 
         private void _audioService_VoiceConnected(object sender, EventArgs e)
@@ -362,6 +362,8 @@ namespace TeamCord.Core
         /// <param name="channels"></param>
         public unsafe void SendVoiceData(short[] samples, int channels)
         {
+            if (_currentChannel == null)
+                return;
             _sw = Stopwatch.StartNew();
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)

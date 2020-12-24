@@ -22,7 +22,7 @@ namespace TeamCord.Core.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource {
+    public class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -63,57 +63,57 @@ namespace TeamCord.Core.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo {
+        public static System.Drawing.Icon logo {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo_all_muted {
+        public static System.Drawing.Icon logo_all_muted {
             get {
                 object obj = ResourceManager.GetObject("logo_all_muted", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo_connected {
+        public static System.Drawing.Icon logo_connected {
             get {
                 object obj = ResourceManager.GetObject("logo_connected", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo_error {
+        public static System.Drawing.Icon logo_error {
             get {
                 object obj = ResourceManager.GetObject("logo_error", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo_voice {
+        public static System.Drawing.Icon logo_voice {
             get {
                 object obj = ResourceManager.GetObject("logo_voice", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon logo_voice_muted {
+        public static System.Drawing.Icon logo_voice_muted {
             get {
                 object obj = ResourceManager.GetObject("logo_voice_muted", resourceCulture);
                 return ((System.Drawing.Icon)(obj));

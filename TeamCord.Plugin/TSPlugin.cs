@@ -362,6 +362,17 @@ namespace TeamCord.Plugin
         public void Deaf(bool value)
         {
             ConnectionHandler.CurrentVoiceChannelService.Deaf = value;
+            if (ConnectionHandler.ConnectionInfo == null)
+                return;
+            else
+                if(value)
+                    _trayIcon.UpdateIcon(Core.Properties.Resource.logo_all_muted);
+                else
+                    if(ConnectionHandler.CurrentVoiceChannelService.Mute)
+                        _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
+                    else
+                        _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
+
         }
 
         /// <summary>
@@ -371,6 +382,14 @@ namespace TeamCord.Plugin
         public void Mute(bool value)
         {
             ConnectionHandler.CurrentVoiceChannelService.Mute = value;
+            if (ConnectionHandler.ConnectionInfo == null)
+                return;
+            else
+                if (value && !ConnectionHandler.CurrentVoiceChannelService.Deaf)
+                    _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
+                else
+                    if(!ConnectionHandler.CurrentVoiceChannelService.Deaf)
+                        _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
         }
 
         /// <summary>
@@ -389,8 +408,8 @@ namespace TeamCord.Plugin
             {
                 Logging.Log($"Can't get ts3 mute state {err}");
             }
-            ConnectionHandler.CurrentVoiceChannelService.Mute = input != 0;
-            ConnectionHandler.CurrentVoiceChannelService.Deaf = output != 0;
+            Mute(input != 0);
+            Deaf(output != 0);
             Logging.Log($"Current ts3 mute state: Deaf={output} Mute={input}", LogLevel.LogLevel_DEBUG);
         }
 
