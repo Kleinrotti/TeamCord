@@ -186,7 +186,6 @@
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="Audio\SoundService.cs" />
-    <Compile Include="Enums\TS3DeviceType.cs" />
     <Compile Include="Dialogs\TCDialogResult.cs" />
     <Compile Include="Dialogs\TCMessageBox.cs" />
     <Compile Include="Dialogs\TCPrompt.cs" />

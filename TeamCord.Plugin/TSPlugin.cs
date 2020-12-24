@@ -17,6 +17,15 @@ namespace TeamCord.Plugin
 
         private TSPlugin()
         {
+            PluginName = "TeamCord";
+            ApiVersion = 25;
+            Author = "Kleinrotti";
+            Description = "Voice channel bridge between Teamspeak and Discord";
+#if DEBUG
+            PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
+#else
+            PluginVersion= typeof(TSPlugin).Assembly.GetName().Version.ToString();
+#endif
         }
 
         public static TSPlugin Instance
@@ -75,15 +84,11 @@ namespace TeamCord.Plugin
             }
         }
 
-        public string PluginName { get; } = "TeamCord";
-#if DEBUG
-        public string PluginVersion { get; } = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
-#else
-        public string PluginVersion { get; set; } = typeof(TSPlugin).Assembly.GetName().Version.ToString();
-#endif
-        public int ApiVersion { get; } = 23;
-        public string Author { get; } = "Kleinrotti";
-        public string Description { get; } = "Voice channel bridge between Teamspeak and Discord";
+        public string PluginName { get; }
+        public string PluginVersion { get; }
+        public int ApiVersion { get; }
+        public string Author { get; }
+        public string Description { get; }
         public string PluginID { get; set; }
 
         public string PluginDirectory
@@ -172,6 +177,7 @@ namespace TeamCord.Plugin
                 TrayIcon.VolumeMenuItemClicked -= TrayIcon_VolumeChangedClicked;
             }
             _settings = null;
+            Logging.Log("TeamCord has been shut down.");
         }
 
         #region Events
