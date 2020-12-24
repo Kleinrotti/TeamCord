@@ -93,7 +93,6 @@ namespace TeamCord.Plugin
         [DllExport]
         public static void ts3plugin_freeMemory(IntPtr data)
         {
-            Logging.Log($"Freeing memory: {data}", LogLevel.LogLevel_DEBUG);
             Marshal.FreeHGlobal(data);
         }
 
