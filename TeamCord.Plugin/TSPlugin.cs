@@ -267,8 +267,8 @@ namespace TeamCord.Plugin
             {
                 if (ConnectionHandler == null || !Instance.ConnectionHandler.Connected)
                     return;
-                string description;
-                Instance.Functions.getChannelVariableAsString(serverConnectionHandler, newChannel, ChannelProperties.CHANNEL_DESCRIPTION, out description);
+
+                Instance.Functions.getChannelVariableAsString(serverConnectionHandler, newChannel, ChannelProperties.CHANNEL_DESCRIPTION, out var description);
 
                 if (description == null)
                     return;
@@ -306,6 +306,21 @@ namespace TeamCord.Plugin
                     Instance.DiscordAutoMuteUser(serverConnectionHandler, clientId);
                 }
             }
+        }
+
+        /// <summary>
+        /// Opens the settings window
+        /// </summary>
+        public void OpenSettings()
+        {
+            var settings = Settings;
+            if (settings.Token == null)
+            {
+                if (!LoginHelper.Login(ref settings))
+                    return;
+            }
+            SettingsWindow w = new SettingsWindow(settings);
+            w.ShowDialog();
         }
 
         /// <summary>

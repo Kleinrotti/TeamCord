@@ -82,8 +82,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public static unsafe void ts3plugin_configure(void* handle, void* qParentWidget)
         {
-            SettingsWindow w = new SettingsWindow(TSPlugin.Instance.Settings);
-            w.ShowDialog();
+            TSPlugin.Instance.OpenSettings();
         }
 
         [DllExport]

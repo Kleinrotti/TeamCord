@@ -94,6 +94,7 @@
     <Compile Include="ConnectionInfoWindow.xaml.cs">
       <DependentUpon>ConnectionInfoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoginHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
