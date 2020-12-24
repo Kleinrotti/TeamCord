@@ -206,10 +206,6 @@
       <Project>{50281cf0-63d7-4f96-aa0b-8238bc9d6f3b}</Project>
       <Name>TeamCord.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TeamCord.GUI\TeamCord.GUI.csproj">
-      <Project>{beffee47-6b2e-488a-997f-e5bd49e9f77c}</Project>
-      <Name>TeamCord.GUI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

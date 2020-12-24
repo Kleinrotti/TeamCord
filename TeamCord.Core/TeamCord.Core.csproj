@@ -142,6 +142,22 @@
     <Compile Include="Configs\LoginModel.cs" />
     <Compile Include="Discord\TCChannel.cs" />
     <Compile Include="Discord\TCServer.cs" />
+    <Compile Include="GUI\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ChannelConnector.xaml.cs">
+      <DependentUpon>ChannelConnector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ConnectionInfoWindow.xaml.cs">
+      <DependentUpon>ConnectionInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\VolumeControl.xaml.cs">
+      <DependentUpon>VolumeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoginHelper.cs" />
     <Compile Include="Storage\DataStorage.cs" />
     <Compile Include="Discord\VoiceChannelService.cs" />
     <Compile Include="Discord\Auth.cs" />
@@ -208,6 +224,27 @@
   <ItemGroup>
     <None Include="Resources\logo_voice.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="GUI\AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ChannelConnector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ConnectionInfoWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\SettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\VolumeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
