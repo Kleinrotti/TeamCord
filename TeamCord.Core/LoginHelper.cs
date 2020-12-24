@@ -35,6 +35,8 @@ namespace TeamCord.GUI
                         goto retry;
                     }
                 }
+                else
+                    mfaToken = token.token;
                 TCMessageBox.Show("You are now logged in. Plugin reload required!");
                 var storage = new DataStorage<SettingsModel>();
                 settings.Token = PluginUserCredential.StoreData(Encoding.Default.GetBytes(mfaToken));
