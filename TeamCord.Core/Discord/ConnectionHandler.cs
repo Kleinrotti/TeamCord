@@ -323,7 +323,7 @@ namespace TeamCord.Core
                 await _client?.StopAsync();
                 await _client?.LogoutAsync();
             }
-            catch (ObjectDisposedException ex)
+            catch (Exception ex)
             {
                 Logging.Log(ex, LogLevel.LogLevel_DEBUG);
             }
@@ -419,9 +419,12 @@ namespace TeamCord.Core
 
         public void Dispose()
         {
-            Disconnect();
+            if (_client != null)
+            {
+                Disconnect();
+                _client?.Dispose();
+            }
             _voiceChannelService?.Dispose();
-            _client.Dispose();
             _client = null;
             _bufferBytes = null;
             _voiceChannelService = null;
