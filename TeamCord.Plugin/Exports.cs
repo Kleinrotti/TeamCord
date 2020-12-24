@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TeamCord.Core;
-using TeamCord.GUI;
 using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
@@ -265,8 +264,7 @@ namespace TeamCord.Plugin
         [DllExport]
         public static IntPtr ts3plugin_infoTitle()
         {
-            string info = "TeamCord";
-            return Marshal.StringToHGlobalAnsi(info);
+            return Marshal.StringToHGlobalAnsi("TeamCord");
         }
 
         [DllExport]
