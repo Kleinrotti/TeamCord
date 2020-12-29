@@ -152,7 +152,7 @@ namespace TeamCord.Plugin
             }
             catch (Exception ex)
             {
-                Instance.Functions.logMessage(ex.Message, LogLevel.LogLevel_ERROR, "TeamCord", 0);
+                Instance.Functions.logMessage(ex.Message + $"\nException: {ex.StackTrace}", LogLevel.LogLevel_ERROR, "TeamCord", 0);
                 return 1;
             }
             finally
@@ -365,14 +365,13 @@ namespace TeamCord.Plugin
             if (ConnectionHandler.ConnectionInfo == null)
                 return;
             else
-                if(value)
-                    _trayIcon.UpdateIcon(Core.Properties.Resource.logo_all_muted);
-                else
-                    if(ConnectionHandler.CurrentVoiceChannelService.Mute)
-                        _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
-                    else
-                        _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
-
+                if (value)
+                _trayIcon.UpdateIcon(Core.Properties.Resource.logo_all_muted);
+            else
+                    if (ConnectionHandler.CurrentVoiceChannelService.Mute)
+                _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
+            else
+                _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
         }
 
         /// <summary>
@@ -386,10 +385,10 @@ namespace TeamCord.Plugin
                 return;
             else
                 if (value && !ConnectionHandler.CurrentVoiceChannelService.Deaf)
-                    _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
-                else
-                    if(!ConnectionHandler.CurrentVoiceChannelService.Deaf)
-                        _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
+                _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
+            else
+                    if (!ConnectionHandler.CurrentVoiceChannelService.Deaf)
+                _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
         }
 
         /// <summary>
