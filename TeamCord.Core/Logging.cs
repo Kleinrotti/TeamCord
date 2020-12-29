@@ -25,7 +25,6 @@ namespace TeamCord.Core
             logCallback = ts3LogCallback;
             logCallbackException = ts3LogCallbackException;
             Console.OutputEncoding = Encoding.Unicode;
-            Console.Title = "Teamcord Debug Console";
         }
 
         /// <summary>
