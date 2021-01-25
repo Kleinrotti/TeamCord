@@ -297,6 +297,7 @@ namespace TeamCord.Core
             if (_currentChannel != null)
             {
                 _voiceChannelService.JoinChannel(_currentChannel);
+                Logging.Log($"Channel bitrate: {_currentChannel.Bitrate}");
             }
             else
             {
