@@ -392,7 +392,7 @@ namespace TeamCord.Core
             {
                 _counter = 0;
                 OnProcessTimeChanged(this, new GenericEventArgs<int>(AverageVoiceProcessTime));
-                Logging.Log($"Voice processing time: {AverageVoiceProcessTime}us", LogLevel.LogLevel_DEBUG);
+                Logging.Log($"Voice processing time: {AverageVoiceProcessTime}us ({channels} channel)", LogLevel.LogLevel_DEBUG);
             }
             else
             {
