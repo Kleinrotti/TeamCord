@@ -361,14 +361,13 @@ namespace TeamCord.Plugin
         /// <param name="value"></param>
         public void Deaf(bool value)
         {
-            ConnectionHandler.CurrentVoiceChannelService.Deaf = value;
-            if (ConnectionHandler.ConnectionInfo == null)
+            if (ConnectionHandler == null || ConnectionHandler.ConnectionInfo == null)
                 return;
-            else
-                if (value)
+            ConnectionHandler.CurrentVoiceChannelService.Deaf = value;
+
+            if (value)
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_all_muted);
-            else
-                    if (ConnectionHandler.CurrentVoiceChannelService.Mute)
+            else if (ConnectionHandler.CurrentVoiceChannelService.Mute)
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
             else
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
@@ -380,14 +379,13 @@ namespace TeamCord.Plugin
         /// <param name="value"></param>
         public void Mute(bool value)
         {
-            ConnectionHandler.CurrentVoiceChannelService.Mute = value;
-            if (ConnectionHandler.ConnectionInfo == null)
+            if (ConnectionHandler == null || ConnectionHandler.ConnectionInfo == null)
                 return;
-            else
-                if (value && !ConnectionHandler.CurrentVoiceChannelService.Deaf)
+            ConnectionHandler.CurrentVoiceChannelService.Mute = value;
+
+            if (value && !ConnectionHandler.CurrentVoiceChannelService.Deaf)
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
-            else
-                    if (!ConnectionHandler.CurrentVoiceChannelService.Deaf)
+            else if (!ConnectionHandler.CurrentVoiceChannelService.Deaf)
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice);
         }
 
