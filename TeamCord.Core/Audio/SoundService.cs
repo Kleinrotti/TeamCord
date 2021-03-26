@@ -75,11 +75,7 @@ namespace TeamCord.Core
             {
                 DiscardOnBufferOverflow = true
             };
-            _waveOut = new WaveOut
-            {
-                DesiredLatency = 900,
-                NumberOfBuffers = 4
-            };
+            _waveOut = new WaveOut();
             _waveOut.PlaybackStopped += _waveOut_PlaybackStopped;
             _volumeSampleProvider = new VolumeSampleProvider(_waveProvider.ToSampleProvider());
             _waveOut.Init(_volumeSampleProvider);
