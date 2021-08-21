@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using TeamCord.Core;
 using TeamCord.Plugin.Natives;
 
 namespace TeamCord.Plugin
@@ -116,20 +115,19 @@ namespace TeamCord.Plugin
 
         [DllExport]
         public static unsafe void ts3plugin_onEditCapturedVoiceDataEvent(ulong serverConnectionHandlerID,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I2, SizeParamIndex = 2)] short[] samples, int sampleCount, int channels, int* edited)
+            short* samples, int sampleCount, int channels, int* edited)
         {
             if (TSPlugin.Instance.Settings.UseTeamspeakVoiceActivation)
             {
                 //only process voice data if teamspeak would send it
                 if (*edited == 2)
                 {
-                    //channels is always 1
-                    TSPlugin.Instance.ConnectionHandler?.SendVoiceData(samples, channels);
+                    TSPlugin.Instance.ConnectionHandler?.ProcessVoiceData(samples, sampleCount, channels);
                 }
             }
             else
             {
-                TSPlugin.Instance.ConnectionHandler?.SendVoiceData(samples, channels);
+                TSPlugin.Instance.ConnectionHandler?.ProcessVoiceData(samples, sampleCount, channels);
             }
         }
 

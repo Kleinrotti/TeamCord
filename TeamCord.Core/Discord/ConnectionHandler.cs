@@ -357,26 +357,34 @@ namespace TeamCord.Core
         }
 
         /// <summary>
-        /// Transmit audio data to discord
+        /// Process and transmit audio data to discord
         /// </summary>
         /// <param name="samples"></param>
+        /// <param name="sampleCount"></param>
         /// <param name="channels"></param>
-        public unsafe void SendVoiceData(short[] samples, int channels)
+        public unsafe void ProcessVoiceData(short* samples, int sampleCount, int channels)
         {
             if (_currentChannel == null)
                 return;
             _sw = Stopwatch.StartNew();
+
+            var audioSamples = new short[sampleCount * channels];
+            //fill the short array with audio data
+            for (int i = 0; i < audioSamples.Length; i++)
+            {
+                audioSamples[i] = *(samples + i);
+            }
+
             //if sound data is PCM mono it needs to be converted to stereo for discord
             if (channels < 2)
-                _voiceBuffer = ToStereo(samples);
+                _voiceBuffer = ToStereo(audioSamples);
             else
-                _voiceBuffer = samples;
+                _voiceBuffer = audioSamples;
 
             if (_bufferBytes == null)
             {
                 _bufferBytes = new byte[sizeof(short) * _voiceBuffer.Length];
             }
-
             //stereo short buffer needs to be converted to stereo byte buffer
             fixed (short* fo = _voiceBuffer)
             {
