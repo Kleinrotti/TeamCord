@@ -13,6 +13,8 @@ namespace TeamCord.Core
         public ulong UserID { get; }
         public string Nickname { get; set; }
 
+        internal static string PlaybackDeviceName { get; set; }
+
         public float Volume
         {
             get
@@ -76,6 +78,19 @@ namespace TeamCord.Core
                 DiscardOnBufferOverflow = true
             };
             _waveOut = new WaveOut();
+
+            if (PlaybackDeviceName != null)
+            {
+                for (int i = 0; i < WaveOut.DeviceCount; i++)
+                {
+                    var device = WaveOut.GetCapabilities(i);
+                    if (PlaybackDeviceName == device.ProductName)
+                    {
+                        _waveOut.DeviceNumber = i;
+                        Logging.Log($"Using playback device: {i} {device.ProductName}", LogLevel.LogLevel_DEBUG);
+                    }
+                }
+            }
             _waveOut.PlaybackStopped += _waveOut_PlaybackStopped;
             _volumeSampleProvider = new VolumeSampleProvider(_waveProvider.ToSampleProvider());
             _waveOut.Init(_volumeSampleProvider);

@@ -152,7 +152,7 @@ namespace TeamCord.Plugin
             }
             catch (Exception ex)
             {
-                Instance.Functions.logMessage(ex.Message + $"\nException: {ex.StackTrace}", LogLevel.LogLevel_ERROR, "TeamCord", 0);
+                Functions.logMessage(ex.Message + $"\nException: {ex.StackTrace}", LogLevel.LogLevel_ERROR, "TeamCord", 0);
                 return 1;
             }
             finally
@@ -311,6 +311,34 @@ namespace TeamCord.Plugin
                     Logging.Log("TS3 User joined channel, trying to apply DiscordAutoMuteUser");
                     Instance.DiscordAutoMuteUser(serverConnectionHandler, clientId);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Call this function when own client connects to a teamspeak server
+        /// </summary>
+        /// <param name="serverConnectionHandler"></param>
+        public void Ts3ServerChanged(ulong serverConnectionHandler)
+        {
+            Functions.getCurrentPlaybackDeviceName(serverConnectionHandler, out string currentPlaybackDevice, out bool defaultDevice);
+
+            Functions.getCurrentPlayBackMode(serverConnectionHandler, out string mode);
+            Functions.getPlaybackDeviceList(mode, out IntPtr ptr);
+            unsafe
+            {
+                char*** c = (char***)ptr.ToPointer();
+                //loop through the two dimensional array to get the devices
+                for (int i = 0; c[i] != null; i++)
+                {
+                    var name = Marshal.PtrToStringAnsi((IntPtr)c[i][0]);
+                    var id = Marshal.PtrToStringAnsi((IntPtr)c[i][1]);
+                    if (id == currentPlaybackDevice)
+                    {
+                        Logging.Log($"Set playback device to <{name}>", LogLevel.LogLevel_INFO);
+                        ConnectionHandler.PlaybackDevice = name;
+                    }
+                }
+                Functions.freeMemory(ptr);
             }
         }
 

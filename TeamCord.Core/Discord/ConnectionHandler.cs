@@ -30,6 +30,18 @@ namespace TeamCord.Core
 
         public bool Connected { get; private set; }
 
+        public string PlaybackDevice
+        {
+            get
+            {
+                return SoundService.PlaybackDeviceName;
+            }
+            set
+            {
+                SoundService.PlaybackDeviceName = value;
+            }
+        }
+
         /// <summary>
         /// Returns the average time (us) to process a voice packet
         /// </summary>

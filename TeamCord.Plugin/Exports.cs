@@ -102,8 +102,11 @@ namespace TeamCord.Plugin
             if (newStatus == ConnectStatus.STATUS_DISCONNECTED)
                 TSPlugin.Instance.ConnectionHandler?.Disconnect();
             else if (newStatus == ConnectStatus.STATUS_CONNECTION_ESTABLISHED)
+            {
+                TSPlugin.Instance.Ts3ServerChanged(serverConnectionHandlerID);
                 if (TSPlugin.Instance.Settings.DiscordAutoLogin)
                     TSPlugin.Instance.ConnectionHandler?.Connect();
+            }
         }
 
         [DllExport]
