@@ -106,9 +106,28 @@ namespace TeamCord.Plugin
             return clientDescription;
         }
 
+        /// <summary>
+        /// Build a json string for a Teamspeak channel desciption to a linked Discord channel
+        /// </summary>
+        /// <param name="channelID"></param>
+        /// <returns></returns>
         public static string ChannelIDToJsonString(ulong channelID)
         {
             var val = new TS3Json<TS3ChannelJson>(new TS3ChannelJson(channelID));
+            var json = JsonConvert.SerializeObject(val);
+            return json;
+        }
+
+        /// <summary>
+        /// Build a json string for a Teamspeak channel desciption to a linked Discord channel
+        /// </summary>
+        /// <param name="channelID"></param>
+        /// <param name="serverName"></param>
+        /// <param name="channelName"></param>
+        /// <returns></returns>
+        public static string ChannelIDToJsonString(ulong channelID, string serverName, string channelName)
+        {
+            var val = new TS3Json<TS3ChannelJson>(new TS3ChannelJson(channelID, serverName, channelName));
             var json = JsonConvert.SerializeObject(val);
             return json;
         }

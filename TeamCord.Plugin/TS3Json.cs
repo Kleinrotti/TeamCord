@@ -20,9 +20,15 @@ namespace TeamCord.Plugin
         [JsonProperty("Channel")]
         public virtual ulong ChannelID { get; set; }
 
-        public TS3ChannelJson(ulong channelID)
+        public virtual string ServerName { get; set; }
+
+        public virtual string ChannelName { get; set; }
+
+        public TS3ChannelJson(ulong channelID, string serverName = null, string channelName = null)
         {
             ChannelID = channelID;
+            ServerName = serverName;
+            ChannelName = channelName;
         }
     }
 

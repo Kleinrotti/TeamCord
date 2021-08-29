@@ -242,9 +242,9 @@ namespace TeamCord.Plugin
             var list = ConnectionHandler.GetServerVoiceChannelList();
             ChannelConnector c = new ChannelConnector(list, callback);
             c.ShowDialog();
-            void callback(ulong channelID)
+            void callback(string serverName, TCChannel channel)
             {
-                var jsonString = Helpers.ChannelIDToJsonString(channelID);
+                var jsonString = Helpers.ChannelIDToJsonString(channel.Id, serverName, channel.Name);
                 var err = Functions.getChannelVariableAsString(serverConnectionHandlerID, ts3ChannelID, ChannelProperties.CHANNEL_DESCRIPTION, out var currentDescription);
                 //first remove all channelIDs which were set before in the description
                 currentDescription = Helpers.RemoveChannelID(currentDescription).TrimEnd(null);
@@ -323,6 +323,11 @@ namespace TeamCord.Plugin
             Functions.getCurrentPlaybackDeviceName(serverConnectionHandler, out string currentPlaybackDevice, out bool defaultDevice);
 
             Functions.getCurrentPlayBackMode(serverConnectionHandler, out string mode);
+            //if the teamspeak speakers set to windows default abort
+            if (mode == null)
+            {
+                return;
+            }
             Functions.getPlaybackDeviceList(mode, out IntPtr ptr);
             unsafe
             {

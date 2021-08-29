@@ -12,9 +12,9 @@ namespace TeamCord.GUI
     public partial class ChannelConnector : Window
     {
         private IList<TCServer> _servers;
-        private Action<ulong> _resultCallback;
+        private Action<string, TCChannel> _resultCallback;
 
-        public ChannelConnector(IList<TCServer> servers, Action<ulong> resultCallback)
+        public ChannelConnector(IList<TCServer> servers, Action<string, TCChannel> resultCallback)
         {
             _servers = servers;
             _resultCallback = resultCallback;
@@ -28,6 +28,7 @@ namespace TeamCord.GUI
             {
                 var mItem = new TreeViewItem();
                 mItem.Header = v.Name;
+                mItem.DataContext = v;
                 foreach (var x in v.VoiceChannels)
                 {
                     var subItem = new RadioButton
@@ -52,8 +53,8 @@ namespace TeamCord.GUI
                 {
                     if (x.IsChecked ?? false)
                     {
-                        var id = ((TCChannel)x.DataContext).Id;
-                        _resultCallback(id);
+                        //var id = ((TCChannel)x.DataContext).Id;
+                        _resultCallback(((TCServer)v.DataContext).Name, (TCChannel)x.DataContext);
                         Close();
                         return;
                     }
