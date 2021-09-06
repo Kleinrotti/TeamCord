@@ -320,6 +320,8 @@ namespace TeamCord.Plugin
         /// <param name="serverConnectionHandler"></param>
         public void Ts3ServerChanged(ulong serverConnectionHandler)
         {
+            if (ConnectionHandler == null)
+                return;
             Functions.getCurrentPlaybackDeviceName(serverConnectionHandler, out string currentPlaybackDevice, out bool defaultDevice);
 
             Functions.getCurrentPlayBackMode(serverConnectionHandler, out string mode);
