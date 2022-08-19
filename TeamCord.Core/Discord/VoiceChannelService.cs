@@ -26,7 +26,13 @@ namespace TeamCord.Core
 
         internal event EventHandler VoiceDisconnected;
 
-        internal int VoiceLatency { get { return _audioClient.UdpLatency; } }
+        /// <summary>
+        /// When a user joins or leaves a channel.
+        /// </summary>
+        public static event EventHandler ChannelStateChanged;
+
+        internal int VoiceLatency
+        { get { return _audioClient.UdpLatency; } }
 
         internal VoiceChannelService(DiscordSocketClient socketClient, ulong ownUserID = 0)
         {
@@ -54,46 +60,38 @@ namespace TeamCord.Core
 
         public bool Deaf
         {
-            //get
-            //{
-            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
-            //    if (user == null) return false;
+            get
+            {
+                var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
+                if (user == null) return false;
 
-            //    return user.IsSelfDeafened;
-            //}
-            //set
-            //{
-            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
-            //    if (user != null)
-            //        user.ModifyAsync(x =>
-            //        {
-            //            //TODO: set SelfDeaf
-            //            x.Deaf = value;
-            //        });
-            //}
-            get; set;
+                return user.IsSelfDeafened;
+            }
+            set
+            {
+                _voiceChannel?.ModifyAsync(x =>
+                {
+                    //x.SelfDeaf = value;
+                });
+            }
         }
 
         public bool Mute
         {
-            //get
-            //{
-            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
-            //    if (user == null) return false;
+            get
+            {
+                var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
+                if (user == null) return false;
 
-            //    return user.IsSelfMuted;
-            //}
-            //set
-            //{
-            //    var user = _voiceChannel?.Guild.GetUserAsync(OwnUserID).Result;
-            //    if (user != null)
-            //        user.ModifyAsync(x =>
-            //        {
-            //            //TODO: set SelfMute
-            //            x.Mute = value;
-            //        });
-            //}
-            get; set;
+                return user.IsSelfMuted;
+            }
+            set
+            {
+                _voiceChannel?.ModifyAsync(x =>
+                {
+                    //x.SelfMute = value;
+                });
+            }
         }
 
         [Command("join", RunMode = RunMode.Async)]
@@ -108,6 +106,7 @@ namespace TeamCord.Core
                 _audioClient.StreamDestroyed += _audioClient_StreamDestroyed;
                 _outStream = _audioClient.CreatePCMStream(AudioApplication.Voice);
                 VoiceConnected?.Invoke(this, EventArgs.Empty);
+                ChannelStateChanged?.Invoke(this, EventArgs.Empty);
                 using (IEffectPlayback joinSound = new Mp3SoundEffect(_audioJoin))
                 {
                     joinSound.LoadStream();
@@ -118,9 +117,23 @@ namespace TeamCord.Core
             catch (Exception ex) { Logging.Log(ex); }
         }
 
+        private Task _audioClient_StreamCreated(ulong userID, AudioInStream arg2)
+        {
+            //Triggers when user joined to the channel
+            Logging.Log($"Stream created {userID}", LogLevel.LogLevel_DEBUG);
+            ChannelStateChanged?.Invoke(this, new EventArgs());
+            using (IEffectPlayback joinSound = new Mp3SoundEffect(_audioJoin))
+            {
+                joinSound.LoadStream();
+                joinSound.Play();
+            }
+            return Task.Run(() => { ListenUserAsync(arg2, userID); });
+        }
+
         private Task _audioClient_StreamDestroyed(ulong arg)
         {
             Logging.Log($"Stream destroyed {arg}", LogLevel.LogLevel_DEBUG);
+            ChannelStateChanged?.Invoke(this, new EventArgs());
             var v = _soundServices.SingleOrDefault(x => x.UserID == arg);
             if (v == null)
                 return Task.CompletedTask;
@@ -138,7 +151,7 @@ namespace TeamCord.Core
         private Task _audioClient_Disconnected(Exception arg)
         {
             VoiceDisconnected?.Invoke(this, EventArgs.Empty);
-
+            ChannelStateChanged?.Invoke(this, EventArgs.Empty);
             using (IEffectPlayback leaveSound = new Mp3SoundEffect(_audioDisconnected))
             {
                 leaveSound.LoadStream();
@@ -160,18 +173,6 @@ namespace TeamCord.Core
                     _ = Task.Run(() => { ListenUserAsync(userAudioStream, socketUser.Id); });
                 }
             }
-        }
-
-        private Task _audioClient_StreamCreated(ulong userID, AudioInStream arg2)
-        {
-            //Triggers when user joined to the channel
-            Logging.Log($"Stream created {userID}", LogLevel.LogLevel_DEBUG);
-            using (IEffectPlayback joinSound = new Mp3SoundEffect(_audioJoin))
-            {
-                joinSound.LoadStream();
-                joinSound.Play();
-            }
-            return Task.Run(() => { ListenUserAsync(arg2, userID); });
         }
 
         [Command("leave", RunMode = RunMode.Async)]
@@ -228,8 +229,8 @@ namespace TeamCord.Core
             //do not playback own audio data
             if (userID == OwnUserID)
                 return;
-
-            var user = await _socketClient.Rest.GetGuildUserAsync(_voiceChannel.GuildId, userID);
+            var user = await _voiceChannel.GetUserAsync(userID);
+            //var user = await _socketClient.Rest.GetGuildUserAsync(_voiceChannel.GuildId, userID);
 
             //if user has no nickname set use username
             var soundsrv = new SoundService(userID, user.Nickname ?? user.Username);

@@ -13,7 +13,7 @@ namespace TeamCord.Plugin
     {
         #region singleton
 
-        private readonly static Lazy<TSPlugin> _instance = new Lazy<TSPlugin>(() => new TSPlugin());
+        private static readonly Lazy<TSPlugin> _instance = new Lazy<TSPlugin>(() => new TSPlugin());
 
         private TSPlugin()
         {
@@ -24,7 +24,7 @@ namespace TeamCord.Plugin
 #if DEBUG
             PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString() + " [DEBUG build]";
 #else
-            PluginVersion= typeof(TSPlugin).Assembly.GetName().Version.ToString();
+            PluginVersion = typeof(TSPlugin).Assembly.GetName().Version.ToString();
 #endif
         }
 
@@ -124,6 +124,7 @@ namespace TeamCord.Plugin
                     Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemConnect, true);
                     ConnectionHandler = new ConnectionHandler(Settings.Token);
                     ConnectionHandler.ConnectionChanged += ConnectionHandler_ConnectionChanged;
+                    VoiceChannelService.ChannelStateChanged += VoiceChannelService_ChannelStateChanged;
                 }
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemDisconnect, false);
                 Functions.setPluginMenuEnabled(PluginID, MenuItems.MenuItemJoin, false);
@@ -381,6 +382,15 @@ namespace TeamCord.Plugin
             ConnectionHandler.AverageVoiceProcessTimeChanged -= ConnectionHandler_VoiceProcessTimeChanged;
         }
 
+        public string GetDiscordUserlistAsTs3String(ulong serverConnectionHandlerID, ulong id)
+        {
+            string description;
+            Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, id, ChannelProperties.CHANNEL_DESCRIPTION, out description);
+            var channelId = Helpers.ExtractChannelID(description);
+            var users = Instance.ConnectionHandler.GetUsersInChannel(channelId);
+            return Helpers.UserListToTs3String(users);
+        }
+
         /// <summary>
         /// Opens the TeamCord About window
         /// </summary>
@@ -534,6 +544,12 @@ namespace TeamCord.Plugin
             if (err)
                 Logging.Log("Reading clients descriptions failed", LogLevel.LogLevel_WARNING);
             return clients;
+        }
+
+        private void VoiceChannelService_ChannelStateChanged(object sender, EventArgs e)
+        {
+            //work around because of access violation exception, channel info will be updated in the export function ts3plugin_onServerUpdatedEvent which is triggered here
+            Functions.requestServerVariables(Functions.getCurrentServerConnectionHandlerID());
         }
 
         #region Logging

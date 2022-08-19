@@ -150,7 +150,7 @@ namespace TeamCord.Plugin
             }
         }
 
-        private unsafe static char* my_strcpy(char* destination, int buffer, char* source)
+        private static unsafe char* my_strcpy(char* destination, int buffer, char* source)
         {
             char* p = destination;
             int x = 0;
@@ -195,7 +195,7 @@ namespace TeamCord.Plugin
         }
 
         [DllExport]
-        public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
+        public static unsafe void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
         {
             int menuItemCount = 8;
             int n = 0;
@@ -275,11 +275,7 @@ namespace TeamCord.Plugin
                 case PluginItemType.PLUGIN_CHANNEL:
                     if (TSPlugin.Instance.ConnectionHandler == null)
                         return;
-                    string description;
-                    TSPlugin.Instance.Functions.getChannelVariableAsString(serverConnectionHandlerID, id, ChannelProperties.CHANNEL_DESCRIPTION, out description);
-                    var channelid = Helpers.ExtractChannelID(description);
-                    var users = TSPlugin.Instance.ConnectionHandler.GetUsersInChannel(channelid);
-                    data = Helpers.UserListToTs3String(users);
+                    data = TSPlugin.Instance.GetDiscordUserlistAsTs3String(serverConnectionHandlerID, id);
                     break;
 
                 case PluginItemType.PLUGIN_CLIENT:
@@ -293,6 +289,14 @@ namespace TeamCord.Plugin
                     data = null;  /* Ignore */
                     return;
             }
+        }
+
+        [DllExport]
+        public static void ts3plugin_onServerUpdatedEvent(ulong serverConnectionHandlerID)
+        {
+            //used as work around to update channel info of plugin because of memory violation when called outside of an export function
+            TSPlugin.Instance.Functions.requestInfoUpdate(serverConnectionHandlerID, PluginItemType.PLUGIN_CHANNEL, TSPlugin.Instance.CurrentChannel);
+            Console.WriteLine("-----------#########");
         }
     }
 }

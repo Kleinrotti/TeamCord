@@ -127,7 +127,8 @@ namespace TeamCord.Core
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Debug
+                LogLevel = LogSeverity.Debug,
+                GatewayIntents = GatewayIntents.All
             });
             _token = Encoding.Default.GetString(token.GetStoredData());
             _voiceChannelService = new VoiceChannelService(_client);
