@@ -20,7 +20,8 @@ namespace TeamCord.Core
             }
         }
 
-        public virtual Version Version { get { return LatestVersion; } }
+        public virtual Version Version
+        { get { return LatestVersion; } }
 
         internal UpdaterBase(Version currentVersion)
         {
