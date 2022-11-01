@@ -127,7 +127,9 @@ namespace TeamCord.Core
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
+#if DEBUG
                 LogLevel = LogSeverity.Debug,
+#endif
                 GatewayIntents = GatewayIntents.All
             });
             _token = Encoding.Default.GetString(token.GetStoredData());
@@ -239,7 +241,7 @@ namespace TeamCord.Core
         private Task Client_Log(LogMessage arg)
         {
 #if DEBUG
-            Console.WriteLine("<Discord.net>" + arg.Message);
+            Logging.Log("<Discord.net>" + arg.Message);
 #endif
             return Task.CompletedTask;
         }
@@ -259,7 +261,9 @@ namespace TeamCord.Core
                     //wait for connection
                     while (_client.ConnectionState != ConnectionState.Connected)
                     {
-                        await Task.Delay(25);
+                        await Task.Delay(10000);
+                        if (_client.ConnectionState != ConnectionState.Connected)
+                            throw new TimeoutException("Timeout reached while connection to Discord.");
                     }
                     Logging.Log("Connection established to discord");
                 }
@@ -309,7 +313,7 @@ namespace TeamCord.Core
             _currentChannel = _client.GetChannel(channelID) as SocketVoiceChannel;
             if (_currentChannel != null)
             {
-                _voiceChannelService.JoinChannel(_currentChannel);
+                await _voiceChannelService.JoinChannel(_currentChannel);
                 Logging.Log($"Channel bitrate: {_currentChannel.Bitrate}");
             }
             else
