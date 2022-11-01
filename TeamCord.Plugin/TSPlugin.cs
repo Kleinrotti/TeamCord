@@ -409,7 +409,7 @@ namespace TeamCord.Plugin
             if (ConnectionHandler == null || ConnectionHandler.ConnectionInfo == null)
                 return;
             ConnectionHandler.CurrentVoiceChannelService.Deaf = value;
-            Logging.Log($"Deaf applied. Value {value}");
+            Logging.Log($"Deaf triggered. Value {value}");
             if (value)
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_all_muted);
             else if (ConnectionHandler.CurrentVoiceChannelService.Mute)
@@ -427,7 +427,7 @@ namespace TeamCord.Plugin
             if (ConnectionHandler == null || ConnectionHandler.ConnectionInfo == null)
                 return;
             ConnectionHandler.CurrentVoiceChannelService.Mute = value;
-            Logging.Log($"Mute applied. Value {value}");
+            Logging.Log($"Mute triggered. Value {value}");
             if (value && !ConnectionHandler.CurrentVoiceChannelService.Deaf)
                 _trayIcon.UpdateIcon(Core.Properties.Resource.logo_voice_muted);
             else if (!ConnectionHandler.CurrentVoiceChannelService.Deaf)
