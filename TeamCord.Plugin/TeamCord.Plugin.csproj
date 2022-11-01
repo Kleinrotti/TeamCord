@@ -89,13 +89,19 @@
       <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Framework.16.8.0\lib\net472\Microsoft.Build.Framework.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Build.Framework.17.3.2\lib\net472\Microsoft.Build.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Utilities.Core.16.8.0\lib\net472\Microsoft.Build.Utilities.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Build.Utilities.Core.17.3.2\lib\net472\Microsoft.Build.Utilities.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.Redist, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.Redist.6.0.0\lib\net472\Microsoft.IO.Redist.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.NET.StringTools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.NET.StringTools.17.3.2\lib\net472\Microsoft.NET.StringTools.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.3.2180\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -110,22 +116,39 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Collections.Immutable, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.5.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.6.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.6.0.1\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Permissions.6.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -223,9 +246,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\UnmanagedExports.Repack.Upgrade.1.2.1\build\UnmanagedExports.Repack.Upgrade.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UnmanagedExports.Repack.Upgrade.1.2.1\build\UnmanagedExports.Repack.Upgrade.targets'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.3.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.3.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.6.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.6.4\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.3.2180\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.3.2180\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets'))" />
   </Target>
-  <Import Project="..\packages\Fody.6.3.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.3.0\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.6.6.4\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.4\build\Fody.targets')" />
+  <Import Project="..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.3.2180\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.3.3.2180\build\Microsoft.VisualStudio.Setup.Configuration.Interop.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
