@@ -296,7 +296,6 @@ namespace TeamCord.Plugin
         {
             //used as work around to update channel info of plugin because of memory violation when called outside of an export function
             TSPlugin.Instance.Functions.requestInfoUpdate(serverConnectionHandlerID, PluginItemType.PLUGIN_CHANNEL, TSPlugin.Instance.CurrentChannel);
-            Console.WriteLine("-----------#########");
         }
     }
 }
