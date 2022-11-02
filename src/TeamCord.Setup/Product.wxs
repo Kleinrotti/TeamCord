@@ -50,11 +50,11 @@
         <RegistryKey Root="HKCU" Key="Software\TeamCord">
           <RegistryValue Name="TeamCordFolder" Value="1" KeyPath="yes" Type="integer" />
         </RegistryKey>
-        <File Id="libsodium.dll" Source="..\TeamCord.Plugin\libsodium.dll" Checksum="no" />
+        <File Id="libsodium.dll" Source="libsodium.dll" Checksum="no" />
       </Component>
 
       <Component Id="opus.dll" Guid="{09ED1BCF-DE6C-4D4E-83E4-AC5122755817}">
-        <File Id="opus.dll" Source="..\TeamCord.Plugin\opus.dll" Checksum="no" />
+        <File Id="opus.dll" Source="opus.dll" Checksum="no" />
       </Component>
 
       <Component Id="logo" Guid="{F84203BF-4507-48D5-A823-7D0166650685}">
