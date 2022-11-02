@@ -1,4 +1,4 @@
-name: build
+name: Release_package
 
 on:
   push:
@@ -6,13 +6,11 @@ on:
       - "*.*.*"
 
 jobs:
-  Release_package:
+  build:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set version env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
@@ -32,15 +30,25 @@ jobs:
     - name: Rename setup files
       run: | 
         cd src\\TeamCord.Setup\\bin\\x64\\Release
-        mv TeamCord.msi TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
+        mv TeamCord.msi TeamCord-win-x64-${{github.ref_name}}.msi
 
     - name: Upload setup artifact
       uses: actions/upload-artifact@v3
       with:
-        name: TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
-        path: "src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi"
+        name: TeamCord-win-x64-${{github.ref_name}}.msi
+        path: "src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{github.ref_name}}.msi"
         if-no-files-found: error
         retention-days: 7
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/download-artifact@v3
+      with:
+        name: TeamCord-win-x64-${{github.ref_name}}.msi
 
     - name: Release files
       uses: softprops/action-gh-release@v1
@@ -48,5 +56,5 @@ jobs:
         body_path: ${{ github.workspace }}-CHANGELOG.md
         fail_on_unmatched_files: true
         files: |
-          src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
+          TeamCord-win-x64-${{github.ref_name}}.msi
         
