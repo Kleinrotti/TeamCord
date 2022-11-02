@@ -21,7 +21,7 @@ jobs:
         nuget-version: '5.x'
       
     - name: Navigate to Workspace
-      run: cd src
+      run: cd $GITHUB_WORKSPACE/src
       
     - name: Restore Packages
       run: nuget restore TeamCord.sln
@@ -34,5 +34,5 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: TeamCord Plugin
-        path: "$GITHUB_WORKSPACE/src/TeamCord.Plugin/bin/x64/Release/TeamCord.dll" 
+        path: "TeamCord.Plugin/bin/x64/Release/TeamCord.dll" 
         
