@@ -2,9 +2,8 @@ name: build
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    tags:
+      - "*.*.*"
 
 jobs:
   build:
@@ -36,17 +35,18 @@ jobs:
         mv TeamCord.msi TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
 
     - name: Upload setup artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
         path: "src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi"
         if-no-files-found: error
         retention-days: 7
 
-#    - name: Release files
-#      uses: softprops/action-gh-release@v1
-#      with:
-#        fail_on_unmatched_files: true
-#        files: |
-#          src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
+    - name: Release files
+      uses: softprops/action-gh-release@v1
+      with:
+        body_path: ${{ github.workspace }}-CHANGELOG.md
+        fail_on_unmatched_files: true
+        files: |
+          src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
         
