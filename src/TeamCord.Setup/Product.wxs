@@ -7,13 +7,13 @@
       <![CDATA[Installed OR NETFRAMEWORK45>=#528040]]>
     </Condition>
     <Media Id="1" Cabinet="cab1.cab" EmbedCab="yes" />
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"/>
 
     <Feature Id="ProductFeature" Title="TeamCord" Level="1">
-
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="NeededComponents" />
     </Feature>
+      
     <UIRef Id="WixUI_Minimal" />
     <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf" />
   </Product>
@@ -45,17 +45,12 @@
     </ComponentGroup>
 
     <ComponentGroup Id="NeededComponents" Directory="INSTALLFOLDER">
-
       <Component Id="libsodium.dll" Guid="{696EA44B-8073-4EAC-8D2F-A4C0DFA621F9}">
         <RemoveFolder Id="RemoveTeamCordDirectory" On="uninstall" />
         <RegistryKey Root="HKCU" Key="Software\TeamCord">
           <RegistryValue Name="TeamCordFolder" Value="1" KeyPath="yes" Type="integer" />
         </RegistryKey>
         <File Id="libsodium.dll" Source="..\TeamCord.Plugin\libsodium.dll" Checksum="no" />
-      </Component>
-
-      <Component Id="ConfigFile" Guid="{9801ECAD-54B3-412E-912A-AC894FE5E01F}">
-        <RemoveFile Id="Config" Name="config.json" On="uninstall" />
       </Component>
 
       <Component Id="opus.dll" Guid="{09ED1BCF-DE6C-4D4E-83E4-AC5122755817}">

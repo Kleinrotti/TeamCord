@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TeamCord.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TeamCord")]
+[assembly: AssemblyDescription("Voice channel bridge between Teamspeak and Discord")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TeamCord.Core")]
+[assembly: AssemblyCompany("Kleinrotti")]
+[assembly: AssemblyProduct("TeamCord TS3 Plugin")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("50281cf0-63d7-4f96-aa0b-8238bc9d6f3b")]
+[assembly: Guid("6b216556-8b70-4475-9ada-1f5ad9513709")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.3.1")]
-[assembly: AssemblyFileVersion("0.1.3.1")]
+[assembly: AssemblyVersion("0.1.4.0")]
+[assembly: AssemblyFileVersion("0.1.4.0")]

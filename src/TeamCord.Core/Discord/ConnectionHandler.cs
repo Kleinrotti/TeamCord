@@ -405,7 +405,7 @@ namespace TeamCord.Core
             //stereo short buffer needs to be converted to stereo byte buffer
             fixed (short* fo = _voiceBuffer)
             {
-                byte* sample = (byte*)fo;
+                var sample = (byte*)fo;
                 for (int i = 0; i < _bufferBytes.Length; i++)
                 {
                     _bufferBytes[i] = sample[i];
@@ -435,7 +435,7 @@ namespace TeamCord.Core
         private short[] ToStereo(short[] buf)
         {
             //new buffer needs to be twice as large because of stereo data
-            short[] buffer = new short[buf.Length * 2];
+            var buffer = new short[buf.Length * 2];
             //start at the end and copy each short twice to the new stereo buffer
             for (int i = buf.Length - 1, j = buffer.Length - 1; i >= 0; --i)
             {
