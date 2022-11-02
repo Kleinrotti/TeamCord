@@ -16,17 +16,19 @@ jobs:
       uses: microsoft/setup-msbuild@v1
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: NuGet/setup-nuget@v1.1.1
+      with:
+        nuget-version: '5.x'
       
     - name: Navigate to Workspace
-      run: cd src/TeamCord.Plugin
+      run: cd src
       
     - name: Restore Packages
-      run: nuget restore TeamCord.Plugin.csproj
+      run: nuget restore TeamCord.sln
 
     - name: Build Solution
       run: |
-        msbuild.exe TeamCord.Plugin.csproj /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release"
+        msbuild.exe TeamCord.Plugin/TeamCord.Plugin.csproj /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v1
