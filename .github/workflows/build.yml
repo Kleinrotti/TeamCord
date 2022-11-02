@@ -25,11 +25,11 @@ jobs:
 
     - name: Build Solution
       run: |
-        msbuild.exe src\TeamCord.sln /t:TeamCord_Plugin /p:platform="Any CPU" /p:configuration="Release" /p:PostBuildEvent=
+        msbuild.exe src\TeamCord.sln /t:TeamCord_Plugin /p:platform="x64" /p:configuration="Release" /p:PostBuildEvent=
 
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
         name: TeamCord Plugin
-        path: "TeamCord.Plugin\\bin\\x64\\Release\\TeamCord.dll" 
+        path: "src\\TeamCord.Plugin\\bin\\x64\\Release\\TeamCord.dll" 
         
