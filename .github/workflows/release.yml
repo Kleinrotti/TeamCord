@@ -6,7 +6,7 @@ on:
       - "*.*.*"
 
 jobs:
-  build:
+  Release_package:
     runs-on: windows-latest
 
     steps:
