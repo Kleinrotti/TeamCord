@@ -12,6 +12,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set version env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
@@ -25,11 +28,23 @@ jobs:
 
     - name: Build Solution
       run: |
-        msbuild.exe src\TeamCord.sln /t:TeamCord_Plugin /p:platform="x64" /p:configuration="Release" /p:PostBuildEvent=
+        msbuild.exe src\TeamCord.sln /t:TeamCord_Setup /p:platform="x64" /p:configuration="Release" /p:PostBuildEvent=
+    
+    - name: Rename setup files
+      run: | 
+        cd src\\TeamCord.Setup\\bin\\x64\\Release
+        mv TeamCord.msi TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
 
-    - name: Upload artifact
+    - name: Upload setup artifact
       uses: actions/upload-artifact@v1
       with:
-        name: TeamCord Plugin
-        path: "src\\TeamCord.Plugin\\bin\\x64\\Release\\TeamCord.dll" 
+        name: TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
+        path: "src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord.msi"
+
+#    - name: Release files
+#      uses: softprops/action-gh-release@v1
+#      with:
+#        fail_on_unmatched_files: true
+#        files: |
+#          src\\TeamCord.Setup\\bin\\x64\\Release\\TeamCord-win-x64-${{ env.RELEASE_VERSION }}.msi
         
