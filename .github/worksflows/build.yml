@@ -1,0 +1,36 @@
+name: build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+      
+    - name: Navigate to Workspace
+      run: cd $GITHUB_WORKSPACE/src/TeamCord.Plugin
+      
+    - name: Restore Packages
+      run: nuget restore TeamCord.Plugin.csproj
+
+    - name: Build Solution
+      run: |
+        msbuild.exe TeamCord.Plugin.csproj /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: TeamCord Plugin
+        path: "$GITHUB_WORKSPACE/src/TeamCord.Plugin/bin/x64/Release/TeamCord.dll" 
+        
