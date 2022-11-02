@@ -19,7 +19,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
       
     - name: Navigate to Workspace
-      run: cd $GITHUB_WORKSPACE/src/TeamCord.Plugin
+      run: cd src/TeamCord.Plugin
       
     - name: Restore Packages
       run: nuget restore TeamCord.Plugin.csproj
