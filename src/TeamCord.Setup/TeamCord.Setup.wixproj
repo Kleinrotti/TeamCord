@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>ef7c605d-4bdd-437e-b2a5-280ea24fa103</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TeamCord Setup</OutputName>
+    <OutputName>TeamCord</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
