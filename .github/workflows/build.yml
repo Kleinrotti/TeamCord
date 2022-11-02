@@ -25,7 +25,7 @@ jobs:
 
     - name: Build Solution
       run: |
-        msbuild.exe src\TeamCord.sln /t:TeamCord.Plugin /p:platform="Any CPU" /p:configuration="Release"
+        msbuild.exe src\TeamCord.sln /t:TeamCord_Plugin /p:platform="Any CPU" /p:configuration="Release"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v1
