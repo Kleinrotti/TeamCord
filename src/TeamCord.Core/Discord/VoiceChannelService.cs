@@ -45,17 +45,14 @@ namespace TeamCord.Core
         /// <summary>
         /// Returns a list of UserVolume objects
         /// </summary>
-        public IList<UserVolume> UserVolumes
+        public async Task<IList<UserVolume>> GetUserVolumes()
         {
-            get
+            var volumes = new List<UserVolume>();
+            foreach (var v in _soundServices)
             {
-                var volumes = new List<UserVolume>();
-                foreach (var v in _soundServices)
-                {
-                    volumes.Add(v.UserVolume);
-                }
-                return volumes;
+                volumes.Add(await v.GetUserVolume());
             }
+            return volumes;
         }
 
         public bool Deaf { get; set; }
@@ -236,7 +233,7 @@ namespace TeamCord.Core
             var user = await _voiceChannel.GetUserAsync(userID);
 
             //if user has no nickname set use username
-            var soundsrv = new SoundService(userID, user.Nickname ?? user.Username);
+            var soundsrv = new SoundService(userID, _voiceChannel);
             _soundServices.Add(soundsrv);
             try
             {

@@ -112,17 +112,6 @@ namespace TeamCord.Core
             }
         }
 
-        /// <summary>
-        /// Return a list of tuples with each volume, userid and nickname
-        /// </summary>
-        public IList<UserVolume> UserVolumesInCurrentChannel
-        {
-            get
-            {
-                return _voiceChannelService.UserVolumes;
-            }
-        }
-
         public ConnectionHandler(PluginUserCredential token)
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig

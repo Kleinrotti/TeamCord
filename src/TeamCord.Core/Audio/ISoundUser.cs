@@ -1,4 +1,6 @@
-﻿namespace TeamCord.Core
+﻿using System.Threading.Tasks;
+
+namespace TeamCord.Core
 {
     /// <summary>
     /// Interface which declares a user with audio data
@@ -13,6 +15,6 @@
         /// <summary>
         /// UserVolume object
         /// </summary>
-        UserVolume UserVolume { get; }
+        Task<UserVolume> GetUserVolume();
     }
 }

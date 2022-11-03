@@ -219,9 +219,10 @@ namespace TeamCord.Plugin
             catch (AccessViolationException) { }
         }
 
-        private void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)
+        private async void TrayIcon_VolumeChangedClicked(object sender, EventArgs e)
         {
-            var _volumeControl = new VolumeControl(ConnectionHandler.UserVolumesInCurrentChannel);
+            var voiceChannelService = ConnectionHandler.CurrentVoiceChannelService;
+            var _volumeControl = new VolumeControl(await voiceChannelService.GetUserVolumes());
             _volumeControl.VolumeChanged += Control_VolumeChanged;
             _volumeControl.Show();
         }

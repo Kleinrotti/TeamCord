@@ -1,17 +1,19 @@
-﻿using NAudio.Wave;
+﻿using Discord;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
+using System.Threading.Tasks;
 
 namespace TeamCord.Core
 {
     internal class SoundService : ISoundPlayback, ISoundUser, IDisposable
     {
-        private BufferedWaveProvider _waveProvider;
-        private VolumeSampleProvider _volumeSampleProvider;
-        private WaveOut _waveOut;
+        protected BufferedWaveProvider _waveProvider;
+        protected VolumeSampleProvider _volumeSampleProvider;
+        protected IVoiceChannel _voiceChannel;
+        protected WaveOut _waveOut;
 
         public ulong UserID { get; }
-        public string Nickname { get; set; }
 
         internal static string PlaybackDeviceName { get; set; }
 
@@ -24,15 +26,7 @@ namespace TeamCord.Core
             set
             {
                 _volumeSampleProvider.Volume = value;
-                Logging.Log($"Volume of user {Nickname} changed to {value}", LogLevel.LogLevel_DEBUG);
-            }
-        }
-
-        public UserVolume UserVolume
-        {
-            get
-            {
-                return new UserVolume(UserID, _volumeSampleProvider.Volume, Nickname);
+                Logging.Log($"Volume of user {UserID} changed to {value}", LogLevel.LogLevel_DEBUG);
             }
         }
 
@@ -51,24 +45,35 @@ namespace TeamCord.Core
             }
         }
 
-        public SoundService(ulong userID, string nickname)
+        public SoundService(ulong userId, IVoiceChannel voiceChannel)
         {
-            UserID = userID;
-            Nickname = nickname;
+            UserID = userId;
+            _voiceChannel = voiceChannel;
             InitSpeakers();
-            Logging.Log($"SoundService loaded for user {nickname}");
+            Logging.Log($"SoundService loaded for user {UserID}");
+        }
+
+        public async Task<string> GetNickname()
+        {
+            var user = await _voiceChannel.GetUserAsync(UserID);
+            return user.Nickname ?? user.Username;
+        }
+
+        public async Task<UserVolume> GetUserVolume()
+        {
+            return new UserVolume(UserID, _volumeSampleProvider.Volume, await GetNickname());
         }
 
         public void StartPlayback()
         {
             _waveOut.Play();
-            Logging.Log($"Playback started of user {Nickname}");
+            Logging.Log($"Playback started of user {UserID}");
         }
 
         public void StopPlayback()
         {
             _waveOut.Stop();
-            Logging.Log($"Playback stopped of user {Nickname}");
+            Logging.Log($"Playback stopped of user {UserID}");
         }
 
         private void InitSpeakers()
@@ -101,7 +106,7 @@ namespace TeamCord.Core
         private void _waveOut_PlaybackStopped(object sender, StoppedEventArgs e)
         {
             if (e.Exception == null)
-                Logging.Log($"Sound playback automatically stoppped of user {Nickname}");
+                Logging.Log($"Sound playback automatically stoppped of user {UserID}");
             else
                 Logging.Log(e.Exception);
         }
@@ -115,7 +120,7 @@ namespace TeamCord.Core
         {
             _waveOut.Dispose();
             _waveProvider = null;
-            Logging.Log($"Unloaded SoundService of user {Nickname}", LogLevel.LogLevel_DEBUG);
+            Logging.Log($"Unloaded SoundService of user {UserID}", LogLevel.LogLevel_DEBUG);
         }
     }
 }
