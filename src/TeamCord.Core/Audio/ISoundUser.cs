@@ -13,8 +13,15 @@ namespace TeamCord.Core
         float Volume { get; set; }
 
         /// <summary>
-        /// UserVolume object
+        /// User volume object
         /// </summary>
+        /// <returns></returns>
         Task<UserVolume> GetUserVolume();
+
+        /// <summary>
+        /// Get the username/nickname of the discord user.
+        /// </summary>
+        /// <returns></returns>
+        Task<string> GetNickname();
     }
 }

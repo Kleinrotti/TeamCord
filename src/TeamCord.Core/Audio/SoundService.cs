@@ -6,15 +6,22 @@ using System.Threading.Tasks;
 
 namespace TeamCord.Core
 {
+    /// <summary>
+    /// Provides logic to playback audio data of a discord user.
+    /// </summary>
     internal class SoundService : ISoundPlayback, ISoundUser, IDisposable
     {
         protected BufferedWaveProvider _waveProvider;
         protected VolumeSampleProvider _volumeSampleProvider;
-        protected IVoiceChannel _voiceChannel;
+        protected readonly IVoiceChannel _voiceChannel;
         protected WaveOut _waveOut;
+        private readonly int _randomizedUserId;
 
         public ulong UserID { get; }
 
+        /// <summary>
+        /// The name of the audio playback device which should be used.
+        /// </summary>
         internal static string PlaybackDeviceName { get; set; }
 
         public float Volume
@@ -26,7 +33,7 @@ namespace TeamCord.Core
             set
             {
                 _volumeSampleProvider.Volume = value;
-                Logging.Log($"Volume of user {UserID} changed to {value}", LogLevel.LogLevel_DEBUG);
+                Logging.Log($"Volume of user {_randomizedUserId} changed to {value}", LogLevel.LogLevel_DEBUG);
             }
         }
 
@@ -49,8 +56,10 @@ namespace TeamCord.Core
         {
             UserID = userId;
             _voiceChannel = voiceChannel;
+            //create a random userId for pseudo log messages
+            _randomizedUserId = new Random().Next(1000, 100000);
             InitSpeakers();
-            Logging.Log($"SoundService loaded for user {UserID}");
+            Logging.Log($"SoundService loaded for user {_randomizedUserId}");
         }
 
         public async Task<string> GetNickname()
@@ -67,15 +76,18 @@ namespace TeamCord.Core
         public void StartPlayback()
         {
             _waveOut.Play();
-            Logging.Log($"Playback started of user {UserID}");
+            Logging.Log($"Playback started of user {_randomizedUserId}");
         }
 
         public void StopPlayback()
         {
             _waveOut.Stop();
-            Logging.Log($"Playback stopped of user {UserID}");
+            Logging.Log($"Playback stopped of user {_randomizedUserId}");
         }
 
+        /// <summary>
+        /// Initialize the audio playback device.
+        /// </summary>
         private void InitSpeakers()
         {
             _waveProvider = new BufferedWaveProvider(new WaveFormat(48000, 2))
@@ -106,7 +118,7 @@ namespace TeamCord.Core
         private void _waveOut_PlaybackStopped(object sender, StoppedEventArgs e)
         {
             if (e.Exception == null)
-                Logging.Log($"Sound playback automatically stoppped of user {UserID}");
+                Logging.Log($"Sound playback automatically stoppped of user {_randomizedUserId}");
             else
                 Logging.Log(e.Exception);
         }
@@ -120,7 +132,7 @@ namespace TeamCord.Core
         {
             _waveOut.Dispose();
             _waveProvider = null;
-            Logging.Log($"Unloaded SoundService of user {UserID}", LogLevel.LogLevel_DEBUG);
+            Logging.Log($"Unloaded SoundService of user {_randomizedUserId}", LogLevel.LogLevel_DEBUG);
         }
     }
 }
