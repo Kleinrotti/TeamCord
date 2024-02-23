@@ -18,7 +18,8 @@ namespace TeamCord.Plugin
         private TSPlugin()
         {
             PluginName = "TeamCord";
-            ApiVersion = 25;
+            ApiVersion = 26;
+            //I assume this is why teamspeak won't load the plugin -Kinokoda
             Author = "Kleinrotti";
             Description = "Voice channel bridge between Teamspeak and Discord";
 #if DEBUG
